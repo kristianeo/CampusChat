@@ -7,4 +7,12 @@
         <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Blazor.Bootstrap" Version="4.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Images\" />
+    </ItemGroup>
+
 </Project>
