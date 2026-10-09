@@ -1,0 +1,50 @@
+@rendermode InteractiveServer
+
+@if (profile != null)
+{
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@profile.UserName</h5>
+            <p class="card-text">@profile.Introduction</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">@profile.FirstName @profile.LastName</li>
+            <li class="list-group-item">@profile.Studies student at @profile.School</li>
+            <li class="list-group-item">@GetStudyYear()</li>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+        </div>
+    </div>
+}
+
+else
+{
+    <p>No user with username @UserName</p>
+}
+
+@code {
+    [Parameter] public string UserName { get; set; } = "";
+
+    private Profile? profile;
+
+    //TODO: Make this an interface?
+    private string GetStudyYear()
+    {
+        string currentYear = profile.StartYear switch
+        {
+            < 2025 => "Graduated student",
+            2025 => "Second year student",
+            2026 => "First year student",
+            > 2026 => "Upcoming student"
+        };
+        return currentYear;
+    }
+    
+    protected override void OnParametersSet()
+    {
+        profile = Profiles.AllProfiles.SingleOrDefault(p => p.UserName == UserName);
+    }
+}
