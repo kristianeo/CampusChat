@@ -1,0 +1,61 @@
+@page "/CreateProfile"
+
+<div class="container text-center">
+    <div class="col-sm-8">
+        <h1>Create a new profile</h1>
+        <form class="row g-3">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="Username">@@</span>
+                <input type="text" class="form-control" placeholder="Username" @bind="Username">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">First name</span>
+                <input type="text" class="form-control" placeholder="First name" @bind="Firstname">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Last name</span>
+                <input type="text" class="form-control" placeholder="Last name" @bind="Lastname">
+            </div>
+            <div class="col-md-4">
+                <select id="studies" class="form-select" @bind="Studies">
+                    <option selected>Choose your studies</option>
+                    @foreach (string studies in Enum.GetNames(typeof(Studies)))
+                    {
+                        <option>@studies</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select id="year" class="form-select" @bind="Startyear">
+                    <option selected>Choose your starting year</option>
+                    @for (int year = 2024; year < 2028; year++)
+                    {
+                        <option>@year</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">Write a short note about yourself</span>
+                <textarea class="form-control" aria-label="With textarea" @bind="Introduction"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@code {
+    private string Username = "";
+    private string Firstname = "";
+    private string Lastname = "";
+    private Studies Studies;
+    private int Startyear;
+    private string Introduction;
+
+    private void CreateNewProfile()
+    {
+        Profile profile = new Profile(Username, Firstname, Lastname, Studies, Startyear, Introduction);
+        Profiles.AllProfiles.Add(profile);
+    }
+    //TODO: Add validations on inputs 
+   
+}

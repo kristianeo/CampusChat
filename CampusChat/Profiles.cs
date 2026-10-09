@@ -18,7 +18,7 @@ public enum Studies
     
 public static class Profiles
 {
-    public static Profile[] AllProfiles =
+    public static List<Profile> AllProfiles =
     [
         new("Brukernavn", "Kristiane", "Olsen", Studies.BackendProgramming, 2025,"Hei")
     ];
