@@ -7,12 +7,14 @@ public record Profile(
     Studies Studies,
     int StartYear,
     string Introduction,
+    string AvatarColor,
     bool Teacher = false,
     bool Audit = false,
     string School = "Gokstad Akademiet");
 
 public enum Studies
 {
+    None,
     CyberSecurity, 
     BackendProgramming, 
     FrontendProgramming
@@ -20,8 +22,5 @@ public enum Studies
     
 public static class Profiles
 {
-    public static List<Profile> AllProfiles =
-    [
-        new("Brukernavn", "Kristiane", "Olsen", Studies.BackendProgramming, 2025,"Hei")
-    ];
+    public static List<Profile> AllProfiles = [];
 }
