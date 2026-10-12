@@ -59,10 +59,10 @@
             </div>
             <div class="col-md-4">
                 <select id="studies" class="form-select" @bind="_studies">
-                    <option selected>Choose your studies</option>
+                    <option value="None" disabled selected>Choose your studies</option>
                     @foreach (string studies in Enum.GetNames(typeof(Studies)))
                     {
-                        <option>@studies</option>
+                        <option value="@studies">@studies</option>
                     }
                 </select>
             </div>
@@ -70,10 +70,10 @@
             {
                 <div class="col-md-4">
                     <select id="year" class="form-select" @bind="_startyear">
-                        <option selected>Choose your starting year</option>
+                        <option value="-1" disabled selected>Choose your starting year</option>
                         @for (int year = 2024; year < 2028; year++)
                         {
-                            <option>@year</option>
+                            <option value="@year">@year</option>
                         }
                     </select>
                 </div>
@@ -103,7 +103,7 @@
     private string _firstname;
     private string _lastname;
     private Studies _studies;
-    private int _startyear;
+    private int _startyear = -1;
     private string _introduction;
     private string _avatarcolor;
     private bool _isTeacher;
