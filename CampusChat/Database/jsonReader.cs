@@ -36,4 +36,10 @@ public class jsonReader
         string updatedJson = JsonSerializer.Serialize(profiles, options);
         File.WriteAllText(path, updatedJson);
     }
+
+    public static Profile? GetProfile(string username)
+    {
+        var profiles = LoadDatabase();
+        return profiles?.FirstOrDefault(p => p.UserName == username);
+    }
 }
