@@ -2,9 +2,15 @@
 @rendermode InteractiveServer
 @using CampusChat.Database
 
+<h1>Create a new profile</h1>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isTeacher">
+    <label class="form-check-label" for="checkDefault">
+        I am a teacher
+    </label>
+</div>
 <div class="container text-center">
     <div class="col-sm-8">
-        <h1>Create a new profile</h1>
         <form class="row g-3">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="Username">@@</span>
@@ -27,19 +33,31 @@
                     }
                 </select>
             </div>
-            <div class="col-md-4">
-                <select id="year" class="form-select" @bind="_startyear">
-                    <option selected>Choose your starting year</option>
-                    @for (int year = 2024; year < 2028; year++)
-                    {
-                        <option>@year</option>
-                    }
-                </select>
-            </div>
+            @if (!_isTeacher)
+            {
+                <div class="col-md-4">
+                    <select id="year" class="form-select" @bind="_startyear">
+                        <option selected>Choose your starting year</option>
+                        @for (int year = 2024; year < 2028; year++)
+                        {
+                            <option>@year</option>
+                        }
+                    </select>
+                </div>
+            }
             <div class="input-group">
                 <span class="input-group-text">Write a short note about yourself</span>
                 <textarea class="form-control" aria-label="With textarea" @bind="_introduction"></textarea>
             </div>
+            @if (_isTeacher)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isAudit">
+                    <label class="form-check-label" for="checkDefault">
+                        Do you want an audit role?
+                    </label>
+                </div>
+            }
             <button type="button" class="btn btn-primary" @onclick="@Submit">Submit</button>
         </form>
     </div>
@@ -54,11 +72,13 @@
     private Studies _studies;
     private int _startyear;
     private string _introduction;
+    private bool _isTeacher;
+    private bool _isAudit = false;
 
     private void Submit()
     {
         Profile profile = new Profile(_username, _firstname, 
-            _lastname, _studies, _startyear, _introduction);
+            _lastname, _studies, _startyear, _introduction, _isAudit);
         jsonReader.AddProfileToDatabase(profile);
         Nav.NavigateTo($"/Profile/{_username}");
     }

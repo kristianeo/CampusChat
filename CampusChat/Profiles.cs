@@ -7,6 +7,7 @@ public record Profile(
     Studies Studies,
     int StartYear,
     string Introduction,
+    bool Audit = false,
     string School = "Gokstad Akademiet");
 
 public enum Studies

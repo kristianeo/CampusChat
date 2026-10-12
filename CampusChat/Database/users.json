@@ -34,5 +34,14 @@
     "StartYear": 2027,
     "Introduction": "Voff",
     "School": "Gokstad Akademiet"
+  },
+  {
+    "UserName": "Teacher",
+    "FirstName": "Teac",
+    "LastName": "Her",
+    "Studies": 2,
+    "StartYear": 0,
+    "Introduction": "Jeg er l\u00E6rer",
+    "School": "Gokstad Akademiet"
   }
 ]
