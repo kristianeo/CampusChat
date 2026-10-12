@@ -1,3 +1,4 @@
+@using CampusChat.Database
 @rendermode InteractiveServer
 
 @if (profile != null)
@@ -45,6 +46,7 @@ else
     
     protected override void OnParametersSet()
     {
-        profile = Profiles.AllProfiles.SingleOrDefault(p => p.UserName == UserName);
+        List<Profile> profiles = jsonReader.LoadDatabase();
+        profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
 }

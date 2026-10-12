@@ -1,5 +1,6 @@
 @page "/CreateProfile"
 @rendermode InteractiveServer
+@using CampusChat.Database
 
 <div class="container text-center">
     <div class="col-sm-8">
@@ -53,20 +54,16 @@
     private Studies _studies;
     private int _startyear;
     private string _introduction;
-    private void CreateNewProfile()
-    {
-        Profile profile = new Profile(_username, _firstname, _lastname, _studies, _startyear, _introduction);
-        Profiles.AllProfiles.Add(profile);
-    }
 
     private void Submit()
     {
-        CreateNewProfile();
+        Profile profile = new Profile(_username, _firstname, 
+            _lastname, _studies, _startyear, _introduction);
+        jsonReader.AddProfileToDatabase(profile);
         Nav.NavigateTo($"/Profile/{_username}");
-
     }
     
     //TODO: Add validations on inputs
-    //TODO: Add .json to store profiles 
+    //TODO: No duplicate usernames 
    
 }
