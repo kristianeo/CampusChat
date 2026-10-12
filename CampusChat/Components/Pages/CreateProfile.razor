@@ -78,7 +78,7 @@
     private void Submit()
     {
         Profile profile = new Profile(_username, _firstname, 
-            _lastname, _studies, _startyear, _introduction, _isAudit);
+            _lastname, _studies, _startyear, _introduction, _isTeacher, _isAudit);
         jsonReader.AddProfileToDatabase(profile);
         Nav.NavigateTo($"/Profile/{_username}");
     }

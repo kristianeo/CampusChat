@@ -7,6 +7,7 @@ public record Profile(
     Studies Studies,
     int StartYear,
     string Introduction,
+    bool Teacher = false,
     bool Audit = false,
     string School = "Gokstad Akademiet");
 
