@@ -1,10 +1,10 @@
-@using CampusChat.Database
+@using CampusChat.Components.Pages
 @rendermode InteractiveServer
 
 @if (profile != null)
 {
     <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+        <Avatar Username="@profile.UserName"/>
         <div class="card-body">
             <h5 class="card-title">@profile.UserName</h5>
             <p class="card-text">@profile.Introduction</p>
@@ -26,12 +26,17 @@ else
     <p>No user with username @UserName</p>
 }
 
+@inject NavigationManager Nav;
+<a href="#" class="card-link" @onclick='() => Nav.NavigateTo("/")'>Go back to home page</a>
+
+
 @code {
     [Parameter] public string UserName { get; set; } = "";
 
     private Profile? profile;
 
-    //TODO: Make this an interface?
+    //TODO: Make global navigation routes
+    //TODO: Correct when teacher 
     private string GetStudyYear()
     {
         string currentYear = profile.StartYear switch
