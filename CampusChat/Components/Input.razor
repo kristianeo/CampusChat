@@ -1,0 +1,14 @@
+<div class="input-group mb-3 has-validation">
+    <span class="input-group-text" 
+          id="@Value">@Value
+    </span>
+    <input type="text" 
+           class="form-control" 
+           @bind="@Bind" 
+           required>
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string Bind { get; set; }
+}
