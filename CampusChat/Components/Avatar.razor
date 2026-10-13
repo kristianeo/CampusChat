@@ -15,17 +15,19 @@
     private string GetAvatarColor()
     {
         string avatarColor = "";
-        if (Username != null)
+        
+        if (AvatarColor != null)
+        {
+            avatarColor = AvatarColor;
+        }
+        
+        else if (Username != null)
         {
             Profile? _profile = jsonReader.GetProfile(Username);
             avatarColor = _profile.AvatarColor;
         }
 
-        if (AvatarColor != null)
-        {
-            avatarColor = AvatarColor;
-        }
-
         return avatarColor;
     }
+
 }
