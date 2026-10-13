@@ -1,0 +1,39 @@
+@typeparam T
+
+<div class="form-floating">
+    <select class="form-select"
+            id="floatingSelectGrid"
+            @onchange="HandleChange"
+            required>
+        
+        @foreach (var option in Options)
+        {
+            <option value="@option">@option</option>
+        }
+    </select>
+    <label for="floatingSelectGrid">@Message</label>
+</div>
+
+@code {
+    [Parameter] public T Value { get; set; }
+    [Parameter] public EventCallback<T> ValueChanged { get; set; }
+    [Parameter] public string Message { get; set; }
+
+    [Parameter] public IEnumerable<T> Options { get; set; }
+        = Enumerable.Empty<T>();
+
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        T value;
+
+        if (typeof(T).IsEnum)
+        {
+            value = (T)Enum.Parse(typeof(T), e.Value!.ToString()!);
+        }
+        else
+        {
+            value = (T)Convert.ChangeType(e.Value!, typeof(T));
+        }
+        await ValueChanged.InvokeAsync(value);
+    }
+}
