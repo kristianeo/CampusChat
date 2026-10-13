@@ -42,4 +42,16 @@ public class jsonReader
         var profiles = LoadDatabase();
         return profiles?.FirstOrDefault(p => p.UserName == username);
     }
+
+    /// <summary>
+    /// Returns true if username already exists
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
+    public static bool CheckUsername(string username)
+    {
+        var profiles = LoadDatabase();
+        return profiles.FirstOrDefault(p => string.Equals(
+            p.UserName, username, StringComparison.CurrentCultureIgnoreCase)) != null;
+    }
 }
