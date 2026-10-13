@@ -2,98 +2,108 @@
 @rendermode InteractiveServer
 
 <div class="container text-left">
-    <div class="col-sm-8">
-        <div class="row g-3">
-            <h1>Create a new profile</h1>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isTeacher">
-                <label class="form-check-label" for="checkDefault">
-                    I am a teacher
-                </label>
-            </div>
-            <div class="input-group mb-3">
+    <h1>Create a new profile</h1>
+    <form class="row g-3" @onsubmit="Submit">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isTeacher">
+        <label class="form-check-label" for="checkDefault">
+            I am a teacher
+        </label>
+    </div>
+    
+        <div class="col-md-4">
+            <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" id="Username">@@</span>
-                <input type="text" class="form-control" placeholder="Username" @bind="_username">
-            </div>
-            <div class="d-flex align-items-center gap-3 mb-3">
-                <span>Select a color: </span>
-                <div class="d-flex gap-2">
-                    <input type="radio"
-                           class="btn-check"
-                           name="avatarcolor"
-                           id="blue"
-                           value="bg-primary" @onchange='() => _avatarcolor = "bg-primary"'>
-                    <label for="blue"
-                           class="btn btn-primary">
-                        <Avatar AvatarColor="bg-primary"></Avatar>
-                    </label>
-
-                    <input type="radio"
-                           class="btn-check"
-                           name="avatarcolor"
-                           id="green"
-                           value="bg-success" @onchange='() => _avatarcolor = "bg-success"'>
-                    <label for="green"
-                           class="btn btn-success"><Avatar AvatarColor="bg-success"></Avatar>
-                    </label>
-
-                    <input type="radio"
-                           class="btn-check"
-                           name="avatarcolor"
-                           id="red"
-                           value="bg-danger" @onchange='() => _avatarcolor = "bg-danger"'>
-                    <label for="red"
-                           class="btn btn-danger">
-                        <Avatar AvatarColor="bg-danger"></Avatar>
-                    </label>
+                <input type="text" class="form-control @(_usernameTaken ? "is-invalid" : "" )" placeholder="Username" @bind="_username"  required>
+                <div id="Username" class="invalid-feedback">
+                    Username is taken.
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-4">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon2">First name</span>
-                <input type="text" class="form-control" placeholder="First name" @bind="_firstname">
+                <input type="text" class="form-control" placeholder="First name" @bind="_firstname" required>
             </div>
+        </div>
+        <div class="col-md-4">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon3">Last name</span>
-                <input type="text" class="form-control" placeholder="Last name" @bind="_lastname">
+                <input type="text" class="form-control" placeholder="Last name" @bind="_lastname" required>
             </div>
+        </div>
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span>Select an avatar color: </span>
+            <div class="d-flex gap-2" reqired>
+                <input type="radio"
+                       class="btn-check"
+                       name="avatarcolor"
+                       id="blue"
+                       value="bg-primary" @onchange='() => _avatarcolor = "bg-primary"'>
+                <label for="blue"
+                       class="btn btn-primary">
+                    <Avatar AvatarColor="bg-primary"></Avatar>
+                </label>
+
+                <input type="radio"
+                       class="btn-check"
+                       name="avatarcolor"
+                       id="green"
+                       value="bg-success" @onchange='() => _avatarcolor = "bg-success"'>
+                <label for="green"
+                       class="btn btn-success">
+                    <Avatar AvatarColor="bg-success"></Avatar>
+                </label>
+
+                <input type="radio"
+                       class="btn-check"
+                       name="avatarcolor"
+                       id="red"
+                       value="bg-danger" @onchange='() => _avatarcolor = "bg-danger"'>
+                <label for="red"
+                       class="btn btn-danger">
+                    <Avatar AvatarColor="bg-danger"></Avatar>
+                </label>
+            </div>
+        </div>
+
+           
+        <div class="col-md-4">
+            <select id="studies" class="form-select" @bind="_studies" required>
+                <option value="None" disabled selected>Choose your studies</option>
+                @foreach (string studies in Enum.GetNames(typeof(Studies)))
+                {
+                    <option value="@studies">@studies</option>
+                }
+            </select>
+        </div>
+        @if (!_isTeacher)
+        {
             <div class="col-md-4">
-                <select id="studies" class="form-select" @bind="_studies">
-                    <option value="None" disabled selected>Choose your studies</option>
-                    @foreach (string studies in Enum.GetNames(typeof(Studies)))
+                <select id="year" class="form-select" @bind="_startyear" required>
+                    <option value="-1" disabled selected>Choose your starting year</option>
+                    @for (int year = 2024; year < 2028; year++)
                     {
-                        <option value="@studies">@studies</option>
+                        <option value="@year">@year</option>
                     }
                 </select>
             </div>
-            @if (!_isTeacher)
-            {
-                <div class="col-md-4">
-                    <select id="year" class="form-select" @bind="_startyear">
-                        <option value="-1" disabled selected>Choose your starting year</option>
-                        @for (int year = 2024; year < 2028; year++)
-                        {
-                            <option value="@year">@year</option>
-                        }
-                    </select>
-                </div>
-            }
-            <div class="input-group">
-                <span class="input-group-text">Write a short note about yourself</span>
-                <textarea class="form-control" aria-label="With textarea" @bind="_introduction"></textarea>
-            </div>
-            @if (_isTeacher)
-            {
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isAudit">
-                    <label class="form-check-label" for="checkDefault">
-                        Do you want an audit role?
-                    </label>
-                </div>
-            }
-            <button type="button" class="btn btn-primary" @onclick="@Submit">Submit</button>
+        }
+        <div class="input-group">
+            <span class="input-group-text" required>Write a short note about yourself</span>
+            <textarea class="form-control" @bind="_introduction"></textarea>
         </div>
-    </div>
+        @if (_isTeacher)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDefault" @bind="_isAudit">
+                <label class="form-check-label" for="checkDefault">
+                    Do you want an audit role?
+                </label>
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
 
 @inject NavigationManager Nav
@@ -109,17 +119,28 @@
     private bool _isTeacher;
     private bool _isAudit = false;
 
+    private bool _usernameTaken = false;
+
     private void Submit()
     {
+        if (jsonReader.CheckUsername(_username))
+        {
+            _usernameTaken = true;
+            return;
+        }
         Profile profile = new Profile(_username, _firstname, 
             _lastname, _studies, _startyear, _introduction, 
             _avatarcolor, _isTeacher, _isAudit);
         jsonReader.AddProfileToDatabase(profile);
-        Nav.NavigateTo($"/Profile/{_username}");
+        // Nav.NavigateTo($"/Profile/{_username}");
     }
-    
-    //TODO: Add validations on inputs
-    //TODO: No duplicate usernames 
-    //TODO: Add switches instead of boxes
+
+    protected override void OnParametersSet()
+    {
+        
+    }
+
+    // TODO: Add validations on inputs
+    // TODO: No duplicate usernames 
    
 }
