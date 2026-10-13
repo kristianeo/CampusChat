@@ -1,4 +1,3 @@
-@using CampusChat.Components.Pages
 @rendermode InteractiveServer
 
 @if (profile != null)
@@ -14,12 +13,16 @@
             @if (!profile.Teacher)
             {
                 <li class="list-group-item">@profile.Studies student at @profile.School</li>   
+                <li class="list-group-item">@GetStudyYear()</li>
             }
-            <li class="list-group-item">@GetStudyYear()</li>
+            else
+            {
+                <li class="list-group-item">Teacher</li> 
+            }
+            
         </ul>
         <div class="card-body">
             <a href="#" class="card-link">Send a private message</a>
-            <a href="#" class="card-link">Another link</a>
         </div>
     </div>
 }
