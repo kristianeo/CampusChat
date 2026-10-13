@@ -1,0 +1,26 @@
+<div class="input-group mb-3 has-validation">
+    <span class="input-group-text"
+          id="@Id">
+        @Id
+    </span>
+    
+    <input type="text" 
+           class="form-control" 
+           value="@Value"
+           @onchange="HandleChange"
+           required>
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Value { get; set; }
+    
+    
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        string value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(value);
+    }
+}
