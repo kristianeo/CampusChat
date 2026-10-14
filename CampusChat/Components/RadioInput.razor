@@ -1,0 +1,25 @@
+<input type="radio"
+       class="btn-check"
+       name="radio button"
+       value="@Value"
+       id="@Color"
+       @onchange="HandleChange">
+<label for="@Color"
+       class="btn @ButtonColor">
+    @ChildContent
+</label>
+
+@code {
+    [Parameter] public string Color { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? ButtonColor { get; set; }
+    
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        string value = e.Value.ToString();
+        await ValueChanged.InvokeAsync(value);
+    }
+}
