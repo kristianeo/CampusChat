@@ -1,0 +1,8 @@
+@page "/EditProfile/{Username}"
+
+<ProfileEditor Username="@Username"></ProfileEditor>
+
+@code {
+    [Parameter]
+    public required string Username { get; set; }
+}
