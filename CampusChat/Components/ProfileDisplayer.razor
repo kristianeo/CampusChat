@@ -22,7 +22,16 @@
             
         </ul>
         <div class="card-body">
-            <a href="#" class="card-link">Send a private message</a>
+            <button type="button" 
+                    class="btn btn-primary">
+                Send a private message
+            </button>
+            
+            <button type="button" 
+                    class="btn btn-primary"
+                    @onclick='() => Nav.NavigateTo($"/EditProfile/{UserName}")'>
+                Edit profile
+            </button>
         </div>
     </div>
 }
@@ -32,7 +41,7 @@ else
     <p>No user with username @UserName</p>
 }
 
-@inject NavigationManager Nav;
+@inject NavigationManager Nav
 <a href="#" class="card-link" @onclick='() => Nav.NavigateTo("/")'>Go back to home page</a>
 
 
@@ -56,6 +65,7 @@ else
         return currentYear;
     }
     
+    //TODO: Make this default when logging in
     protected override void OnParametersSet()
     {
         List<Profile> profiles = jsonReader.LoadDatabase();
