@@ -5,15 +5,22 @@
     </span>
     
     <input type="text" 
-           class="form-control" 
+           class="form-control @Feedback" 
            value="@Value"
+           placeholder="@Id"
            @onchange="HandleChange"
            required>
+    <div class="invalid-feedback"
+         style="text-align: right">
+        @Id is taken
+    </div>
 </div>
+
 
 @code {
     [Parameter] public string Id { get; set; }
     [Parameter] public string Value { get; set; }
+    [Parameter] public string Feedback { get; set; } = "";
     
     
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
