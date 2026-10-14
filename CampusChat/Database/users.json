@@ -24,18 +24,6 @@
     "School": "Gokstad Akademiet"
   },
   {
-    "UserName": "Hest",
-    "FirstName": "Hest",
-    "LastName": "Hestesen",
-    "Studies": 2,
-    "StartYear": 0,
-    "Introduction": "hest",
-    "AvatarColor": "bg-success",
-    "Teacher": true,
-    "Audit": true,
-    "School": "Gokstad Akademiet"
-  },
-  {
     "UserName": "Brukernavn",
     "FirstName": "kristiane",
     "LastName": "olsen",
@@ -54,6 +42,18 @@
     "Studies": 1,
     "StartYear": 2026,
     "Introduction": "hei",
+    "AvatarColor": "bg-success",
+    "Teacher": true,
+    "Audit": true,
+    "School": "Gokstad Akademiet"
+  },
+  {
+    "UserName": "Hest",
+    "FirstName": "Hest",
+    "LastName": "Hestesen",
+    "Studies": 2,
+    "StartYear": 0,
+    "Introduction": "hest test",
     "AvatarColor": "bg-success",
     "Teacher": true,
     "Audit": true,
