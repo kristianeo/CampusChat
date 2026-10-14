@@ -1,29 +1,14 @@
 [
   {
-    "UserName": "Brukernavn",
-    "FirstName": "Kristiane",
-    "LastName": "Olsen",
-    "Studies": 1,
-    "StartYear": 2025,
-    "Introduction": "Hello",
-    "School": "Gokstad Akademiet"
-  },
-  {
     "UserName": "Krissa",
     "FirstName": "Kristiane",
     "LastName": "Olsen",
     "Studies": 0,
     "StartYear": 2025,
     "Introduction": "hei",
-    "School": "Gokstad Akademiet"
-  },
-  {
-    "UserName": "Krissa",
-    "FirstName": "Kristiane",
-    "LastName": "Olsen",
-    "Studies": 1,
-    "StartYear": 2025,
-    "Introduction": "hwi",
+    "AvatarColor": "bg-primary",
+    "Teacher": false,
+    "Audit": false,
     "School": "Gokstad Akademiet"
   },
   {
@@ -33,15 +18,45 @@
     "Studies": 0,
     "StartYear": 2027,
     "Introduction": "Voff",
+    "AvatarColor": null,
+    "Teacher": false,
+    "Audit": false,
     "School": "Gokstad Akademiet"
   },
   {
-    "UserName": "Teacher",
-    "FirstName": "Teac",
-    "LastName": "Her",
+    "UserName": "Hest",
+    "FirstName": "Hest",
+    "LastName": "Hestesen",
     "Studies": 2,
     "StartYear": 0,
-    "Introduction": "Jeg er l\u00E6rer",
+    "Introduction": "hest",
+    "AvatarColor": "bg-success",
+    "Teacher": true,
+    "Audit": true,
+    "School": "Gokstad Akademiet"
+  },
+  {
+    "UserName": "Brukernavn",
+    "FirstName": "kristiane",
+    "LastName": "olsen",
+    "Studies": 2,
+    "StartYear": 2025,
+    "Introduction": "test",
+    "AvatarColor": "bg-primary",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet"
+  },
+  {
+    "UserName": "Brukernavn2",
+    "FirstName": "Kristiane",
+    "LastName": "Olsen",
+    "Studies": 1,
+    "StartYear": 2026,
+    "Introduction": "hei",
+    "AvatarColor": "bg-success",
+    "Teacher": true,
+    "Audit": true,
     "School": "Gokstad Akademiet"
   }
 ]
