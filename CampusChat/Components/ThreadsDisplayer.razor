@@ -1,0 +1,22 @@
+@inject ThreadService Ts
+@inject NavigationManager Nav
+
+<div class="container" style="width: 50%">
+    <h1>All threads</h1>
+    
+    @foreach (ChatThread thread in _allThreads)
+    {
+        <a href="/Thread/@thread.Id"
+           class="card-link">
+            @("\n")@thread.Title
+        </a>
+    }
+</div>
+@code {
+    private List<ChatThread> _allThreads = new();
+
+    protected override void OnInitialized()
+    {
+        _allThreads = Ts.GetThreads();
+    }
+}
