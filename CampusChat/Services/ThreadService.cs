@@ -1,6 +1,6 @@
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Text.Json;
-using CampusChat.Database;
 
 namespace CampusChat.Services;
 
@@ -10,14 +10,13 @@ public record ChatThread(
     string AccessCode,
     List<Post> Posts,
     List<string> JoinedUsers,
-    string CreatedBy,
     bool IsPrivate = false);
 
 public record Post(
     string Id,
     string Author,
     string Message,
-    TimeOnly TimeStamp,
+    DateTime TimeStamp,
     string ParentPostId,
     string ChatTreadId);
 
@@ -92,9 +91,10 @@ public class ThreadService
         
     }
 
-    private void AddPost()
+    public Post AddPost(string author, string message, string parentId, string threadId)
     {
-        
+        return new Post(Guid.NewGuid().ToString(), author,
+            message, DateTime.Now, parentId, threadId);
     }
 
     private void DeletePost()

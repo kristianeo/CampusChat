@@ -1,5 +1,6 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
+@inject AppState As
 
 <div class="input-group mb-3">
     <input type="text" 
@@ -13,15 +14,17 @@
 
 @code {
     private string _chatMessage = "";
+    private Post? post;
 
     [Parameter] public EventCallback OnMessageAdded { get; set; }
     
     private async Task SendMessage()
     {
-        Ts.AddMessage(_chatMessage);
+        post = Ts.AddPost(As.ActiveUser, _chatMessage, "1", "2");
+        Ts.AddMessage(post);
         _chatMessage = string.Empty;
 
         await OnMessageAdded.InvokeAsync();
     }
-
+    
 }
