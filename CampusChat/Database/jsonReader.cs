@@ -36,6 +36,24 @@ public class jsonReader
         string updatedJson = JsonSerializer.Serialize(profiles, options);
         File.WriteAllText(path, updatedJson);
     }
+    
+    public static void EditProfile(Profile profile, Profile editedProfile)
+    {
+        string path = "Database/users.json";
+
+        List<Profile> profiles = LoadDatabase();
+
+        profiles.Remove(profile);
+        profiles.Add(editedProfile);
+        
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
+        string updatedJson = JsonSerializer.Serialize(profiles, options);
+        File.WriteAllText(path, updatedJson);
+    }
 
     public static Profile? GetProfile(string username)
     {
