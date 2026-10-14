@@ -1,6 +1,6 @@
 @page "/Thread/{ThreadId}"
 
-<ThreadPanel></ThreadPanel>
+<ThreadPanel ThreadId="@ThreadId"></ThreadPanel>
 @code {
      [Parameter] public required string ThreadId { get; set; }
 }
