@@ -1,18 +1,18 @@
 @rendermode InteractiveServer
 
-@if (profile != null)
+@if (_profile != null)
 {
     <div class="card" style="width: 18rem;">
-        <Avatar Username="@profile.UserName"/>
+        <Avatar Username="@_profile.UserName"/>
         <div class="card-body">
-            <h5 class="card-title">@profile.UserName</h5>
-            <p class="card-text">@profile.Introduction</p>
+            <h5 class="card-title">@_profile.UserName</h5>
+            <p class="card-text">@_profile.Introduction</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">@profile.FirstName @profile.LastName</li>
-            @if (!profile.Teacher)
+            <li class="list-group-item">@_profile.FirstName @_profile.LastName</li>
+            @if (!_profile.Teacher)
             {
-                <li class="list-group-item">@profile.Studies student at @profile.School</li>   
+                <li class="list-group-item">@_profile.Studies student at @_profile.School</li>   
                 <li class="list-group-item">@GetStudyYear()</li>
             }
             else
@@ -39,13 +39,13 @@ else
 @code {
     [Parameter] public string UserName { get; set; } = "";
 
-    private Profile? profile;
+    private Profile? _profile;
 
     //TODO: Make global navigation routes
     //TODO: Correct when teacher 
     private string GetStudyYear()
     {
-        string currentYear = profile.StartYear switch
+        string currentYear = _profile.StartYear switch
         {
             -1 => "Teacher",
             < 2025 => "Graduated student",
@@ -59,6 +59,6 @@ else
     protected override void OnParametersSet()
     {
         List<Profile> profiles = jsonReader.LoadDatabase();
-        profile = profiles.SingleOrDefault(p => p.UserName == UserName);
+        _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
 }
