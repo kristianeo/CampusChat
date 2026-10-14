@@ -10,6 +10,8 @@ builder.Services.AddRazorComponents()
 //Creates an instance of the class to be used as needed
 builder.Services.AddSingleton<ThreadService>();
 
+builder.Services.AddScoped<AppState>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

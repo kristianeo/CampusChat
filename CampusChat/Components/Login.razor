@@ -1,0 +1,33 @@
+@inject NavigationManager Nav
+@inject AppState As
+
+<div class="container" style="width: 50%">
+    <h1>Log in</h1>
+    
+    @foreach (Profile profile in _profiles)
+    {
+        <a href="#"
+           class="card-link"
+           @bind="_profile"
+           @onclick="ClickLink">
+            @profile.UserName
+        </a>
+    }
+</div>
+
+@code {
+    private List<Profile> _profiles { get; set; } = [];
+    private Profile _profile = null!;
+
+    private void ClickLink()
+    {
+        As.Login(_profile.UserName);
+        Nav.NavigateTo($"/Profile/{_profile.UserName}");
+    }
+
+    protected override void OnInitialized()
+    {
+        _profiles = jsonReader.LoadProfiles();
+    }
+
+}
