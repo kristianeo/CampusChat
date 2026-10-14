@@ -2,6 +2,7 @@
 @inject ThreadService Ts
 
 <div class="container" style="width: 50%">
+    <h1>@_thread.Title</h1>
     <textarea class="form-control" 
               rows="5" 
               id="comment" readonly>
@@ -11,20 +12,22 @@
 </div>
 
 @code {
-    private string ThreadContent { get; set; } 
+    [Parameter] public required string ThreadId { get; set; }
+    private string ThreadContent { get; set; } = "";
+    private ChatThread? _thread;
+    
     
     private void RefreshMessages()
     {
-        ThreadContent = Ts.ReadAllMessages();
+        ThreadContent = Ts.ReadAllMessages(ThreadId);
     }
     
     protected override void OnInitialized()
     {
-        ThreadContent = Ts.ReadAllMessages();
+        _thread = Ts.GetThread(ThreadId);
+        ThreadContent = Ts.ReadAllMessages(ThreadId);
     }
     
-    //TODO: Dont use a card, needs something where send button is fixed 
-    //TODO: message is removed after sending 
-    //TODO: Fix so it can use string, and not the queue directly 
-
+    //TODO: Fix possible null reference 
+   
 }
