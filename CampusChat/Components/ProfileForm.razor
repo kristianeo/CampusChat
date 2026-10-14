@@ -53,7 +53,7 @@
         @if (!_isTeacher)
         {
             <div class="col-md-4">
-                <SelectInput T="@Studies"
+                <SelectInput T="Studies"
                              @bind-Value="_studies"
                              Message="Choose your studies"
                              Options="@(Enum.GetValues<Studies>().Skip(1))">
@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-md-4">
-                <SelectInput T="@int"
+                <SelectInput T="int"
                              @bind-Value="_startyear"
                              Message="Choose your starting year"
                              Options="@_years">
