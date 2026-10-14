@@ -1,10 +1,14 @@
 using CampusChat.Components;
+using CampusChat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Creates an instance of the class to be used as needed
+builder.Services.AddSingleton<ThreadService>();
 
 var app = builder.Build();
 

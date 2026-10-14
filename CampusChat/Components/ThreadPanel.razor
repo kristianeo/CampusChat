@@ -1,0 +1,30 @@
+@rendermode InteractiveServer
+@inject ThreadService Ts
+
+<div class="container" style="width: 50%">
+    <textarea class="form-control" 
+              rows="5" 
+              id="comment" readonly>
+            @ThreadContent
+    </textarea>
+    <ThreadInput OnMessageAdded="@RefreshMessages"></ThreadInput>
+</div>
+
+@code {
+    private string ThreadContent { get; set; } 
+    
+    private void RefreshMessages()
+    {
+        ThreadContent = Ts.ReadAllMessages();
+    }
+    
+    protected override void OnInitialized()
+    {
+        ThreadContent = Ts.ReadAllMessages();
+    }
+    
+    //TODO: Dont use a card, needs something where send button is fixed 
+    //TODO: message is removed after sending 
+    //TODO: Fix so it can use string, and not the queue directly 
+
+}
