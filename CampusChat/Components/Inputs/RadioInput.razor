@@ -1,9 +1,10 @@
 <input type="radio"
        class="btn-check"
        name="radio button"
-       value="@Value"
+       value="@Color"
        id="@Color"
-       @onchange="HandleChange">
+       @onchange="HandleChange"
+       checked="@(Value == Color)">
 <label for="@Color"
        class="btn @ButtonColor">
     @ChildContent
