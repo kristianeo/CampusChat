@@ -1,2 +1,26 @@
-{
-}
+[
+  {
+    "Id": "1",
+    "Title": "Information from the school",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "2",
+    "Title": "Extracurricular activities",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "3",
+    "Title": "Student council group",
+    "AccessCode": "Iamthestudentcouncil",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": true
+  }
+]
