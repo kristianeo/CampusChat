@@ -148,7 +148,7 @@ else
     //I need to update the profiles list by removing the old profile and adding the new one 
     protected override void OnInitialized()
     {
-        List<Profile> profiles = jsonReader.LoadDatabase();
+        List<Profile> profiles = jsonReader.LoadProfiles();
         _profile = profiles.SingleOrDefault(p => p.UserName == Username);
 
         if (_profile == null) return;

@@ -1,11 +1,12 @@
 using System.Text.Json;
+using CampusChat.Services;
 
 namespace CampusChat.Database;
 
 public class jsonReader
 {
     //TODO: What happens if the file is not loaded?
-    public static List<Profile> LoadDatabase()
+    public static List<Profile> LoadProfiles()
     {
         string path = "Database/users.json";
         
@@ -24,7 +25,7 @@ public class jsonReader
     {
         string path = "Database/users.json";
 
-        List<Profile> profiles = LoadDatabase();
+        List<Profile> profiles = LoadProfiles();
 
         profiles.Add(profile);
         
@@ -41,7 +42,7 @@ public class jsonReader
     {
         string path = "Database/users.json";
 
-        List<Profile> profiles = LoadDatabase();
+        List<Profile> profiles = LoadProfiles();
 
         profiles.Remove(profile);
         profiles.Add(editedProfile);
@@ -57,7 +58,7 @@ public class jsonReader
 
     public static Profile? GetProfile(string username)
     {
-        var profiles = LoadDatabase();
+        var profiles = LoadProfiles();
         return profiles?.FirstOrDefault(p => p.UserName == username);
     }
 
@@ -68,8 +69,11 @@ public class jsonReader
     /// <returns></returns>
     public static bool CheckUsername(string username)
     {
-        var profiles = LoadDatabase();
+        var profiles = LoadProfiles();
         return profiles.FirstOrDefault(p => string.Equals(
             p.UserName, username, StringComparison.CurrentCultureIgnoreCase)) != null;
     }
+    
+    
+    
 }

@@ -68,7 +68,7 @@ else
     //TODO: Make this default when logging in
     protected override void OnParametersSet()
     {
-        List<Profile> profiles = jsonReader.LoadDatabase();
+        List<Profile> profiles = jsonReader.LoadProfiles();
         _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
 }

@@ -5,21 +5,21 @@
     <input type="text" 
            class="form-control" 
            placeholder="Say something..." 
-           @bind="chatMessage">
+           @bind="_chatMessage">
     <button class="btn btn-outline-secondary" 
             type="button" 
             @onclick="SendMessage">Send</button>
 </div>
 
 @code {
-    private string chatMessage;
+    private string _chatMessage = "";
 
     [Parameter] public EventCallback OnMessageAdded { get; set; }
     
     private async Task SendMessage()
     {
-        Ts.AddMessage(chatMessage);
-        chatMessage = string.Empty;
+        Ts.AddMessage(_chatMessage);
+        _chatMessage = string.Empty;
 
         await OnMessageAdded.InvokeAsync();
     }
