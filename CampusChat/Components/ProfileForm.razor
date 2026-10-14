@@ -1,0 +1,137 @@
+@rendermode InteractiveServer
+
+<div class="container">
+    <h1>Create a new profile</h1>
+    <form class="row g-3" @onsubmit="Submit">
+        
+        <Checkbox @bind-Value="@_isTeacher"
+                  Message="I am a teacher">
+        </Checkbox>
+
+        <div class="col-md-4">
+            <TextInput @bind-Value="_username"
+                       Id="Username"
+                       Feedback="@(_usernameTaken ? "is-invalid" : "")">
+            </TextInput>
+        </div>
+
+        <div class="col-md-4">
+            <TextInput @bind-Value="_firstname"
+                       Id="First name">
+            </TextInput>
+        </div>
+        
+        <div class="col-md-4">
+            <TextInput @bind-Value="_lastname"
+                       Id="Last name">
+            </TextInput>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span>Select an avatar color: </span>
+            <div class="d-flex gap-2" reqired>
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-primary"
+                            Color="bg-primary">
+                    <Avatar AvatarColor="bg-primary"></Avatar>
+                </RadioInput>
+                
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-success"
+                            Color="bg-success">
+                    <Avatar AvatarColor="bg-success"></Avatar>
+                </RadioInput>
+                
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-danger"
+                            Color="bg-danger">
+                    <Avatar AvatarColor="bg-danger"></Avatar>
+                </RadioInput>
+            </div>
+        </div>
+
+        @if (!_isTeacher)
+        {
+            <div class="col-md-4">
+                <SelectInput T="Studies"
+                             @bind-Value="_studies"
+                             Message="Choose your studies"
+                             Options="@(Enum.GetValues<Studies>().Skip(1))">
+                </SelectInput>
+            </div>
+
+            <div class="col-md-4">
+                <SelectInput T="int"
+                             @bind-Value="_startyear"
+                             Message="Choose your starting year"
+                             Options="@_years">
+                </SelectInput>
+            </div>
+        }
+        
+        <div class="input-group">
+            <span class="input-group-text"
+                  required>
+                Write a short note about yourself
+            </span>
+            <textarea class="form-control" @bind="_introduction"></textarea>
+        </div>
+        
+        @if (_isTeacher)
+        {
+            _studies = Studies.None;
+            _startyear = -1;
+            <Checkbox @bind-Value="_isAudit"
+                      Message="Do you want an audit role?"
+            ></Checkbox>
+        }
+        
+        <button type="submit"
+                class="btn btn-primary">
+            Submit
+        </button>
+        
+    </form>
+</div>
+
+@inject NavigationManager Nav
+
+@code {
+    private string _username = "";
+    private string _firstname = "";
+    private string _lastname = "";
+    private Studies _studies;
+    private int _startyear = -1;
+    private string _introduction = "";
+    private string _avatarcolor = "";
+    private bool _isTeacher;
+    private bool _isAudit;
+
+    private bool _usernameTaken;
+
+    private void Submit()
+    {
+        if (jsonReader.CheckUsername(_username))
+        {
+            _usernameTaken = true;
+            return;
+        }
+        
+        Profile profile = new Profile(_username, _firstname, 
+            _lastname, _studies, _startyear, _introduction, 
+            _avatarcolor, _isTeacher, _isAudit);
+        
+        jsonReader.AddProfileToDatabase(profile);
+        
+        Nav.NavigateTo($"/Profile/{_username}");
+    }
+    
+    // TODO: Fix this 
+    private readonly List<int> _years =
+    [
+        2024,
+        2025,
+        2026,
+        2027
+    ];
+}

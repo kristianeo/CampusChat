@@ -1,0 +1,174 @@
+@rendermode InteractiveServer
+
+@if (_profile != null)
+{
+    <div class="container">
+        <h1>Edit profile</h1>
+        <form class="row g-3" @onsubmit="Submit">
+
+            <div class="col-md-4">
+                <TextInput Value="@_profile.UserName"
+                           Id="Username"
+                           Disabled="true">
+                </TextInput>
+            </div>
+
+            <div class="col-md-4">
+                <TextInput @bind-Value="_firstname"
+                           Id="First name">
+                </TextInput>
+            </div>
+
+            <div class="col-md-4">
+                <TextInput @bind-Value="_lastname"
+                           Id="Last name">
+                </TextInput>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <span>Select an avatar color: </span>
+                <div class="d-flex gap-2" reqired>
+                    <RadioInput @bind-Value="_avatarcolor"
+                                ButtonColor="btn-primary"
+                                Color="bg-primary">
+                        <Avatar AvatarColor="bg-primary"></Avatar>
+                    </RadioInput>
+
+                    <RadioInput @bind-Value="_avatarcolor"
+                                ButtonColor="btn-success"
+                                Color="bg-success">
+                        <Avatar AvatarColor="bg-success"></Avatar>
+                    </RadioInput>
+
+                    <RadioInput @bind-Value="_avatarcolor"
+                                ButtonColor="btn-danger"
+                                Color="bg-danger">
+                        <Avatar AvatarColor="bg-danger"></Avatar>
+                    </RadioInput>
+                </div>
+            </div>
+
+            @if (!_isTeacher)
+            {
+            <div class="col-md-4">
+                     <SelectInput T="Studies"
+                                  @bind-Value="_studies"
+                                  Message="Choose your studies"
+                                  Options="@(Enum.GetValues<Studies>().Skip(1))">
+                     </SelectInput>
+                 </div>
+
+                <div class="col-md-4">
+                    <SelectInput T="int"
+                                 @bind-Value="_startyear"
+                                 Message="Choose your starting year"
+                                 Options="@_years">
+                    </SelectInput>
+                </div>
+            }
+
+            <div class="input-group">
+                <span class="input-group-text"
+                      required>
+                    Write a short note about yourself
+                </span>
+                <textarea class="form-control" @bind="_introduction"></textarea>
+            </div>
+
+            @if (_isTeacher)
+            {
+            <Checkbox @bind-Value="_isAudit"
+                Message="Do you want an audit role?"></Checkbox>
+            }
+
+            <div class="col-md-1">
+                <button type="submit"
+                        class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+            
+            <div class="col-md-1">
+                <button type="button" 
+                        class="btn btn-primary"
+                        @onclick='() => Nav.NavigateTo($"/Profile/{Username}")'>
+                    Cancel
+                </button>
+            </div>
+            
+
+        </form>
+    </div>
+}
+
+else 
+{
+    <p>No user with username @Username</p>
+}
+
+@inject NavigationManager Nav
+
+@code {
+    // I want it to load with the modifiable parameters not disabled in the text box 
+    [Parameter]
+    public required string Username { get; set; }
+
+    private Profile? _profile;
+    
+    private string _firstname = "";
+    private string _lastname = "";
+    private Studies _studies;
+    private int _startyear = -1;
+    private string _introduction = "";
+    private string _avatarcolor = "";
+    private bool _isTeacher;
+    private bool _isAudit;
+
+    private void Submit()
+    {
+        Profile EditedProfile = _profile;
+        EditedProfile = _profile with
+        {
+            FirstName = _firstname,
+            LastName = _lastname,
+            Studies = _studies,
+            StartYear = _startyear,
+            Introduction = _introduction,
+            AvatarColor = _avatarcolor,
+            Audit = _isAudit
+            
+        };
+        
+        jsonReader.EditProfile(_profile, EditedProfile);
+
+        Nav.NavigateTo($"/Profile/{Username}");
+
+    }
+    
+    //I need to update the profiles list by removing the old profile and adding the new one 
+    protected override void OnInitialized()
+    {
+        List<Profile> profiles = jsonReader.LoadDatabase();
+        _profile = profiles.SingleOrDefault(p => p.UserName == Username);
+
+        if (_profile == null) return;
+        
+        _firstname = _profile.FirstName;
+        _lastname = _profile.LastName;
+        _studies = _profile.Studies;
+        _startyear = _profile.StartYear;
+        _introduction = _profile.Introduction;
+        _avatarcolor = _profile.AvatarColor;
+        _isTeacher = _profile.Teacher;
+        _isAudit = _profile.Audit;
+    }
+
+    // TODO: Fix this 
+    private readonly List<int> _years =
+    [
+        2024,
+        2025,
+        2026,
+        2027
+    ];
+}

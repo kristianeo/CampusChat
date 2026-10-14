@@ -1,0 +1,74 @@
+@rendermode InteractiveServer
+
+@if (_profile != null)
+{
+    <div class="card" style="width: 18rem;">
+        <Avatar Username="@_profile.UserName"/>
+        <div class="card-body">
+            <h5 class="card-title">@_profile.UserName</h5>
+            <p class="card-text">@_profile.Introduction</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">@_profile.FirstName @_profile.LastName</li>
+            @if (!_profile.Teacher)
+            {
+                <li class="list-group-item">@_profile.Studies student at @_profile.School</li>   
+                <li class="list-group-item">@GetStudyYear()</li>
+            }
+            else
+            {
+                <li class="list-group-item">Teacher</li> 
+            }
+            
+        </ul>
+        <div class="card-body">
+            <button type="button" 
+                    class="btn btn-primary">
+                Send a private message
+            </button>
+            
+            <button type="button" 
+                    class="btn btn-primary"
+                    @onclick='() => Nav.NavigateTo($"/EditProfile/{UserName}")'>
+                Edit profile
+            </button>
+        </div>
+    </div>
+}
+
+else
+{
+    <p>No user with username @UserName</p>
+}
+
+@inject NavigationManager Nav
+<a href="#" class="card-link" @onclick='() => Nav.NavigateTo("/")'>Go back to home page</a>
+
+
+@code {
+    [Parameter] public string UserName { get; set; } = "";
+
+    private Profile? _profile;
+
+    //TODO: Make global navigation routes
+    //TODO: Correct when teacher 
+    private string GetStudyYear()
+    {
+        string currentYear = _profile.StartYear switch
+        {
+            -1 => "Teacher",
+            < 2025 => "Graduated student",
+            2025 => "Second year student",
+            2026 => "First year student",
+            > 2026 => "Upcoming student"
+        };
+        return currentYear;
+    }
+    
+    //TODO: Make this default when logging in
+    protected override void OnParametersSet()
+    {
+        List<Profile> profiles = jsonReader.LoadDatabase();
+        _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
+    }
+}

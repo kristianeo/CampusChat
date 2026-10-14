@@ -1,0 +1,8 @@
+@page "/Profile/{Username}"
+
+<ProfileDisplayer UserName="@Username"/>
+
+@code 
+{
+    [Parameter] public string Username { get; set; } = "";
+}
