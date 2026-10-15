@@ -5,8 +5,8 @@
 <div class="container" style="width: 20%">
     <h1>Log in</h1>
     
-    <SelectInput T="Profile"
-                 @bind-Value="_user"
+    <SelectInput T="string"
+                 @bind-Value="_userName"
                  Options="_profiles"
                  Message="Select a user:">
     </SelectInput>
@@ -19,18 +19,21 @@
 </div>
 
 @code {
-    private List<Profile> _profiles { get; set; } = [];
+    private List<string> _profiles { get; set; } = [];
+    private string _userName { get; set; }
     private Profile _user { get; set; }
 
-    private void LoggingIn()
+    private async Task LoggingIn()
     {
-        Us.SaveUserAsync(_user);
+        _user = Us.GetProfile(_userName)!;
+        await Us.SaveUserAsync(_user);
         Nav.NavigateTo($"/Profile/{_user.UserName}");
     }
 
     protected override void OnInitialized()
     {
-        _profiles = jsonReader.LoadProfiles();
+        Us.LoadProfiles();
+        _profiles = new List<string>(Us.AllProfiles.Select(p => p.UserName));
     }
 
 }
