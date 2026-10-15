@@ -1,6 +1,6 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
-@inject AppState As
+@inject UserService Us
 
 <div class="input-group mb-3">
     <input type="text" 
@@ -13,6 +13,7 @@
 </div>
 
 @code {
+    [Parameter] public required string ThreadId { get; set; }
     private string _chatMessage = "";
     private Post? post;
 
@@ -20,7 +21,9 @@
     
     private async Task SendMessage()
     {
-        post = Ts.AddPost(As.ActiveUser, _chatMessage, "1", "2");
+        var user = await Us.LoadUserAsync();
+        var thread = await Us.LoadThreadAsync();
+        post = Ts.AddPost(user!, thread!, _chatMessage);
         Ts.AddMessage(post);
         _chatMessage = string.Empty;
 

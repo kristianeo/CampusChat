@@ -1,33 +1,38 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
+@inject UserService Us
 
-<div class="container" style="width: 50%">
+@if (_thread != null)
+{
     <h1>@_thread.Title</h1>
     <textarea class="form-control" 
-              rows="5" 
-              id="comment" readonly>
-            @ThreadContent
+          rows="5" 
+          id="comment" readonly>
+        @ThreadContent
     </textarea>
-    <ThreadInput OnMessageAdded="@RefreshMessages"></ThreadInput>
-</div>
+    <ThreadInput ThreadId="@_thread.Id" OnMessageAdded="@RefreshMessages"></ThreadInput>
+}
 
 @code {
-    [Parameter] public required string ThreadId { get; set; }
+    [Parameter] public string? ThreadId { get; set; }
     private string ThreadContent { get; set; } = "";
     private ChatThread? _thread;
     
-    
     private void RefreshMessages()
     {
-        ThreadContent = Ts.ReadAllMessages(ThreadId);
+        ThreadContent = Ts.ReadAllMessages(ThreadId!);
     }
-    
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        _thread = Ts.GetThread(ThreadId);
-        ThreadContent = Ts.ReadAllMessages(ThreadId);
+        _thread = await Us.LoadThreadAsync();
+
+        if (_thread != null)
+        {
+            ThreadContent = Ts.ReadAllMessages(_thread.Id);
+        }
     }
     
+
     //TODO: Fix possible null reference 
    
 }
