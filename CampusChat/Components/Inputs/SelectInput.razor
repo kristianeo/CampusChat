@@ -16,11 +16,9 @@
 
 @code {
     [Parameter] public T Value { get; set; }
-    [Parameter] public EventCallback<T> ValueChanged { get; set; }
     [Parameter] public string Message { get; set; }
-
-    [Parameter] public IEnumerable<T> Options { get; set; }
-        = Enumerable.Empty<T>();
+    [Parameter] public IEnumerable<T> Options { get; set; } = Enumerable.Empty<T>();
+    [Parameter] public EventCallback<T> ValueChanged { get; set; }
 
     private async Task HandleChange(ChangeEventArgs e)
     {
