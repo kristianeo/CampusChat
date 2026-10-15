@@ -1,28 +1,31 @@
 @inject NavigationManager Nav
-@inject AppState As
+@inject UserService Us
+@rendermode InteractiveServer
 
-<div class="container" style="width: 50%">
+<div class="container" style="width: 20%">
     <h1>Log in</h1>
     
-    @foreach (Profile profile in _profiles)
-    {
-        <a href="#"
-           class="card-link"
-           @bind="_profile"
-           @onclick="ClickLink">
-            @profile.UserName
-        </a>
-    }
+    <SelectInput T="Profile"
+                 @bind-Value="_user"
+                 Options="_profiles"
+                 Message="Select a user:">
+    </SelectInput>
+    
+    <button type="button"
+            class="btn btn-primary"
+            @onclick="LoggingIn">
+        Log in
+    </button> 
 </div>
 
 @code {
     private List<Profile> _profiles { get; set; } = [];
-    private Profile _profile = null!;
+    private Profile _user { get; set; }
 
-    private void ClickLink()
+    private void LoggingIn()
     {
-        As.Login(_profile.UserName);
-        Nav.NavigateTo($"/Profile/{_profile.UserName}");
+        Us.SaveUserAsync(_user);
+        Nav.NavigateTo($"/Profile/{_user.UserName}");
     }
 
     protected override void OnInitialized()
