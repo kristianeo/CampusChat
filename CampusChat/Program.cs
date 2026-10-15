@@ -1,3 +1,4 @@
+using CampusChat;
 using CampusChat.Components;
 using CampusChat.Services;
 
@@ -10,7 +11,7 @@ builder.Services.AddRazorComponents()
 //Creates an instance of the class to be used as needed
 builder.Services.AddSingleton<ThreadService>();
 
-builder.Services.AddScoped<AppState>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
