@@ -16,8 +16,6 @@
     [Parameter] public required string ThreadId { get; set; }
     private string _chatMessage = "";
     private Post? post;
-
-    [Parameter] public EventCallback OnMessageAdded { get; set; }
     
     private async Task SendMessage()
     {
@@ -26,8 +24,6 @@
         post = Ts.AddPost(user!, thread!, _chatMessage);
         Ts.AddMessage(post);
         _chatMessage = string.Empty;
-
-        await OnMessageAdded.InvokeAsync();
     }
     
 }
