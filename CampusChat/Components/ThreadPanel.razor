@@ -1,30 +1,59 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
 @inject UserService Us
+@implements IDisposable
 
-@if (_thread != null)
-{
-    <h1>@_thread.Title</h1>
-    <textarea class="form-control" 
-          rows="5" 
-          id="comment" readonly>
-        @ThreadContent
-    </textarea>
-    <ThreadInput ThreadId="@_thread.Id" OnMessageAdded="@RefreshMessages"></ThreadInput>
-}
+<div class="container text-left">
+    <div class="row">
+        <div class="col">
+                <h1>All threads</h1>
+    
+                <div class="list-group">
+                    @foreach (ChatThread thread in _allThreads)
+                    {
+                        <button type="button" 
+                                class="list-group-item list-group-item-action"
+                                value="@thread.Id"
+                                @onclick="() => Choose(thread)">
+                            @thread.Title
+                        </button>
+                    }
+                </div>
+        </div>
+        <div class="col">
+                <h1>@_thread?.Title</h1>
+                <textarea class="form-control" 
+                          rows="5" 
+                          readonly>
+                            @ThreadContent 
+                </textarea>
+                <ThreadInput ThreadId="@_thread?.Id" ></ThreadInput>
+        </div>
+    </div>
+</div>
+
+
 
 @code {
-    [Parameter] public string? ThreadId { get; set; }
     private string ThreadContent { get; set; } = "";
     private ChatThread? _thread;
+    private List<ChatThread> _allThreads = new();
+    private Profile? _user { get; set; }
     
-    private void RefreshMessages()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        ThreadContent = Ts.ReadAllMessages(ThreadId!);
+        if (firstRender)
+        {
+            _user = await Us.LoadUserAsync();
+            StateHasChanged();
+        }
     }
-    protected override async Task OnParametersSetAsync()
+
+    private async Task Choose(ChatThread thread) 
     {
-        _thread = await Us.LoadThreadAsync();
+        await Us.SaveThreadAsync(thread);
+        
+        Us.SelectedThread();
 
         if (_thread != null)
         {
@@ -32,7 +61,40 @@
         }
     }
     
+    protected override void OnInitialized()
+    {
+        _allThreads = Ts.GetThreads();
+        Ts.NewMessages += HandleNewMessages;
+        Us.ChangeThread += HandleChangedThread;
+        _thread = _allThreads[0];
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _thread = await Us.LoadThreadAsync();
+    }
+    
+    private void HandleNewMessages()
+    {
+        if (_thread == null) return;
+        
+        InvokeAsync(() =>
+        {
+            ThreadContent = Ts.ReadAllMessages(_thread.Id);
+            StateHasChanged();
+        });
+    }
 
-    //TODO: Fix possible null reference 
-   
+    private async void HandleChangedThread()
+    {
+        _thread = await Us.LoadThreadAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Ts.NewMessages -= HandleNewMessages;
+    }
+
+
 }
