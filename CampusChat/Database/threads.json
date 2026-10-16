@@ -22,5 +22,165 @@
     "Posts": [],
     "JoinedUsers": [],
     "IsPrivate": true
+  },
+  {
+    "Id": "4",
+    "Title": "Homework help",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "5",
+    "Title": "Exam preparation",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "6",
+    "Title": "Study groups",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "7",
+    "Title": "Library discussions",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "8",
+    "Title": "Campus events",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "9",
+    "Title": "Sports club",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "10",
+    "Title": "Gaming community",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "11",
+    "Title": "Programming help",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "12",
+    "Title": "Career advice",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "13",
+    "Title": "Internship opportunities",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "14",
+    "Title": "Student marketplace",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "15",
+    "Title": "Housing and accommodation",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "16",
+    "Title": "International students",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "17",
+    "Title": "Class representatives",
+    "AccessCode": "ClassRep2026",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": true
+  },
+  {
+    "Id": "18",
+    "Title": "Volunteer projects",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "19",
+    "Title": "Group assignments",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "20",
+    "Title": "Photography club",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "21",
+    "Title": "Music society",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "22",
+    "Title": "Teachers and assistants",
+    "AccessCode": "FacultyOnly",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": true
+  },
+  {
+    "Id": "23",
+    "Title": "Graduation planning",
+    "AccessCode": "Graduation2027",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": true
   }
 ]
