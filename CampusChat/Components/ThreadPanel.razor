@@ -39,16 +39,6 @@
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = new();
     private Profile? _user { get; set; }
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _user = await Us.LoadUserAsync();
-            StateHasChanged();
-        }
-    }
-
     private async Task Choose(ChatThread thread) 
     {
         await Us.SaveThreadAsync(thread);
@@ -61,17 +51,25 @@
         }
     }
     
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _user = await Us.LoadUserAsync();
+            StateHasChanged();
+        }
+    }
+    
     protected override void OnInitialized()
     {
         _allThreads = Ts.GetThreads();
         Ts.NewMessages += HandleNewMessages;
         Us.ChangeThread += HandleChangedThread;
-        _thread = _allThreads[0];
     }
     
     protected override async Task OnInitializedAsync()
     {
-        _thread = await Us.LoadThreadAsync();
+        _thread = await Us.LoadThreadAsync() ?? _allThreads[0];
     }
     
     private void HandleNewMessages()
