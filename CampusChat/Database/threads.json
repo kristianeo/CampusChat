@@ -24,14 +24,6 @@
     "IsPrivate": false
   },
   {
-    "Id": "8",
-    "Title": "Campus events",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
     "Id": "9",
     "Title": "Sports club",
     "AccessCode": "",
@@ -182,6 +174,16 @@
   {
     "Id": "6",
     "Title": "Study groups",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [
+      "Hest"
+    ],
+    "IsPrivate": false
+  },
+  {
+    "Id": "8",
+    "Title": "Campus events",
     "AccessCode": "",
     "Posts": [],
     "JoinedUsers": [

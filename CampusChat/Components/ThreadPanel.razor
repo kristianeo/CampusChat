@@ -1,14 +1,36 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
 @inject UserService Us
+@using BlazorBootstrap
 @implements IDisposable
 @inject NavigationManager Nav
 
 <div class="container text-left">
     <div class="row">
         <div class="col">
-                <h1>All threads</h1>
-                <input type="text" 
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand">Threads</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="btn" @onclick='() => _joinedThreads = ""'>All</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn" @onclick='() => _joinedThreads = _user.UserName'>Joined</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn" @onclick='() => Console.WriteLine("Clicked")'>Private messages</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <input type="text" 
                        class="form-control" 
                        @bind="_search"
                        placeholder="Search"
@@ -97,6 +119,7 @@
     private Profile? _user { get; set; }
     private string _search = "";
     private string? _parentPostId = "";
+    private string? _joinedThreads = "";
     private async Task Choose(ChatThread thread) 
     {
         await Us.SaveThreadAsync(thread);
@@ -134,8 +157,11 @@
     private IEnumerable<ChatThread> Filtered =>
         _allThreads
             .Where(t =>
-                _search == "" ||
-                t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase))
+                (_search == "" ||
+                 t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase)) && 
+                (_joinedThreads == "" || 
+                 t.JoinedUsers.Contains(_joinedThreads, StringComparer.OrdinalIgnoreCase))
+                             )
             .OrderBy(t => int.Parse(t.Id))
             .Skip((Page - 1) * 10)
             .Take(10);
