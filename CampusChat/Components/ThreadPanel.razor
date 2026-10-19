@@ -2,6 +2,7 @@
 @inject ThreadService Ts
 @inject UserService Us
 @implements IDisposable
+@inject NavigationManager Nav
 
 <div class="container text-left">
     <div class="row">
@@ -24,6 +25,21 @@
                         </button>
                     }
                 </div>
+                
+                <nav>
+                    <ul class="pagination">
+                        <button type="button" class="btn btn-outline-primary" disabled="@(Page <= 1)"
+                                @onclick='() => Nav.NavigateTo($"/Threads/{Page-1}")'>Previous</button>
+                        <button type="button" class="btn btn-outline-primary" 
+                                @onclick='() => Nav.NavigateTo("/Threads/1")'>1</button>
+                        <button type="button" class="btn btn-outline-primary" 
+                                @onclick='() => Nav.NavigateTo("/Threads/2")'>2</button>
+                        <button type="button" class="btn btn-outline-primary" 
+                                @onclick='() => Nav.NavigateTo("/Threads/3")'>3</button>
+                        <button type="button" class="btn btn-outline-primary" disabled="@(Page >= 3)" 
+                                @onclick='() => Nav.NavigateTo($"/Threads/{Page+1}")'>Next</button>
+                    </ul>
+                </nav>
         </div>
         <div class="col">
                 <h1>@_thread?.Title</h1>
@@ -40,6 +56,7 @@
 
 
 @code {
+    [Parameter] public int Page { get; set; }
     private string ThreadContent { get; set; } = "";
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = new();
@@ -78,10 +95,14 @@
         _thread = await Us.LoadThreadAsync() ?? _allThreads[0];
     }
 
-    private IEnumerable<ChatThread> Filtered => _allThreads.Where(t =>
-        _search == "" ||
-        t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase));
-    
+    private IEnumerable<ChatThread> Filtered =>
+        _allThreads
+            .Where(t =>
+                _search == "" ||
+                t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase))
+            .Skip((Page - 1) * 10)
+            .Take(10);
+
     private void HandleNewMessages()
     {
         if (_thread == null) return;
