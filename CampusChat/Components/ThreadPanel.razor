@@ -80,34 +80,18 @@
                         }
                     }
                     <div class="list-group list-group-flush overflow-auto" style="height:400px;">
-                        @foreach (var post in ThreadContent.Where(post => post.ParentPostId == ""))
+
+                        @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
                         {
-                            <button type="button" 
-                                    class="list-group-item list-group-item-action
-                                    @(_parentPostId == post.Id ? "active" : "")"
-                                    @onclick='() => _parentPostId = _parentPostId == post.Id ? "" : post.Id'>
-                                <div class="ms-2 me-auto">
-                                    <div>@post.Author at @($"{post.TimeStamp:t}"): @post.Message</div>
-                                    
-                                    @foreach (var subPost in PostReplies(post.Id))
-                                    {
-                                        <figure class="text-center">
-                                            @($"\n{subPost.Author} replied at {subPost.TimeStamp:t}: {subPost.Message}")
-                                        </figure>
-                                    }
-                                </div>
-                                <span class="badge text-bg-primary rounded-pill">14</span>
-                                @if (_parentPostId == post.Id &&
-                                     post.Author == _user?.UserName)
-                                {
-                                    <button type="button" @onclick="() => Ts.DeleteMessage(Ts.GetPost(_parentPostId))">Delete post</button>
-                                }
-                            </button>
+                            <PostItem Post="post"
+                                      ThreadContent="ThreadContent"
+                                      @bind-ParentPostId="@_parentPostId">
+                            </PostItem>
                         }
                     </div>
+                    <p>Page Selected Post ID: @_parentPostId</p>
                 </div>
             </div>
-            
             <ThreadInput ThreadId="@_thread?.Id" ParentPostId="@_parentPostId"></ThreadInput>
         </div>
     </div>
