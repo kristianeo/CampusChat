@@ -20,13 +20,19 @@ public record Post(
 
 public class ThreadService
 {
-    private Queue<Post> ChatMessages { get; set; } = new();
+    private List<Post> ChatMessages { get; set; } = new();
     public event Action? NewMessages;
     public event Action? ThreadsChanged;
     
     public void AddMessage(Post post)
     {
-        ChatMessages.Enqueue(post);
+        ChatMessages.Add(post);
+        NewMessages?.Invoke();
+    }
+
+    public void DeleteMessage(Post post)
+    {
+        ChatMessages.Remove(post);
         NewMessages?.Invoke();
     }
     
@@ -102,16 +108,13 @@ public class ThreadService
 
     public Post AddPost(Profile author, ChatThread thread, string message, string parentPostId)
     {
-        Console.WriteLine("test");
         return new Post(Guid.NewGuid().ToString(), author.UserName,
             message, DateTime.Now, thread.Id, parentPostId);
     }
 
-    private void DeletePost()
+    public Post? GetPost(string postId)
     {
-        
+        return ChatMessages.FirstOrDefault(p => p.Id == postId);
     }
-    
-    private event Action? Changed;
 
 }

@@ -1,7 +1,6 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
 @inject UserService Us
-@using BlazorBootstrap
 @implements IDisposable
 @inject NavigationManager Nav
 
@@ -98,6 +97,11 @@
                                     }
                                 </div>
                                 <span class="badge text-bg-primary rounded-pill">14</span>
+                                @if (_parentPostId == post.Id &&
+                                     post.Author == _user?.UserName)
+                                {
+                                    <button type="button" @onclick="() => Ts.DeleteMessage(Ts.GetPost(_parentPostId))">Delete post</button>
+                                }
                             </button>
                         }
                     </div>
@@ -173,7 +177,6 @@
                         p.ParentPostId == parentPostId);
     }
 
-    
     private void HandleNewMessages()
     {
         if (_thread == null) return;
