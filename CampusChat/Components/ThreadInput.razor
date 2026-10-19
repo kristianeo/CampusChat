@@ -20,11 +20,17 @@
     
     private async Task SendMessage()
     {
-        var user = await Us.LoadUserAsync();
-        var thread = await Us.LoadThreadAsync();
-        post = Ts.AddPost(user!, thread!, _chatMessage, ParentPostId);
-        Ts.AddMessage(post);
-        _chatMessage = string.Empty;
+        if (_chatMessage != "")
+        {
+            var user = await Us.LoadUserAsync();
+            var thread = await Us.LoadThreadAsync();
+            post = Ts.AddPost(user!, thread!, _chatMessage, ParentPostId);
+            Ts.AddMessage(post);
+            _chatMessage = string.Empty;
+            // ParentPostId = string.Empty;
+            
+            Console.WriteLine($"ThreadId: {ThreadId}");
+            Console.WriteLine($"ParentPostId: {ParentPostId}");
+        }
     }
-    
 }
