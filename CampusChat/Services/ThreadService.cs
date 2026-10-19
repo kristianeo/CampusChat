@@ -23,6 +23,7 @@ public class ThreadService
 {
     private Queue<Post> ChatMessages { get; set; } = new();
     public event Action? NewMessages;
+    public event Action? ThreadsChanged;
     
     public void AddMessage(Post post)
     {
@@ -30,6 +31,7 @@ public class ThreadService
         NewMessages?.Invoke();
     }
     
+    //TODO: Format this differently for the chat?
     public string ReadAllMessages(string threadId)
     {
         StringBuilder sb = new StringBuilder();
@@ -72,25 +74,29 @@ public class ThreadService
 
         string updatedJson = JsonSerializer.Serialize(threads, options);
         File.WriteAllText(path, updatedJson);
+        ThreadsChanged?.Invoke();
     }
 
     public void JoinThread(Profile user, ChatThread thread)
     {
         List<ChatThread> threads = GetThreads();
+        
+        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
+        threads.Remove(oldThread);
+        
         thread.JoinedUsers.Add(user.UserName);
-
-        threads.Remove(thread);
         threads.Add(thread);
         
         UpdateThread(threads);
     }
 
-    private void LeaveThread(Profile user, ChatThread thread)
+    public void LeaveThread(Profile user, ChatThread thread)
     {
         List<ChatThread> threads = GetThreads();
+        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
+        threads.Remove(oldThread);
+        
         thread.JoinedUsers.Remove(user.UserName);
-
-        threads.Remove(thread);
         threads.Add(thread);
         
         UpdateThread(threads);

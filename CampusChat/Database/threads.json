@@ -16,30 +16,6 @@
     "IsPrivate": false
   },
   {
-    "Id": "3",
-    "Title": "Student council group",
-    "AccessCode": "Iamthestudentcouncil",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": true
-  },
-  {
-    "Id": "4",
-    "Title": "Homework help",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
-    "Id": "5",
-    "Title": "Exam preparation",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
     "Id": "6",
     "Title": "Study groups",
     "AccessCode": "",
@@ -182,5 +158,33 @@
     "Posts": [],
     "JoinedUsers": [],
     "IsPrivate": true
+  },
+  {
+    "Id": "3",
+    "Title": "Student council group",
+    "AccessCode": "Iamthestudentcouncil",
+    "Posts": [],
+    "JoinedUsers": [
+      "Brukernavn"
+    ],
+    "IsPrivate": true
+  },
+  {
+    "Id": "5",
+    "Title": "Exam preparation",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [
+      "Brukernavn"
+    ],
+    "IsPrivate": false
+  },
+  {
+    "Id": "4",
+    "Title": "Homework help",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [],
+    "IsPrivate": false
   }
 ]
