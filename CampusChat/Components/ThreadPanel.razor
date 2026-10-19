@@ -42,27 +42,47 @@
                 </nav>
         </div>
         <div class="col">
-            <h1>@_thread?.Title</h1>
-            @if (_thread != null && _user != null)
-            {
-                @if (!_thread.JoinedUsers.Contains(_user.UserName))
-                {
-                    <button type="button" class="btn btn-outline-success"
-                            @onclick='() => Ts.JoinThread(_user, _thread)'>Join thread</button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-outline-danger"
-                            @onclick='() => Ts.LeaveThread(_user, _thread)'>Leave thread</button>
-                }
-            }
+            <div class="panel panel-default">
+                <div class="panel-heading"><h1>@_thread?.Title</h1></div>
+                <div class="panel-body">
+                    @if (_thread != null && _user != null)
+                    {
+                        @if (!_thread.JoinedUsers.Contains(_user.UserName))
+                        {
+                            <button type="button" class="btn btn-outline-success"
+                                    @onclick='() => Ts.JoinThread(_user, _thread)'>Join thread</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-outline-danger"
+                                    @onclick='() => Ts.LeaveThread(_user, _thread)'>Leave thread</button>
+                        }
+                    }
+                    <div class="list-group list-group-flush overflow-auto" style="height:400px;">
+                        @foreach (var post in ThreadContent.Where(post => post.ParentPostId == ""))
+                        {
+                            <button type="button" 
+                                    class="list-group-item list-group-item-action
+                                    @(_parentPostId == post.Id ? "active" : "")"
+                                    @onclick='() => _parentPostId = _parentPostId == post.Id ? "" : post.Id'>
+                                <div class="ms-2 me-auto">
+                                    <div>@post.Author at @($"{post.TimeStamp:t}"): @post.Message</div>
+                                    
+                                    @foreach (var subPost in PostReplies(post.Id))
+                                    {
+                                        <figure class="text-center">
+                                            @($"\n{subPost.Author} replied at {subPost.TimeStamp:t}: {subPost.Message}")
+                                        </figure>
+                                    }
+                                </div>
+                                <span class="badge text-bg-primary rounded-pill">14</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
             
-            <textarea class="form-control" 
-                      rows="5" 
-                      readonly>
-                        @ThreadContent 
-            </textarea>
-            <ThreadInput ThreadId="@_thread?.Id" ></ThreadInput>
+            <ThreadInput ThreadId="@_thread?.Id" ParentPostId="@_parentPostId"></ThreadInput>
         </div>
     </div>
 </div>
@@ -71,11 +91,12 @@
 
 @code {
     [Parameter] public int Page { get; set; }
-    private string ThreadContent { get; set; } = "";
+    private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = new();
     private Profile? _user { get; set; }
     private string _search = "";
+    private string? _parentPostId = "";
     private async Task Choose(ChatThread thread) 
     {
         await Us.SaveThreadAsync(thread);
@@ -119,6 +140,14 @@
             .Skip((Page - 1) * 10)
             .Take(10);
 
+    private IEnumerable<Post> PostReplies(string parentPostId)
+    {
+        return ThreadContent
+            .Where(p => !string.IsNullOrEmpty(p.ParentPostId) &&
+                        p.ParentPostId == parentPostId);
+    }
+
+    
     private void HandleNewMessages()
     {
         if (_thread == null) return;
@@ -146,4 +175,4 @@
     {
         Ts.NewMessages -= HandleNewMessages;
     }
-}
+}}

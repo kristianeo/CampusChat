@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 namespace CampusChat.Services;
 
@@ -17,7 +16,7 @@ public record Post(
     string Message,
     DateTime TimeStamp,
     string ChatTreadId,
-    string? ParentPostId = null);
+    string? ParentPostId = "");
 
 public class ThreadService
 {
@@ -31,19 +30,18 @@ public class ThreadService
         NewMessages?.Invoke();
     }
     
-    //TODO: Format this differently for the chat?
-    public string ReadAllMessages(string threadId)
+    public List<Post> ReadAllMessages(string threadId)
     {
-        StringBuilder sb = new StringBuilder();
+        List<Post> content = [];
         foreach (Post p in ChatMessages)
         {
             if (p.ChatTreadId == threadId)
             {
-                sb.Append($"\n{p.Author}: {p.Message} -{p.TimeStamp:g}");
+                content.Add(p);
             }
         }
 
-        return sb.ToString();
+        return content;
     }
 
     public List<ChatThread> GetThreads()
@@ -102,11 +100,11 @@ public class ThreadService
         UpdateThread(threads);
     }
 
-    public Post AddPost(Profile author, ChatThread thread, string message)
+    public Post AddPost(Profile author, ChatThread thread, string message, string parentPostId)
     {
         Console.WriteLine("test");
         return new Post(Guid.NewGuid().ToString(), author.UserName,
-            message, DateTime.Now, thread.Id);
+            message, DateTime.Now, thread.Id, parentPostId);
     }
 
     private void DeletePost()

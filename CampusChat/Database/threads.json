@@ -16,14 +16,6 @@
     "IsPrivate": false
   },
   {
-    "Id": "6",
-    "Title": "Study groups",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
     "Id": "7",
     "Title": "Library discussions",
     "AccessCode": "",
@@ -185,6 +177,16 @@
     "AccessCode": "",
     "Posts": [],
     "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "6",
+    "Title": "Study groups",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [
+      "Hest"
+    ],
     "IsPrivate": false
   }
 ]
