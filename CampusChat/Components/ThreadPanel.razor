@@ -7,9 +7,14 @@
     <div class="row">
         <div class="col">
                 <h1>All threads</h1>
-    
+                <input type="text" 
+                       class="form-control" 
+                       @bind="_search"
+                       placeholder="Search"
+                       @bind:event="oninput">
+                
                 <div class="list-group">
-                    @foreach (ChatThread thread in _allThreads)
+                    @foreach (ChatThread thread in Filtered)
                     {
                         <button type="button" 
                                 class="list-group-item list-group-item-action"
@@ -39,6 +44,7 @@
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = new();
     private Profile? _user { get; set; }
+    private string _search = "";
     private async Task Choose(ChatThread thread) 
     {
         await Us.SaveThreadAsync(thread);
@@ -71,6 +77,10 @@
     {
         _thread = await Us.LoadThreadAsync() ?? _allThreads[0];
     }
+
+    private IEnumerable<ChatThread> Filtered => _allThreads.Where(t =>
+        _search == "" ||
+        t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase));
     
     private void HandleNewMessages()
     {
