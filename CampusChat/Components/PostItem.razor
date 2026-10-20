@@ -6,29 +6,37 @@
 
             <div class="d-flex justify-content-between">
                 <div class="flex-grow-1">
-
-                    <div class="list-group-item-action p-2
+                    <div class="row">
+                        <div class="col">
+                            <div class="list-group-item-action p-2
                                 @(ParentPostId == Post.Id ? "active" : "")"
-                         @onclick="() => SelectPost(Post.Id)">
+                                 @onclick="() => SelectPost(Post.Id)">
 
-                        <strong>@Post.Author</strong>
-                        <small class="text-muted">
-                            @Post.TimeStamp.ToString("t")
-                        </small>
+                                <strong>@Post.Author</strong>
+                                <small class="text-muted">
+                                    @Post.TimeStamp.ToString("t")
+                                </small>
 
-                        <div>@Post.Message</div>
+                                <div>@Post.Message</div>
 
+                            </div>
+                        </div>
+                        <div class="col">
+                            @if (CanDelete(Post))
+                            {
+                                <button type="button"
+                                        class="btn btn-danger btn-sm mt-2"
+                                        @onclick:stopPropagation="true"
+                                        @onclick="() => Ts.DeleteMessage(Post)">
+                                    Delete
+                                </button>
+                            }
+                        </div>
                     </div>
 
-                    @if (CanDelete(Post))
-                    {
-                        <button type="button"
-                                class="btn btn-danger btn-sm mt-2"
-                                @onclick:stopPropagation="true"
-                                @onclick="() => Ts.DeleteMessage(Post)">
-                            Delete
-                        </button>
-                    }
+                    
+
+                    
 
                     @foreach (var reply in PostReplies(Post.Id))
                     {
