@@ -31,16 +31,23 @@
         <div class="col">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="row">
-                        <h1>@_thread?.Title</h1>
-                        <JoinOrLeaveThreadButton Thread="_thread" User="_user"></JoinOrLeaveThreadButton>
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0">@_thread?.Title</h1>
+
+                        <div class="ms-auto">
+                            <JoinOrLeaveThreadButton Thread="_thread"
+                                                     User="User" />
+                        </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="list-group list-group-flush overflow-auto" style="height:400px;">
                         @if (!_canAccess)
                         {
-                            <PrivateThread CanAccess="_canAccess" ThreadPassword="@_thread.AccessCode" IsValid="HandleChangedAccess"></PrivateThread>
+                            <PrivateThread CanAccess="_canAccess"
+                                           ThreadPassword="@_thread.AccessCode"
+                                           IsValid="HandleChangedAccess">
+                            </PrivateThread>
                         }
 
                         @if (_canAccess)
@@ -72,13 +79,11 @@
     private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = new();
-    private Profile? _user { get; set; }
+    private Profile? User { get; set; }
     private string _search = "";
     private string? _parentPostId = "";
     private string? _joinedThreads = "";
     private bool _canAccess;
-    private string Password = "";
-    private bool _showValidation = false;
     private async Task Choose(ChatThread thread)
     {
         _thread = thread;
@@ -93,7 +98,7 @@
     {
         if (firstRender)
         {
-            _user = await Us.LoadUserAsync();
+            User = await Us.LoadUserAsync();
             StateHasChanged();
         }
     }
@@ -102,13 +107,20 @@
     {
         _allThreads = Ts.GetThreads();
         _thread = _allThreads.FirstOrDefault();
+        
         Ts.NewMessages += HandleNewMessages;
         Ts.ThreadsChanged += HandleEditedThread;
     }
     
     protected override async Task OnInitializedAsync()
     {
-        _thread = await Us.LoadThreadAsync() ?? _allThreads[0];
+        _thread = await Us.LoadThreadAsync() ?? _allThreads.FirstOrDefault();
+        
+        if (_thread != null)
+        {
+            ThreadContent = Ts.ReadAllMessages(_thread.Id);
+            _canAccess = !_thread.IsPrivate;
+        }
     }
 
     private IEnumerable<ChatThread> Filtered =>
