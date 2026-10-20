@@ -11,6 +11,8 @@ builder.Services.AddRazorComponents()
 //Creates an instance of the class to be used as needed
 builder.Services.AddSingleton<ThreadService>();
 
+builder.Services.AddSingleton<DirectMessageService>();
+
 builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
