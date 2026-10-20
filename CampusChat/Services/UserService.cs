@@ -29,7 +29,6 @@ public class UserService(ProtectedLocalStorage storage)
     public List<Profile> AllProfiles = [];
     private const string StoredUser = "userName";
     private const string StoredThread = "thread";
-    public event Action? ChangeThread;
     
     public List<Profile> LoadProfiles()
     {
@@ -92,10 +91,5 @@ public class UserService(ProtectedLocalStorage storage)
     public async Task SaveThreadAsync(ChatThread thread)
     {
         await storage.SetAsync(StoredThread, thread);
-    }
-    
-    public void SelectedThread()
-    {
-        ChangeThread?.Invoke();
     }
 }
