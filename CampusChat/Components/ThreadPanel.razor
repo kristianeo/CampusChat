@@ -7,27 +7,8 @@
 <div class="container text-left">
     <div class="row">
         <div class="col">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <a class="navbar-brand">Threads</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="btn" @onclick='() => _joinedThreads = ""'>All</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn" @onclick='() => _joinedThreads = _user.UserName'>Joined</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn" @onclick='() => Console.WriteLine("Clicked")'>Private messages</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            
+            <ThreadsNavBar ChooseThreads="HandleChangedThreads"></ThreadsNavBar>
             
             <input type="text" 
                        class="form-control" 
@@ -47,7 +28,7 @@
                     }
                 </div>
                 
-                <ThreadsPagination Page="Page" Threads="Filtered" JoinedThreads="@_joinedThreads"></ThreadsPagination>
+                <ThreadsPagination Page="Page" Threads="Filtered"></ThreadsPagination>
         </div>
         <div class="col">
             <div class="panel panel-default">
@@ -171,6 +152,11 @@
     {
         _allThreads = Ts.GetThreads();
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleChangedThreads(string joinedThreads)
+    {
+        _joinedThreads = joinedThreads;
     }
 
     public void Dispose()
