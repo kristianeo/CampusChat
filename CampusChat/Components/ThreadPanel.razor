@@ -79,17 +79,14 @@
     private bool _canAccess;
     private string Password = "";
     private bool _showValidation = false;
-    private async Task Choose(ChatThread thread) 
+    private async Task Choose(ChatThread thread)
     {
+        _thread = thread;
+
+        ThreadContent = Ts.ReadAllMessages(_thread.Id);
+        _canAccess = !_thread.IsPrivate;
+        
         await Us.SaveThreadAsync(thread);
-
-        await HandleChangedThread();
-
-        if (_thread != null)
-        {
-            ThreadContent = Ts.ReadAllMessages(_thread.Id);
-            _canAccess = !_thread.IsPrivate;
-        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -104,9 +101,8 @@
     protected override void OnInitialized()
     {
         _allThreads = Ts.GetThreads();
-        _thread = _allThreads[0];
+        _thread = _allThreads.FirstOrDefault();
         Ts.NewMessages += HandleNewMessages;
-        //Us.ChangeThread += HandleChangedThread;
         Ts.ThreadsChanged += HandleEditedThread;
     }
     
@@ -135,17 +131,11 @@
             StateHasChanged();
         });
     }
-
-    private async Task HandleChangedThread()
-    {
-        _thread = await Us.LoadThreadAsync();
-        await InvokeAsync(StateHasChanged);
-    }
     
-    private async void HandleEditedThread()
+    private void HandleEditedThread()
     {
         _allThreads = Ts.GetThreads();
-        await InvokeAsync(StateHasChanged);
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private void HandleChangedThreads(string joinedThreads)
@@ -154,17 +144,15 @@
         Page = 1;
     }
 
-    private async void HandleChangedAccess()
+    private void HandleChangedAccess()
     {
         _canAccess = true;
-        await InvokeAsync(StateHasChanged);
     }
 
 
     public void Dispose()
     {
         Ts.NewMessages -= HandleNewMessages;
-        //Us.ChangeThread -= HandleChangedThread;
         Ts.ThreadsChanged -= HandleEditedThread;
     }
 }}
