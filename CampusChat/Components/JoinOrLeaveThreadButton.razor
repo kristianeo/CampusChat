@@ -1,0 +1,22 @@
+@rendermode InteractiveServer
+@inject ThreadService Ts
+
+@if (Thread != null && User != null)
+{
+    @if (!Thread.JoinedUsers.Contains(User.UserName))
+    {
+        <button type="button" class="btn btn-outline-success"
+                @onclick='() => Ts.JoinThread(User, Thread)'>Join thread</button>
+    }
+    else
+    {
+        <button type="button" class="btn btn-outline-danger"
+                @onclick='() => Ts.LeaveThread(User, Thread)'>Leave thread</button>
+    }
+}
+
+@code {
+    [Parameter] public required ChatThread Thread { get; set; }
+    [Parameter] public required Profile User { get; set; }
+    
+}
