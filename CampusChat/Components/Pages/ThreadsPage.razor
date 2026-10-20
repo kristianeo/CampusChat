@@ -1,0 +1,8 @@
+@page "/Threads"
+@page "/Threads/{Page:int}"
+
+<ThreadPanel Page="Page"></ThreadPanel>
+
+@code {
+    [Parameter] public int Page { get; set; } = 1;
+}

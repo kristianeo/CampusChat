@@ -1,0 +1,96 @@
+@rendermode InteractiveServer
+@inject ThreadService Ts
+@inject UserService Us
+
+        <div class="list-group-item">
+
+            <div class="d-flex justify-content-between">
+                <div class="flex-grow-1">
+                    <div class="row">
+                        <div class="col">
+                            <div class="list-group-item-action p-2
+                                @(ParentPostId == Post.Id ? "active" : "")"
+                                 @onclick="() => SelectPost(Post.Id)">
+
+                                <strong>@Post.Author</strong>
+                                <small class="text-muted">
+                                    @Post.TimeStamp.ToString("t")
+                                </small>
+
+                                <div>@Post.Message</div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            @if (CanDelete(Post))
+                            {
+                                <button type="button"
+                                        class="btn btn-danger btn-sm mt-2"
+                                        @onclick:stopPropagation="true"
+                                        @onclick="() => Ts.DeleteMessage(Post)">
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    
+
+                    
+
+                    @foreach (var reply in PostReplies(Post.Id))
+                    {
+                        <div class="ms-4">
+                            <PostItem Post="reply"
+                                      ThreadContent="ThreadContent"
+                                      ParentPostId="@ParentPostId"
+                                      ParentPostIdChanged="@ParentPostIdChanged">
+                            </PostItem>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+@code {
+    [Parameter] public required List<Post> ThreadContent { get; set; }
+    [Parameter] public required Post Post { get; set; }
+    [Parameter] public EventCallback<string> ParentPostIdChanged { get; set; }
+    [Parameter] public string ParentPostId { get; set; } = "";
+    private Profile? _user { get; set; }
+    
+    private async Task SelectPost(string postId)
+    {
+        Console.WriteLine($"Selected: {postId}");
+        
+        var selectedId = ParentPostId == postId
+            ? ""
+            : postId;
+        
+        await ParentPostIdChanged.InvokeAsync(selectedId);
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _user = await Us.LoadUserAsync();
+            StateHasChanged();
+        }
+    }
+    
+    private IEnumerable<Post> PostReplies(string parentPostId)
+    {
+        return ThreadContent
+            .Where(p => !string.IsNullOrEmpty(p.ParentPostId) &&
+                        p.ParentPostId == parentPostId);
+    }
+
+    private bool CanDelete(Post post)
+    {
+        return ParentPostId == post.Id &&
+               post.Author == _user?.UserName;
+    }
+   
+}

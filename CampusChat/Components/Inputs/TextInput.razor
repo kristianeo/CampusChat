@@ -19,8 +19,8 @@
 
 
 @code {
-    [Parameter] public string Id { get; set; }
-    [Parameter] public string Value { get; set; }
+    [Parameter] public required string Id { get; set; }
+    [Parameter] public required string Value { get; set; }
     [Parameter] public string Feedback { get; set; } = "";
     [Parameter] public bool Disabled { get; set; }
     

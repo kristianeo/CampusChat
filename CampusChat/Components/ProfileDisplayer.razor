@@ -1,4 +1,5 @@
 @rendermode InteractiveServer
+@inject ThreadService Ts
 
 @if (_profile != null)
 {
@@ -34,6 +35,18 @@
             </button>
         </div>
     </div>
+    
+    <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            Joined threads:
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach (ChatThread thread in JoinedThreads)
+            {
+                <li class="list-group-item">@thread.Title</li>
+            }
+        </ul>
+    </div>
 }
 
 else
@@ -49,6 +62,7 @@ else
     [Parameter] public string UserName { get; set; } = "";
 
     private Profile? _profile;
+    private List<ChatThread> AllThreads { get; set; } = [];
 
     //TODO: Make global navigation routes
     //TODO: Correct when teacher 
@@ -64,11 +78,24 @@ else
         };
         return currentYear;
     }
-    
+
+    protected override void OnInitialized()
+    {
+        AllThreads = Ts.GetThreads();
+    }
+
     //TODO: Make this default when logging in
     protected override void OnParametersSet()
     {
-        List<Profile> profiles = jsonReader.LoadDatabase();
+        List<Profile> profiles = jsonReader.LoadProfiles();
         _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
+
+    private IEnumerable<ChatThread> JoinedThreads =>
+        AllThreads
+            .Where(t =>
+                t.JoinedUsers.Contains(_profile.UserName))
+            .OrderBy(t => int.Parse(t.Id));
+
+    // TODO: Go to chat for given thread when clicked 
 }
