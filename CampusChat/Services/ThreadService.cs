@@ -39,13 +39,7 @@ public class ThreadService
     public List<Post> ReadAllMessages(string threadId)
     {
         List<Post> content = [];
-        foreach (Post p in ChatMessages)
-        {
-            if (p.ChatTreadId == threadId)
-            {
-                content.Add(p);
-            }
-        }
+        content.AddRange(ChatMessages.Where(p => p.ChatTreadId == threadId));
 
         return content;
     }
