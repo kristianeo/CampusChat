@@ -1,0 +1,38 @@
+@rendermode InteractiveServer
+
+<div class="input-group mb-3 has-validation" style="width: 50%">
+    <input type="password" 
+           @bind="_password"
+           class="form-control @(_showValidation && _password != ThreadPassword ? "is-invalid" : "")" 
+           placeholder="Password"
+           required>
+    
+    <button class="btn btn-primary" @onclick="CheckPassword">Enter</button>
+    
+    <div class="invalid-feedback"
+         style="text-align: right">
+        Password is incorrect
+    </div>
+                            
+</div>
+
+
+@code {
+    [Parameter] public required bool CanAccess { get; set; }
+    [Parameter] public required string ThreadPassword { get; set; }
+    [Parameter] public EventCallback<bool> IsValid { get; set; }
+    
+    private string _password = "";
+    private bool _showValidation;
+    
+    private async Task CheckPassword()
+    {
+        _showValidation = true;
+        
+        if (_password == ThreadPassword)
+        {
+            await IsValid.InvokeAsync(true);
+        }
+    }
+
+}
