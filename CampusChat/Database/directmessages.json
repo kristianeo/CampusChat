@@ -1,2 +1,25 @@
 [
+  {
+    "Id": "0fc29306-7bb1-426b-92f3-be47551cfa76",
+    "Participants": [
+      "Brukernavn2",
+      "Brukernavn"
+    ],
+    "Messages": [
+      {
+        "Id": "8bb0edfe-b0c2-4940-bc4b-9091169825fa",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-21T15:21:52.6127188+02:00",
+        "Content": "yo",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      },
+      {
+        "Id": "b2c60d02-0bfb-4777-8308-58c9196e3141",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-21T17:56:54.1634398+02:00",
+        "Content": "hey",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      }
+    ]
+  }
 ]
