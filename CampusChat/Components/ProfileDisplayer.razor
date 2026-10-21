@@ -1,5 +1,8 @@
 @rendermode InteractiveServer
 @inject ThreadService Ts
+@inject UserService Us
+@inject DirectMessageService Dms
+@inject NavigationManager Nav
 
 @if (_profile != null)
 {
@@ -24,7 +27,8 @@
         </ul>
         <div class="card-body">
             <button type="button" 
-                    class="btn btn-primary">
+                    class="btn btn-primary"
+                    @onclick="SendDirectMessage">
                 Send a private message
             </button>
             
@@ -54,7 +58,7 @@ else
     <p>No user with username @UserName</p>
 }
 
-@inject NavigationManager Nav
+
 <a href="#" class="card-link" @onclick='() => Nav.NavigateTo("/")'>Go back to home page</a>
 
 
@@ -63,6 +67,7 @@ else
 
     private Profile? _profile;
     private List<ChatThread> AllThreads { get; set; } = [];
+    private Profile? _user;
 
     //TODO: Make global navigation routes
     //TODO: Correct when teacher 
@@ -83,6 +88,15 @@ else
     {
         AllThreads = Ts.GetThreads();
     }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _user = await Us.LoadUserAsync();
+            StateHasChanged();
+        }
+    }
 
     //TODO: Make this default when logging in
     protected override void OnParametersSet()
@@ -98,4 +112,10 @@ else
             .OrderBy(t => int.Parse(t.Id));
 
     // TODO: Go to chat for given thread when clicked 
+
+    private void SendDirectMessage()
+    {
+        Dms.SendDm(_user!, _profile!.UserName);
+        Nav.NavigateTo("/Dmtest");
+    }
 }
