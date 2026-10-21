@@ -29,16 +29,19 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="d-flex align-items-center">
-                        <h1 class="mb-0">Username</h1>
+                        <h1 class="mb-0">@_currentDm?.Participants.Single(p => p != User!.UserName)</h1>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="list-group list-group-flush overflow-auto"
                          style="height: 400px;">
-                        All messages goes in here
+                        @foreach (Message message in MessageContent)
+                        {
+                            <p>@message.Content</p>
+                        }
                     </div>
                 </div>
-                <DmInput DmId="@_currentDm?.Id"></DmInput>
+                <DmInput Dm="@_currentDm"></DmInput>
             </div>
         </div>
     </div>
@@ -58,7 +61,7 @@
         if (firstRender)
         {
             User = await Us.LoadUserAsync();
-            _userDms = Dms.GetUserDms(User.UserName);
+            _userDms = Dms.GetUserDms(User!);
             StateHasChanged();
         }
     }
@@ -78,8 +81,9 @@
         _userDms
             .Where(m =>
                 _search == "" ||
-                m.Participants.Contains(_search)
-            );
+                m.Participants
+                    .Any(p => p.Contains(_search, StringComparison.OrdinalIgnoreCase)))
+            ;
 
     private void HandleNewMessages()
     {
