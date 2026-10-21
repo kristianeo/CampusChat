@@ -30,7 +30,7 @@ public class UserService(ProtectedSessionStorage storage)
     private const string StoredUser = "userName";
     private const string StoredThread = "thread";
     
-    public List<Profile> LoadProfiles()
+    public List<Profile> GetProfiles()
     {
         string path = "Database/users.json";
 
@@ -44,7 +44,7 @@ public class UserService(ProtectedSessionStorage storage)
     }
     public Profile? GetProfile(string username)
     {
-        var profiles = LoadProfiles();
+        var profiles = GetProfiles();
         return profiles?.FirstOrDefault(p => p.UserName == username);
     }
     public async Task<Profile?> LoadUserAsync()
