@@ -24,7 +24,7 @@ public enum Studies
     FrontendProgramming
 };
 
-public class UserService(ProtectedLocalStorage storage)
+public class UserService(ProtectedSessionStorage storage)
 {
     public List<Profile> AllProfiles = [];
     private const string StoredUser = "userName";
@@ -73,7 +73,6 @@ public class UserService(ProtectedLocalStorage storage)
     public async Task<ChatThread?> LoadThreadAsync()
     {
         ProtectedBrowserStorageResult<ChatThread> storedThread;
-
         try
         {
             storedThread = await storage.GetAsync<ChatThread>(StoredThread);
