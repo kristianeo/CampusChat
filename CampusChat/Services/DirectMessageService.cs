@@ -20,34 +20,36 @@ public class DirectMessageService
 {
     public event Action? UpdateDirectMsgs;
     private List<Message> _directMessages = [];
-    public DirectMessage CreateNewDm(string receiverUserName, string userName)
+    public DirectMessage? SendDm(Profile user, string recipient)
     {
-        ImmutableList<string> participants = [userName, receiverUserName];
+        var dmExist = GetUserDms(user).Where(dm => dm.Participants.Contains(recipient));
+        if (dmExist != null) return dmExist.FirstOrDefault();
+        
+        ImmutableList<string> participants = [user.UserName, recipient];
         List<Message> messages = [];
         DirectMessage directMessage = new DirectMessage(Guid.NewGuid().ToString(), participants, messages);
+        UpdateDms(directMessage);
         return directMessage;
+
     }
 
-    public Message SendMessage(string author, string message, string dmId)
+    public void SendMessage(string author, string message, DirectMessage dm)
     {
         Message msg = new Message(Guid.NewGuid().ToString(), author, 
-            DateTime.Now, message, dmId);
+            DateTime.Now, message, dm.Id);
         
-        List<DirectMessage> chats = GetDirectMessages();
-        DirectMessage? chat = chats.FirstOrDefault(c => c.Id == dmId);
-        chat?.Messages.Add(msg);
-        UpdateDms(chats);
+        dm.Messages.Add(msg);
+        
+        UpdateDms(dm);
+        // Do I need the local _directMessages?
         _directMessages.Add(msg);
-        
-        return msg;
     }
 
-    public void DeleteMessage(Message message)
+    public void DeleteMessage(Message message, DirectMessage dm)
     {
-        List<DirectMessage> chats = GetDirectMessages();
-        DirectMessage? chat = chats.FirstOrDefault(c => c.Id == message.DmId);
-        chat?.Messages.Remove(message);
-        UpdateDms(chats);
+        dm.Messages.Remove(message);
+        
+        UpdateDms(dm);
         _directMessages.Remove(message);
     }
 
@@ -70,9 +72,19 @@ public class DirectMessageService
 
         return dms;
     }
-    
-    private void UpdateDms(List<DirectMessage> dms)
+
+    private DirectMessage? GetDirectMessage(string id)
     {
+        return GetDirectMessages().FirstOrDefault(c => c.Id == id);
+    }
+    
+    private void UpdateDms(DirectMessage dm)
+    {
+        List<DirectMessage> dms = GetDirectMessages();
+        var oldDm = dms.FirstOrDefault(d => d.Id == dm.Id);
+        dms.Remove(oldDm);
+        dms.Add(dm);
+        
         string path = "Database/directmessages.json";
         
         var options = new JsonSerializerOptions
@@ -85,9 +97,9 @@ public class DirectMessageService
         UpdateDirectMsgs?.Invoke();
     }
 
-    public List<DirectMessage> GetUserDms(string username)
+    public List<DirectMessage> GetUserDms(Profile user)
     {
-        return GetDirectMessages().Where(dm => dm.Participants.Contains(username)).ToList();
+        return GetDirectMessages().Where(dm => dm.Participants.Contains(user.UserName)).ToList();
     }
     
 }

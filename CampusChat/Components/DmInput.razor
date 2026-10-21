@@ -14,7 +14,7 @@
             @onclick="SendMessage">Send</button>
 </div>
 @code {
-    [Parameter] public required string DmId { get; set; }
+    [Parameter] public required DirectMessage Dm { get; set; }
     private string _chatMessage = "";
     
     private async Task SendMessage()
@@ -22,9 +22,8 @@
         if (_chatMessage != "")
         {
             var user = await Us.LoadUserAsync();
-            Dms.SendMessage(user!.UserName, _chatMessage, DmId);
+            Dms.SendMessage(user!.UserName, _chatMessage, Dm);
             _chatMessage = string.Empty;
         }
     }
-}
 }
