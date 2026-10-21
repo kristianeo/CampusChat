@@ -1,0 +1,30 @@
+@rendermode InteractiveServer
+@inject DirectMessageService Dms
+@inject UserService Us
+
+<div class="input-group mb-3">
+    
+    <input type="text"
+           class="form-control"
+           placeholder="Say something..."
+           @bind="_chatMessage">
+
+    <button class="btn btn-outline-secondary"
+            type="button"
+            @onclick="SendMessage">Send</button>
+</div>
+@code {
+    [Parameter] public required string DmId { get; set; }
+    private string _chatMessage = "";
+    
+    private async Task SendMessage()
+    {
+        if (_chatMessage != "")
+        {
+            var user = await Us.LoadUserAsync();
+            Dms.SendMessage(user!.UserName, _chatMessage, DmId);
+            _chatMessage = string.Empty;
+        }
+    }
+}
+}
