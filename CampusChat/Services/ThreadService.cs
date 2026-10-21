@@ -61,8 +61,14 @@ public class ThreadService
 
     
 
-    private void UpdateThread(List<ChatThread> threads)
+    private void UpdateThread(ChatThread thread)
     {
+        List<ChatThread> threads = GetThreads();
+        
+        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
+        threads.Remove(oldThread);
+        threads.Add(thread);
+        
         string path = "Database/threads.json";
         
         var options = new JsonSerializerOptions
@@ -77,27 +83,16 @@ public class ThreadService
 
     public void JoinThread(Profile user, ChatThread thread)
     {
-        List<ChatThread> threads = GetThreads();
-        
-        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
-        threads.Remove(oldThread);
-        
         thread.JoinedUsers.Add(user.UserName);
-        threads.Add(thread);
         
-        UpdateThread(threads);
+        UpdateThread(thread);
     }
 
     public void LeaveThread(Profile user, ChatThread thread)
     {
-        List<ChatThread> threads = GetThreads();
-        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
-        threads.Remove(oldThread);
-        
         thread.JoinedUsers.Remove(user.UserName);
-        threads.Add(thread);
         
-        UpdateThread(threads);
+        UpdateThread(thread);
     }
 
     public Post AddPost(Profile author, ChatThread thread, string message, string parentPostId)
