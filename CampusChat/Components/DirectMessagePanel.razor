@@ -1,0 +1,101 @@
+@rendermode InteractiveServer
+@inject DirectMessageService Dms
+@inject UserService Us
+@implements IDisposable
+
+<div class="container text-left">
+    <div class="row">
+        <div class="col">
+            
+            <input type="text" 
+                   class="form-control" 
+                   @bind="_search"
+                   placeholder="Search"
+                   @bind:event="oninput">
+                
+            <div class="list-group">
+                @foreach (DirectMessage dm in Filtered)
+                {
+                    <button type="button" 
+                            class="list-group-item list-group-item-action"
+                            value="@dm.Id"
+                            @onclick="() => Choose(dm)">
+                        @dm.Participants.Single(p => p != User!.UserName)
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="col">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="d-flex align-items-center">
+                        <h1 class="mb-0">Username</h1>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group list-group-flush overflow-auto"
+                         style="height: 400px;">
+                        All messages goes in here
+                    </div>
+                </div>
+                <DmInput DmId="@_currentDm?.Id"></DmInput>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+@code {
+    [Parameter] public int Page { get; set; }
+    private List<DirectMessage> _userDms = [];
+    private DirectMessage? _currentDm;
+    private List<Message> MessageContent { get; set; } = [];
+    private string _search = "";
+    private Profile? User { get; set; }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            User = await Us.LoadUserAsync();
+            _userDms = Dms.GetUserDms(User.UserName);
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Dms.UpdateDirectMsgs += HandleNewMessages;
+    }
+
+    private void Choose(DirectMessage dm)
+    {
+        _currentDm = dm;
+        MessageContent = Dms.ReadAllMessages(dm.Id);
+    }
+
+    private IEnumerable<DirectMessage> Filtered =>
+        _userDms
+            .Where(m =>
+                _search == "" ||
+                m.Participants.Contains(_search)
+            );
+
+    private void HandleNewMessages()
+    {
+        if (_currentDm == null) return;
+
+        InvokeAsync(() =>
+        {
+            MessageContent = Dms.ReadAllMessages(_currentDm.Id);
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Dms.UpdateDirectMsgs -= HandleNewMessages;
+    }
+    
+
+}
