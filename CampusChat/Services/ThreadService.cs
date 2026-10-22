@@ -24,24 +24,41 @@ public class ThreadService
     public event Action? NewMessages;
     public event Action? ThreadsChanged;
     
-    public void AddMessage(Post post)
+    public void SendMessage(Profile author, string threadId, string message, string? parentPostId)
     {
+        Post post = new Post(Guid.NewGuid().ToString(), author.UserName,
+                message, DateTime.Now, threadId, parentPostId);
+        var thread = GetThread(threadId);
+        thread.Posts.Add(post);
+        
+        UpdateThreads(thread);
+        
         ChatMessages.Add(post);
+        
         NewMessages?.Invoke();
     }
 
     public void DeleteMessage(Post post)
     {
-        ChatMessages.Remove(post);
+        Post updatedPost = post with
+        {
+            Message = "This message has been deleted"
+        };
+
+        var thread = GetThread(post.ChatTreadId);
+        
+        thread!.Posts.Remove(post);
+        thread.Posts.Add(updatedPost);
+            
+        UpdateThreads(thread);    
+        
         NewMessages?.Invoke();
     }
     
     public List<Post> ReadAllMessages(string threadId)
     {
-        List<Post> content = [];
-        content.AddRange(ChatMessages.Where(p => p.ChatTreadId == threadId));
-
-        return content;
+        List<ChatThread> messages = GetThreads();
+        return messages.FirstOrDefault(m => m.Id == threadId).Posts;
     }
 
     public List<ChatThread> GetThreads()
@@ -59,9 +76,14 @@ public class ThreadService
         return threads;
     }
 
+    public ChatThread? GetThread(string threadId)
+    {
+        return GetThreads().FirstOrDefault(t => t.Id == threadId);
+    }
+
     
 
-    private void UpdateThread(ChatThread thread)
+    private void UpdateThreads(ChatThread thread)
     {
         List<ChatThread> threads = GetThreads();
         
@@ -78,21 +100,24 @@ public class ThreadService
 
         string updatedJson = JsonSerializer.Serialize(threads, options);
         File.WriteAllText(path, updatedJson);
-        ThreadsChanged?.Invoke();
     }
 
     public void JoinThread(Profile user, ChatThread thread)
     {
         thread.JoinedUsers.Add(user.UserName);
         
-        UpdateThread(thread);
+        UpdateThreads(thread);
+        
+        ThreadsChanged?.Invoke();
     }
 
     public void LeaveThread(Profile user, ChatThread thread)
     {
         thread.JoinedUsers.Remove(user.UserName);
         
-        UpdateThread(thread);
+        UpdateThreads(thread);
+        
+        ThreadsChanged?.Invoke();
     }
 
     public Post AddPost(Profile author, ChatThread thread, string message, string parentPostId)
