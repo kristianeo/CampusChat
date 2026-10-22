@@ -62,9 +62,7 @@
                         }
                     </div>
                 </div>
-                    <ThreadInput ThreadId="@_thread?.Id" 
-                                 ParentPostId="@_parentPostId"
-                                 CanAccess="_canAccess"></ThreadInput>
+                <MessageInput OnSend="SendMessage"></MessageInput>
                 
             </div>
             
@@ -159,6 +157,18 @@
     private void HandleChangedAccess()
     {
         _canAccess = true;
+    }
+    
+    private Task SendMessage(string message)
+    {
+        Console.WriteLine("Sending: " + message);
+        if (_thread != null && User != null)
+        {
+            Ts.SendMessage(User, _thread.Id, message, _parentPostId);
+            Console.WriteLine($"Count after send: {Ts.ReadAllMessages(_thread.Id).Count}");
+        }
+
+        return Task.CompletedTask;
     }
 
 

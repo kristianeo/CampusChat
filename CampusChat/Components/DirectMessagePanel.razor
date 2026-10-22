@@ -41,7 +41,7 @@
                         }
                     </div>
                 </div>
-                <DmInput Dm="@_currentDm"></DmInput>
+                <MessageInput OnSend="SendMessage"></MessageInput>
             </div>
         </div>
     </div>
@@ -94,6 +94,14 @@
             MessageContent = Dms.ReadAllMessages(_currentDm.Id);
             StateHasChanged();
         });
+    }
+
+    private async Task SendMessage(string message)
+    {
+        if (_currentDm != null)
+        {
+            Dms.SendMessage(User!.UserName, message, _currentDm.Id);
+        }
     }
 
     public void Dispose()

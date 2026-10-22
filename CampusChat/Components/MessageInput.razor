@@ -1,6 +1,4 @@
 @rendermode InteractiveServer
-@inject DirectMessageService Dms
-@inject UserService Us
 
 <div class="input-group mb-3">
     
@@ -13,17 +11,16 @@
             type="button"
             @onclick="SendMessage">Send</button>
 </div>
+
 @code {
-    [Parameter] public required DirectMessage Dm { get; set; }
+    [Parameter] public EventCallback<string> OnSend { get; set; }
     private string _chatMessage = "";
-    
     private async Task SendMessage()
     {
-        if (_chatMessage != "")
+        if (!string.IsNullOrWhiteSpace(_chatMessage))
         {
-            var user = await Us.LoadUserAsync();
-            Dms.SendMessage(user!.UserName, _chatMessage, Dm);
-            _chatMessage = string.Empty;
+            await OnSend.InvokeAsync(_chatMessage);
+            _chatMessage = "";
         }
     }
 }

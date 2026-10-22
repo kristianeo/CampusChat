@@ -28,28 +28,28 @@ public class DirectMessageService
         ImmutableList<string> participants = [user.UserName, recipient];
         List<Message> messages = [];
         DirectMessage directMessage = new DirectMessage(Guid.NewGuid().ToString(), participants, messages);
-        UpdateDms(directMessage);
+        UpdateDms(directMessage.Id);
         return directMessage;
 
     }
 
-    public void SendMessage(string author, string message, DirectMessage dm)
+    public void SendMessage(string author, string message, string dmId)
     {
         Message msg = new Message(Guid.NewGuid().ToString(), author, 
-            DateTime.Now, message, dm.Id);
+            DateTime.Now, message, dmId);
         
-        dm.Messages.Add(msg);
+        GetDirectMessage(dmId).Messages.Add(msg);
         
-        UpdateDms(dm);
+        UpdateDms(dmId);
         // Do I need the local _directMessages?
         _directMessages.Add(msg);
     }
 
-    public void DeleteMessage(Message message, DirectMessage dm)
+    public void DeleteMessage(Message message, string dmId)
     {
-        dm.Messages.Remove(message);
+        GetDirectMessage(dmId).Messages.Remove(message);
         
-        UpdateDms(dm);
+        UpdateDms(dmId);
         _directMessages.Remove(message);
     }
 
@@ -78,12 +78,12 @@ public class DirectMessageService
         return GetDirectMessages().FirstOrDefault(c => c.Id == id);
     }
     
-    private void UpdateDms(DirectMessage dm)
+    private void UpdateDms(string dmId)
     {
         List<DirectMessage> dms = GetDirectMessages();
-        var oldDm = dms.FirstOrDefault(d => d.Id == dm.Id);
+        var oldDm = dms.FirstOrDefault(d => d.Id == dmId);
         dms.Remove(oldDm);
-        dms.Add(dm);
+        dms.Add(GetDirectMessage(dmId));
         
         string path = "Database/directmessages.json";
         
