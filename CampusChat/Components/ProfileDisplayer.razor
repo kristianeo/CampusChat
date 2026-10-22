@@ -101,7 +101,7 @@ else
     //TODO: Make this default when logging in
     protected override void OnParametersSet()
     {
-        List<Profile> profiles = jsonReader.LoadProfiles();
+        List<Profile> profiles = Us.GetProfiles();
         _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
 

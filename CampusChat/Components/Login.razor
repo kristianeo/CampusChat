@@ -33,7 +33,7 @@
     protected override void OnInitialized()
     {
         Us.GetProfiles();
-        _profiles = new List<string>(Us.AllProfiles.Select(p => p.UserName));
+        _profiles = new List<string>(Us.GetProfiles().Select(p => p.UserName));
     }
 
 }

@@ -258,6 +258,38 @@
         "TimeStamp": "2026-10-22T13:15:26.4096081+02:00",
         "ChatTreadId": "7",
         "ParentPostId": "bcb8968a-2963-4293-81c8-72f665a77bd8"
+      },
+      {
+        "Id": "216f89d6-577d-4b3d-979c-5362067fc05a",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:46:28.6511363+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "2fe08021-7e5c-4cc9-aec5-9d0caaaff500"
+      },
+      {
+        "Id": "806b8228-cebd-46ed-ae04-e2cb6f488939",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:46:33.5660614+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "68e1f683-08ba-4de4-a21d-71a95d32b082",
+        "Author": "Brukernavn2",
+        "Message": "yo",
+        "TimeStamp": "2026-10-22T13:46:49.3453343+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "fb72da30-6e6c-40d5-948c-063d5f0d51ce",
+        "Author": "Brukernavn",
+        "Message": "This message has been deleted",
+        "TimeStamp": "2026-10-22T14:02:10.0532266+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "68e1f683-08ba-4de4-a21d-71a95d32b082"
       }
     ],
     "JoinedUsers": [

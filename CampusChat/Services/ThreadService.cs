@@ -1,14 +1,13 @@
 using System.Text.Json;
 namespace CampusChat.Services;
 
-//TODO: Need to add posts to lists when creating 
 public record ChatThread(
     string Id,
     string Title,
     string AccessCode,
     List<Post> Posts,
     List<string> JoinedUsers,
-    bool IsPrivate = false);
+    bool IsPrivate = false) : IEntity;
 
 public record Post(
     string Id,
@@ -18,117 +17,97 @@ public record Post(
     string ChatTreadId,
     string? ParentPostId = "");
 
-public class ThreadService
+public class ThreadService : DbService<ChatThread>
 {
-    private List<Post> ChatMessages { get; set; } = new();
+    protected override string FilePath =>
+        "Database/threads.json";
+
     public event Action? NewMessages;
     public event Action? ThreadsChanged;
-    
-    public void SendMessage(Profile author, string threadId, string message, string? parentPostId)
+
+    public List<ChatThread> GetThreads()
     {
-        Post post = new Post(Guid.NewGuid().ToString(), author.UserName,
-                message, DateTime.Now, threadId, parentPostId);
-        var thread = GetThread(threadId);
+        return Load();
+    }
+
+    public ChatThread? GetThread(string threadId)
+    {
+        return Get(threadId);
+    }
+
+    public List<Post> ReadAllMessages(string threadId)
+    {
+        return Get(threadId)?.Posts ?? [];
+    }
+
+    public void SendMessage(
+        Profile author,
+        string threadId,
+        string message,
+        string? parentPostId)
+    {
+        ChatThread? thread = Get(threadId);
+
+        if (thread is null)
+            return;
+
+        Post post = new(
+            Guid.NewGuid().ToString(),
+            author.UserName,
+            message,
+            DateTime.Now,
+            threadId,
+            parentPostId);
+
         thread.Posts.Add(post);
-        
-        UpdateThreads(thread);
-        
-        ChatMessages.Add(post);
-        
+
+        Add(thread);
+
         NewMessages?.Invoke();
     }
 
     public void DeleteMessage(Post post)
     {
-        Post updatedPost = post with
+        ChatThread? thread = Get(post.ChatTreadId);
+
+        if (thread is null)
+            return;
+
+        Post deletedPost = post with
         {
             Message = "This message has been deleted"
         };
 
-        var thread = GetThread(post.ChatTreadId);
-        
-        thread!.Posts.Remove(post);
-        thread.Posts.Add(updatedPost);
-            
-        UpdateThreads(thread);    
-        
-        NewMessages?.Invoke();
-    }
-    
-    public List<Post> ReadAllMessages(string threadId)
-    {
-        List<ChatThread> messages = GetThreads();
-        return messages.FirstOrDefault(m => m.Id == threadId).Posts;
-    }
+        int index = thread.Posts.FindIndex(p => p.Id == post.Id);
 
-    public List<ChatThread> GetThreads()
-    {
-        string path = "Database/threads.json";
-        
-        List<ChatThread> threads = new();
-
-        if (File.Exists(path))
+        if (index >= 0)
         {
-            string json = File.ReadAllText(path);
-            threads = JsonSerializer.Deserialize<List<ChatThread>>(json) ?? new();
+            thread.Posts[index] = deletedPost;
+
+            Add(thread);
+
+            NewMessages?.Invoke();
         }
-
-        return threads;
-    }
-
-    public ChatThread? GetThread(string threadId)
-    {
-        return GetThreads().FirstOrDefault(t => t.Id == threadId);
-    }
-
-    
-
-    private void UpdateThreads(ChatThread thread)
-    {
-        List<ChatThread> threads = GetThreads();
-        
-        var oldThread = threads.FirstOrDefault(t => t.Id == thread.Id);
-        threads.Remove(oldThread);
-        threads.Add(thread);
-        
-        string path = "Database/threads.json";
-        
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-
-        string updatedJson = JsonSerializer.Serialize(threads, options);
-        File.WriteAllText(path, updatedJson);
     }
 
     public void JoinThread(Profile user, ChatThread thread)
     {
-        thread.JoinedUsers.Add(user.UserName);
-        
-        UpdateThreads(thread);
-        
-        ThreadsChanged?.Invoke();
+        if (!thread.JoinedUsers.Contains(user.UserName))
+        {
+            thread.JoinedUsers.Add(user.UserName);
+
+            Add(thread);
+
+            ThreadsChanged?.Invoke();
+        }
     }
 
     public void LeaveThread(Profile user, ChatThread thread)
     {
         thread.JoinedUsers.Remove(user.UserName);
-        
-        UpdateThreads(thread);
-        
+
+        Add(thread);
+
         ThreadsChanged?.Invoke();
     }
-
-    public Post AddPost(Profile author, ChatThread thread, string message, string parentPostId)
-    {
-        return new Post(Guid.NewGuid().ToString(), author.UserName,
-            message, DateTime.Now, thread.Id, parentPostId);
-    }
-
-    public Post? GetPost(string postId)
-    {
-        return ChatMessages.FirstOrDefault(p => p.Id == postId);
-    }
-
 }
