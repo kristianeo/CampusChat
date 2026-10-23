@@ -21,5 +21,28 @@
         "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
       }
     ]
+  },
+  {
+    "Id": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
+    "Participants": [
+      "Brukernavn",
+      "Hest"
+    ],
+    "Messages": [
+      {
+        "Id": "a4144636-0985-413b-910a-87f2531a93ad",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T11:22:04.3118481+02:00",
+        "Content": "hei",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      },
+      {
+        "Id": "58195847-4377-44a2-895a-8ca37834f355",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T11:42:10.5567798+02:00",
+        "Content": "hvorfor svarer du ikke",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      }
+    ]
   }
 ]

@@ -145,7 +145,24 @@
     "Id": "9",
     "Title": "Sports club",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "5f00ce60-1757-4b7c-ae1b-83d5a5f63ed4",
+        "Author": "Brukernavn",
+        "Message": "yo",
+        "TimeStamp": "2026-10-22T14:28:21.4797375+02:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "67e319d4-966e-4048-b067-0796fd13dbaa",
+        "Author": "Brukernavn",
+        "Message": "yo mann",
+        "TimeStamp": "2026-10-22T14:28:26.4712092+02:00",
+        "ChatTreadId": "9",
+        "ParentPostId": "5f00ce60-1757-4b7c-ae1b-83d5a5f63ed4"
+      }
+    ],
     "JoinedUsers": [
       "Hest"
     ],
