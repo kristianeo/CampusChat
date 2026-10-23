@@ -1,8 +1,8 @@
 @page "/Messages"
-@page "/Messages/@Username"
+@page "/Messages/{Username}"
 
-<DirectMessagePanel></DirectMessagePanel>
+<DirectMessagePanel Username="@Username"></DirectMessagePanel>
 
 @code {
-    [Parameter] public string Username {get; set}
+    [Parameter] public string? Username {get; set; }
 }

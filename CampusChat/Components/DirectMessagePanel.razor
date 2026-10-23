@@ -2,6 +2,7 @@
 @inject DirectMessageService Dms
 @inject UserService Us
 @implements IDisposable
+@inject NavigationManager Nav
 
 <div class="container text-left">
     <div class="row">
@@ -15,16 +16,20 @@
                    @bind:event="oninput">
 
             <SelectableList T="DirectMessage"
-                            List="Filtered"
+                            List="Filtered.Skip((Page - 1) * 10).Take(10)"
                             ItemText="GetProfileUsername"
                             Selected="Choose"></SelectableList>
+            
+            <Pagination Page="Page"
+                        ItemCount="Filtered.Count()"
+                        ChangedPage="HandleChangedPage"></Pagination>
 
         </div>
         <div class="col">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="d-flex align-items-center">
-                        <h1 class="mb-0">@_currentDm?.Participants.Single(p => p != User!.UserName)</h1>
+                        <h1 class="mb-0">@Username</h1>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -44,6 +49,7 @@
     
 
 @code {
+    [Parameter] public string Username { get; set; } = "";
     [Parameter] public int Page { get; set; }
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
@@ -53,28 +59,47 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            User = await Us.LoadUserAsync();
-            _userDms = Dms.GetUserDms(User!);
-            StateHasChanged();
-        }
-    }
+        if (!firstRender) return;
 
+        User = await Us.LoadUserAsync();
+
+        _userDms = Dms.GetUserDms(User!);
+        
+        LoadCurrentDm();
+
+        StateHasChanged();
+    }
     protected override void OnInitialized()
     {
         Dms.UpdateDirectMsgs += HandleNewMessages;
     }
 
+    protected override void OnParametersSet()
+    {
+        LoadCurrentDm();
+    }
+    
+    private void LoadCurrentDm()
+    {
+        if (_userDms.Count == 0)
+            return;
+
+        _currentDm = _userDms
+            .FirstOrDefault(dm => dm.Participants.Contains(Username));
+
+        MessageContent = _currentDm != null
+            ? Dms.ReadAllMessages(_currentDm.Id)
+            : [];
+    }
+
     private void Choose(DirectMessage dm)
     {
-        _currentDm = dm;
-        MessageContent = Dms.ReadAllMessages(dm.Id);
+        Nav.NavigateTo($"/Messages/{GetProfileUsername(dm)}");
     }
     
     private string GetProfileUsername(DirectMessage dm)
     {
-        return dm.Participants.Single(d => d != User.UserName).ToString();
+        return User == null ? "" : dm.Participants.Single(d => d != User.UserName).ToString();
     }
 
     private IEnumerable<DirectMessage> Filtered =>
@@ -83,6 +108,7 @@
                 _search == "" ||
                 m.Participants
                     .Any(p => p.Contains(_search, StringComparison.OrdinalIgnoreCase)))
+            .OrderByDescending(d => d.Messages.Max(m => m.TimeStamp))
             ;
 
     private void HandleNewMessages()
@@ -92,8 +118,16 @@
         InvokeAsync(() =>
         {
             MessageContent = Dms.ReadAllMessages(_currentDm.Id);
+            
+            _userDms = Dms.GetUserDms(User!);
+            
             StateHasChanged();
         });
+    }
+
+    private void HandleChangedPage(int page)
+    {
+        Page = page;
     }
 
     private async Task SendMessage(string message)
