@@ -1,0 +1,8 @@
+@page "/Messages"
+@page "/Messages/{Username}"
+
+<DirectMessagePanel Username="@Username"></DirectMessagePanel>
+
+@code {
+    [Parameter] public string? Username {get; set; }
+}

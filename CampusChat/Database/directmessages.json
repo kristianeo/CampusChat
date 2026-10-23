@@ -1,0 +1,76 @@
+[
+  {
+    "Id": "0fc29306-7bb1-426b-92f3-be47551cfa76",
+    "Participants": [
+      "Brukernavn2",
+      "Brukernavn"
+    ],
+    "Messages": [
+      {
+        "Id": "8bb0edfe-b0c2-4940-bc4b-9091169825fa",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-21T15:21:52.6127188+02:00",
+        "Content": "yo",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      },
+      {
+        "Id": "b2c60d02-0bfb-4777-8308-58c9196e3141",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-21T17:56:54.1634398+02:00",
+        "Content": "hey",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      },
+      {
+        "Id": "6ecd7bdd-662f-4c65-bbf7-0af842d11781",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T14:02:20.1781802+02:00",
+        "Content": "g",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      },
+      {
+        "Id": "c60c1a53-ce71-48b0-91c1-c35d78cdfb75",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T14:02:46.9372626+02:00",
+        "Content": "rewe",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76"
+      }
+    ]
+  },
+  {
+    "Id": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
+    "Participants": [
+      "Brukernavn",
+      "Hest"
+    ],
+    "Messages": [
+      {
+        "Id": "a4144636-0985-413b-910a-87f2531a93ad",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T11:22:04.3118481+02:00",
+        "Content": "hei",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      },
+      {
+        "Id": "58195847-4377-44a2-895a-8ca37834f355",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T11:42:10.5567798+02:00",
+        "Content": "hvorfor svarer du ikke",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      },
+      {
+        "Id": "a7d89884-57de-47b1-b5ee-993c62888729",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T14:02:28.8546566+02:00",
+        "Content": "tre",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      },
+      {
+        "Id": "88075868-3136-460a-a42b-cbabadab3a6f",
+        "Author": "Brukernavn",
+        "TimeStamp": "2026-10-23T14:08:26.0739609+02:00",
+        "Content": "hei",
+        "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf"
+      }
+    ]
+  }
+]

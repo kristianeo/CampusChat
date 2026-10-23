@@ -1,17 +1,6 @@
 [
   {
-    "UserName": "Krissa",
-    "FirstName": "Kristiane",
-    "LastName": "Olsen",
-    "Studies": 0,
-    "StartYear": 2025,
-    "Introduction": "hei",
-    "AvatarColor": "bg-primary",
-    "Teacher": false,
-    "Audit": false,
-    "School": "Gokstad Akademiet"
-  },
-  {
+    "Id": "1",
     "UserName": "Nils",
     "FirstName": "Nils",
     "LastName": "Nilsen",
@@ -24,18 +13,20 @@
     "School": "Gokstad Akademiet"
   },
   {
+    "Id": "2",
     "UserName": "Brukernavn",
     "FirstName": "kristiane",
     "LastName": "olsen",
     "Studies": 2,
     "StartYear": 2025,
     "Introduction": "test",
-    "AvatarColor": "bg-primary",
+    "AvatarColor": "bg-danger",
     "Teacher": false,
     "Audit": false,
     "School": "Gokstad Akademiet"
   },
   {
+    "Id": "3",
     "UserName": "Brukernavn2",
     "FirstName": "Kristiane",
     "LastName": "Olsen",
@@ -48,6 +39,7 @@
     "School": "Gokstad Akademiet"
   },
   {
+    "Id": "4",
     "UserName": "Hest",
     "FirstName": "Hest",
     "LastName": "Hestesen",

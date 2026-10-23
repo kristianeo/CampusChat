@@ -1,3 +1,4 @@
+@inject UserService Us
 
 <div class="rounded-circle @GetAvatarColor() text-white d-flex
             justify-content-center align-items-center"
@@ -23,8 +24,8 @@
         
         else if (Username != null)
         {
-            Profile? _profile = jsonReader.GetProfile(Username);
-            avatarColor = _profile.AvatarColor;
+            Profile? profile = Us.GetProfile(Username);
+            avatarColor = profile.AvatarColor;
         }
 
         return avatarColor;

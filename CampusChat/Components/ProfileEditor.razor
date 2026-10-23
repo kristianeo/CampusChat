@@ -1,4 +1,5 @@
 @rendermode InteractiveServer
+@inject UserService Us
 
 @if (_profile != null)
 {
@@ -126,8 +127,7 @@ else
 
     private void Submit()
     {
-        Profile EditedProfile = _profile;
-        EditedProfile = _profile with
+        Profile editedProfile = _profile with
         {
             FirstName = _firstname,
             LastName = _lastname,
@@ -139,7 +139,7 @@ else
             
         };
         
-        jsonReader.EditProfile(_profile, EditedProfile);
+        Us.SaveProfile(editedProfile);
 
         Nav.NavigateTo($"/Profile/{Username}");
 
@@ -148,7 +148,7 @@ else
     //I need to update the profiles list by removing the old profile and adding the new one 
     protected override void OnInitialized()
     {
-        List<Profile> profiles = jsonReader.LoadProfiles();
+        List<Profile> profiles = Us.GetProfiles();
         _profile = profiles.SingleOrDefault(p => p.UserName == Username);
 
         if (_profile == null) return;

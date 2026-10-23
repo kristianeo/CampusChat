@@ -1,4 +1,5 @@
 @rendermode InteractiveServer
+@inject UserService Us
 
 <div class="container">
     <h1>Create a new profile</h1>
@@ -111,17 +112,17 @@
 
     private void Submit()
     {
-        if (jsonReader.CheckUsername(_username))
+        if (Us.UsernameExists(_username))
         {
             _usernameTaken = true;
             return;
         }
         
-        Profile profile = new Profile(_username, _firstname, 
+        Profile profile = new Profile(Guid.NewGuid().ToString(),  _username, _firstname, 
             _lastname, _studies, _startyear, _introduction, 
             _avatarcolor, _isTeacher, _isAudit);
         
-        jsonReader.AddProfileToDatabase(profile);
+        Us.SaveProfile(profile);
         
         Nav.NavigateTo($"/Profile/{_username}");
     }

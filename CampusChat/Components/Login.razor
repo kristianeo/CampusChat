@@ -7,7 +7,7 @@
     
     <SelectInput T="string"
                  @bind-Value="_userName"
-                 Options="_profiles"
+                 Options="Profiles"
                  Message="Select a user:">
     </SelectInput>
     
@@ -19,7 +19,7 @@
 </div>
 
 @code {
-    private List<string> _profiles { get; set; } = [];
+    private List<string> Profiles { get; set; } = [];
     private string _userName { get; set; }
     private Profile _user { get; set; }
 
@@ -32,8 +32,9 @@
 
     protected override void OnInitialized()
     {
-        Us.LoadProfiles();
-        _profiles = new List<string>(Us.AllProfiles.Select(p => p.UserName));
+        Profiles = Us.GetProfiles()
+            .Select(p => p.UserName)
+            .ToList();
     }
 
 }

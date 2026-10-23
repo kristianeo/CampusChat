@@ -3,12 +3,11 @@
 @inject UserService Us
 
         <div class="list-group-item">
-
             <div class="d-flex justify-content-between">
                 <div class="flex-grow-1">
                     <div class="row">
                         <div class="col">
-                            <div class="list-group-item-action p-2
+                            <div class="list-group-item list-group-item-action p-2
                                 @(ParentPostId == Post.Id ? "active" : "")"
                                  @onclick="() => SelectPost(Post.Id)">
 
@@ -17,7 +16,13 @@
                                     @Post.TimeStamp.ToString("t")
                                 </small>
 
-                                <div>@Post.Message</div>
+                                <div>
+                                    @if (Post.Message == "This message has been deleted")
+                                    {
+                                        <i>@Post.Message</i>
+                                    }
+                                    else @Post.Message
+                                </div>
 
                             </div>
                         </div>
@@ -33,11 +38,7 @@
                             }
                         </div>
                     </div>
-
                     
-
-                    
-
                     @foreach (var reply in PostReplies(Post.Id))
                     {
                         <div class="ms-4">
@@ -90,7 +91,8 @@
     private bool CanDelete(Post post)
     {
         return ParentPostId == post.Id &&
-               post.Author == _user?.UserName;
+               post.Author == _user?.UserName &&
+               Post.Message != "This message has been deleted";
     }
    
 }

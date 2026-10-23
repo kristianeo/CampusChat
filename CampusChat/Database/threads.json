@@ -8,22 +8,6 @@
     "IsPrivate": false
   },
   {
-    "Id": "2",
-    "Title": "Extracurricular activities",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
-    "Id": "7",
-    "Title": "Library discussions",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
     "Id": "10",
     "Title": "Gaming community",
     "AccessCode": "",
@@ -138,24 +122,6 @@
     "IsPrivate": true
   },
   {
-    "Id": "5",
-    "Title": "Exam preparation",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [
-      "Brukernavn"
-    ],
-    "IsPrivate": false
-  },
-  {
-    "Id": "4",
-    "Title": "Homework help",
-    "AccessCode": "",
-    "Posts": [],
-    "JoinedUsers": [],
-    "IsPrivate": false
-  },
-  {
     "Id": "6",
     "Title": "Study groups",
     "AccessCode": "",
@@ -179,7 +145,24 @@
     "Id": "9",
     "Title": "Sports club",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "5f00ce60-1757-4b7c-ae1b-83d5a5f63ed4",
+        "Author": "Brukernavn",
+        "Message": "yo",
+        "TimeStamp": "2026-10-22T14:28:21.4797375+02:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "67e319d4-966e-4048-b067-0796fd13dbaa",
+        "Author": "Brukernavn",
+        "Message": "yo mann",
+        "TimeStamp": "2026-10-22T14:28:26.4712092+02:00",
+        "ChatTreadId": "9",
+        "ParentPostId": "5f00ce60-1757-4b7c-ae1b-83d5a5f63ed4"
+      }
+    ],
     "JoinedUsers": [
       "Hest"
     ],
@@ -192,6 +175,142 @@
     "Posts": [],
     "JoinedUsers": [
       "Hest"
+    ],
+    "IsPrivate": false
+  },
+  {
+    "Id": "5",
+    "Title": "Exam preparation",
+    "AccessCode": "",
+    "Posts": [],
+    "JoinedUsers": [
+      "Brukernavn",
+      "Brukernavn2"
+    ],
+    "IsPrivate": false
+  },
+  {
+    "Id": "4",
+    "Title": "Homework help",
+    "AccessCode": "",
+    "Posts": [
+      {
+        "Id": "869a7809-b370-4268-a95b-7be70f41944d",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:11:47.4080879+02:00",
+        "ChatTreadId": "4",
+        "ParentPostId": "9354124b-55bb-4d3c-afb5-bc9dae254600"
+      }
+    ],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "2",
+    "Title": "Extracurricular activities",
+    "AccessCode": "",
+    "Posts": [
+      {
+        "Id": "0217c059-3ff6-49da-9344-934f5103b455",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:11:58.328649+02:00",
+        "ChatTreadId": "2",
+        "ParentPostId": "9354124b-55bb-4d3c-afb5-bc9dae254600"
+      }
+    ],
+    "JoinedUsers": [],
+    "IsPrivate": false
+  },
+  {
+    "Id": "7",
+    "Title": "Library discussions",
+    "AccessCode": "",
+    "Posts": [
+      {
+        "Id": "df3ec90b-bc2f-4b77-bcdf-1aa07f347230",
+        "Author": "Brukernavn2",
+        "Message": "heo",
+        "TimeStamp": "2026-10-22T13:14:57.9961118+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "9b509ea4-efc8-4a48-918a-7d118a46f6ea",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:15:05.7796661+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "2fe08021-7e5c-4cc9-aec5-9d0caaaff500",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:15:08.784714+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "9b509ea4-efc8-4a48-918a-7d118a46f6ea"
+      },
+      {
+        "Id": "0b238fbf-d1b3-4e9d-80d1-23ca1c7eea7d",
+        "Author": "Brukernavn2",
+        "Message": "h",
+        "TimeStamp": "2026-10-22T13:15:48.7209089+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "634585ab-fba4-469d-af47-a4a5649e1976"
+      },
+      {
+        "Id": "bcb8968a-2963-4293-81c8-72f665a77bd8",
+        "Author": "Brukernavn2",
+        "Message": "This message has been deleted",
+        "TimeStamp": "2026-10-22T13:15:21.1082571+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "df3ec90b-bc2f-4b77-bcdf-1aa07f347230"
+      },
+      {
+        "Id": "634585ab-fba4-469d-af47-a4a5649e1976",
+        "Author": "Brukernavn2",
+        "Message": "This message has been deleted",
+        "TimeStamp": "2026-10-22T13:15:26.4096081+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "bcb8968a-2963-4293-81c8-72f665a77bd8"
+      },
+      {
+        "Id": "216f89d6-577d-4b3d-979c-5362067fc05a",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:46:28.6511363+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "2fe08021-7e5c-4cc9-aec5-9d0caaaff500"
+      },
+      {
+        "Id": "806b8228-cebd-46ed-ae04-e2cb6f488939",
+        "Author": "Brukernavn2",
+        "Message": "hei",
+        "TimeStamp": "2026-10-22T13:46:33.5660614+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "68e1f683-08ba-4de4-a21d-71a95d32b082",
+        "Author": "Brukernavn2",
+        "Message": "yo",
+        "TimeStamp": "2026-10-22T13:46:49.3453343+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "fb72da30-6e6c-40d5-948c-063d5f0d51ce",
+        "Author": "Brukernavn",
+        "Message": "This message has been deleted",
+        "TimeStamp": "2026-10-22T14:02:10.0532266+02:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "68e1f683-08ba-4de4-a21d-71a95d32b082"
+      }
+    ],
+    "JoinedUsers": [
+      "Brukernavn2"
     ],
     "IsPrivate": false
   }

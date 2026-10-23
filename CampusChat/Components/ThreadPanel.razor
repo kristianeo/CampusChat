@@ -7,26 +7,22 @@
     <div class="row">
         <div class="col">
             
-            <ThreadsNavBar ChooseThreads="HandleChangedThreads"></ThreadsNavBar>
+            <NavBar ChooseThreads="HandleChangedThreads"></NavBar>
             
             <input type="text" 
                    class="form-control" 
                    @bind="_search"
                    placeholder="Search"
                    @bind:event="oninput">
-                
-            <div class="list-group">
-                @foreach (ChatThread thread in Filtered.Skip((Page - 1) * 10).Take(10))
-                {
-                    <button type="button" 
-                            class="list-group-item list-group-item-action"
-                            value="@thread.Id"
-                            @onclick="() => Choose(thread)">
-                        @thread.Title
-                    </button>
-                }
-            </div>
-            <ThreadsPagination Page="Page" Threads="Filtered"></ThreadsPagination>
+            
+            <SelectableList T="ChatThread"
+                            List="Filtered.Skip((Page - 1) * 10).Take(10)"
+                            ItemText="GetThreadTitle"
+                            Selected="Choose" />
+            
+            <Pagination Page="Page" 
+                        ItemCount="Filtered.Count()"
+                        ChangedPage="HandleChangedPage"></Pagination>
         </div>
         <div class="col">
             <div class="panel panel-default">
@@ -62,14 +58,9 @@
                         }
                     </div>
                 </div>
-                    <ThreadInput ThreadId="@_thread?.Id" 
-                                 ParentPostId="@_parentPostId"
-                                 CanAccess="_canAccess"></ThreadInput>
+                <MessageInput OnSend="SendMessage"></MessageInput>
                 
             </div>
-            
-            
-            
         </div>
     </div>
 </div>
@@ -92,6 +83,10 @@
         _canAccess = !_thread.IsPrivate;
         
         await Us.SaveThreadAsync(thread);
+    }
+    private string GetThreadTitle(ChatThread thread)
+    {
+        return thread.Title;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -155,10 +150,27 @@
         _joinedThreads = joinedThreads;
         Page = 1;
     }
+    
+    private void HandleChangedPage(int page)
+    {
+        Page = page;
+    }
 
     private void HandleChangedAccess()
     {
         _canAccess = true;
+    }
+    
+    private Task SendMessage(string message)
+    {
+        Console.WriteLine("Sending: " + message);
+        if (_thread != null && User != null)
+        {
+            Ts.SendMessage(User, _thread.Id, message, _parentPostId);
+            Console.WriteLine($"Count after send: {Ts.ReadAllMessages(_thread.Id).Count}");
+        }
+
+        return Task.CompletedTask;
     }
 
 

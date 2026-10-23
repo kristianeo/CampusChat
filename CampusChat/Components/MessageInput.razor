@@ -1,0 +1,26 @@
+@rendermode InteractiveServer
+
+<div class="input-group mb-3">
+    
+    <input type="text"
+           class="form-control"
+           placeholder="Say something..."
+           @bind="_chatMessage">
+
+    <button class="btn btn-outline-secondary"
+            type="button"
+            @onclick="SendMessage">Send</button>
+</div>
+
+@code {
+    [Parameter] public EventCallback<string> OnSend { get; set; }
+    private string _chatMessage = "";
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(_chatMessage))
+        {
+            await OnSend.InvokeAsync(_chatMessage);
+            _chatMessage = "";
+        }
+    }
+}
