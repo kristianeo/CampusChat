@@ -20,8 +20,9 @@
                             ItemText="GetThreadTitle"
                             Selected="Choose" />
             
-            <ThreadsPagination Page="Page" 
-                               Threads="Filtered"></ThreadsPagination>
+            <Pagination Page="Page" 
+                        ItemCount="Filtered.Count()"
+                        ChangedPage="HandleChangedPage"></Pagination>
         </div>
         <div class="col">
             <div class="panel panel-default">
@@ -148,6 +149,11 @@
     {
         _joinedThreads = joinedThreads;
         Page = 1;
+    }
+    
+    private void HandleChangedPage(int page)
+    {
+        Page = page;
     }
 
     private void HandleChangedAccess()

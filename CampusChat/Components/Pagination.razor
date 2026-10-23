@@ -1,0 +1,37 @@
+@rendermode InteractiveServer
+
+<nav>
+    <ul class="pagination">
+        <button type="button" 
+                class="btn btn-outline-primary" 
+                disabled="@(Page <= 1)"
+                @onclick="() => SelectPage(Page - 1)">Previous</button>
+        
+        @foreach (var pageNumber in Enumerable.Range(1, TotalPages))
+        {
+            <button type="button"
+                    class="btn btn-outline-primary"
+                    @onclick="() => SelectPage(pageNumber)">
+                @pageNumber
+            </button>
+        }
+        
+        <button type="button" class="btn btn-outline-primary" disabled="@(Page >= TotalPages)" 
+                @onclick="() => SelectPage(Page + 1)">Next</button>
+    </ul>
+</nav>
+
+@code {
+    [Parameter] public int Page { get; set; }
+    [Parameter] public required int ItemCount { get; set; }
+    [Parameter] public EventCallback<int> ChangedPage { get; set; }
+
+    private int TotalPages => (int)Math.Ceiling(ItemCount / 10.0);
+    
+    private async Task SelectPage(int page)
+    {
+        Page = page;
+        
+        await ChangedPage.InvokeAsync(Page);
+    }
+}
