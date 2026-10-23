@@ -12,18 +12,12 @@
                    @bind="_search"
                    placeholder="Search"
                    @bind:event="oninput">
-                
-            <div class="list-group">
-                @foreach (DirectMessage dm in Filtered)
-                {
-                    <button type="button" 
-                            class="list-group-item list-group-item-action"
-                            value="@dm.Id"
-                            @onclick="() => Choose(dm)">
-                        @dm.Participants.Single(p => p != User!.UserName)
-                    </button>
-                }
-            </div>
+            
+            <SelectableList T="DirectMessage"
+                            List="Filtered"
+                            ItemText="GetProfileUsername"
+                            Selected="Choose"></SelectableList>
+            
         </div>
         <div class="col">
             <div class="panel panel-default">
@@ -75,6 +69,11 @@
     {
         _currentDm = dm;
         MessageContent = Dms.ReadAllMessages(dm.Id);
+    }
+    
+    private string GetProfileUsername(DirectMessage dm)
+    {
+        return dm.Participants.Single(d => d != User.UserName).ToString();
     }
 
     private IEnumerable<DirectMessage> Filtered =>
