@@ -1,18 +1,24 @@
 @typeparam T
 
 <div class="list-group">
-    @foreach (T choice in List)
+    @if (List.Any())
     {
-        <button type="button"
-                class="list-group-item list-group-item-action"
-                @onclick="() => Selected.InvokeAsync(choice)">
-            @ItemText(choice)
-        </button>
+        @foreach (T choice in List)
+         {
+            <button type="button"
+                    class="list-group-item list-group-item-action"
+                   @onclick="() => Selected.InvokeAsync(choice)">
+                @ItemText(choice)
+            <span class="badge text-bg-secondary">@(NotificationCount?.Invoke(choice) ?? 0)</span>
+                </button>
+        }
     }
+    
 </div>
 
 @code {
     [Parameter] public required IEnumerable<T> List { get; set; }
     [Parameter] public EventCallback<T> Selected { get; set; }
     [Parameter] public required Func<T, string> ItemText { get; set; }
+    [Parameter] public Func<T, int>? NotificationCount { get; set; }
 }
