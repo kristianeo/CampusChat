@@ -1,0 +1,17 @@
+@inject UserService Us
+@inject NavigationManager Nav
+
+<button type="button"
+        class="btn btn-danger"
+        @onclick="LoggingOut">
+    Log out
+</button> 
+
+@code {
+
+    private async Task LoggingOut()
+    {
+        await Us.ClearUserAsync();
+        Nav.NavigateTo("/");
+    }
+}
