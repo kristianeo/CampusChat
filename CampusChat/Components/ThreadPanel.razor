@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col">
             
-            <NavBar ChooseThreads="HandleChangedThreads"></NavBar>
+            <NavBar></NavBar>
             
             <input type="text" 
                    class="form-control" 
@@ -34,8 +34,11 @@
                         <h1 class="mb-0">@ThreadTitle</h1>
 
                         <div class="ms-auto">
+                            @if (_thread != null)
+                            {
                             <JoinOrLeaveThreadButton Thread="_thread"
-                                                     User="User" />
+                                User="User"/> 
+                            }
                         </div>
                     </div>
                 </div>
@@ -49,7 +52,7 @@
                             </PrivateThread>
                         }
 
-                        @if (_canAccess)
+                        @if (_thread != null && _canAccess)
                         {
                             @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
                             {
@@ -71,6 +74,7 @@
 @code {
     [Parameter] public int Page { get; set; }
     [Parameter] public string ThreadTitle { get; set; } = "";
+    [Parameter] public bool ShowJoinedThreads { get; set; }
     private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = [];
@@ -78,13 +82,15 @@
     private Profile? User { get; set; }
     private string _search = "";
     private string? _parentPostId = "";
-    private string? _joinedThreadsx = "";
-    private bool _canAccess;
+    private bool _canAccess = true;
     private List<Log> _logs = [];
     private Task Choose(ChatThread thread)
     {
         ReadPosts(thread);
-        Nav.NavigateTo($"/Threads/{Uri.EscapeDataString(thread.Title)}");
+        Nav.NavigateTo(
+            ShowJoinedThreads
+                ? $"/Threads/JoinedThreads/{Uri.EscapeDataString(thread.Title)}"
+                : $"/Threads/{Uri.EscapeDataString(thread.Title)}");
 
         return Task.CompletedTask;
     }
@@ -96,9 +102,9 @@
 
     private void LoadCurrentThread()
     {
-        if (_allThreads.Count == 0 || string.IsNullOrWhiteSpace(ThreadTitle))
+        if (ThreadTitle == "JoinedThreads" || string.IsNullOrWhiteSpace(ThreadTitle))
             return;
-
+        
         _thread = _allThreads
             .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
 
@@ -119,10 +125,7 @@
             User = await Us.LoadUserAsync();
             _logs = Ns.GetUserLogs(User!.Id);
             _joinedThreads = Ts.GetJoinedThreads(User.UserName);
-            if (_thread != null)
-            {
-                Nav.NavigateTo($"/Threads/{Uri.EscapeDataString(_thread.Title)}");
-            }
+            
             StateHasChanged();
         }
     }
@@ -130,23 +133,20 @@
     protected override void OnInitialized()
     {
         _allThreads = Ts.GetThreads();
-        _thread = _allThreads.FirstOrDefault();
         
         Ts.NewMessages += HandleNewMessages;
         Ts.ThreadsChanged += HandleEditedThread;
-        Console.WriteLine("ON initialized ");
     }
     
-    // TODO: Fix joined threads filter 
-
     private IEnumerable<ChatThread> Filtered =>
-        _allThreads
-            .Where(t =>
-                (_search == "" ||
-                 t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase))
-            )
-            .OrderBy(t => int.Parse(t.Id));
-
+        (ShowJoinedThreads
+            ? _allThreads.Where(t => User != null && 
+                                     t.JoinedUsers.Contains(User!.UserName))
+            : _allThreads)
+        .Where(t =>
+            _search == "" ||
+            t.Title.Contains(_search, StringComparison.OrdinalIgnoreCase))
+        .OrderBy(t => int.Parse(t.Id));
     private void HandleNewMessages(string threadId)
     {
         if (_thread?.Id == threadId)
@@ -168,13 +168,6 @@
             _joinedThreads = Ts.GetJoinedThreads(User.UserName);
         }
         InvokeAsync(StateHasChanged);
-    }
-
-    //TODO: Fix this too
-    private void HandleChangedThreads(string joinedThreads)
-    {
-        _joinedThreads = [];
-        Page = 1;
     }
     
     private void HandleChangedPage(int page)
@@ -201,10 +194,10 @@
     
     public int Notifications(ChatThread thread)
     {
-        if (thread == null) return 0;
+        if (thread == null || User == null) return 0;
         if (_joinedThreads.All(t => t.Id != thread.Id)) return 0;
         Log? log = _logs.FirstOrDefault(l => l.threadId.Contains(thread.Id));
-        return log != null ? thread.Posts.Count(p => p.TimeStamp > log.Time && p.Author != User!.UserName) : 0;
+        return log != null ? thread.Posts.Count(p => p.TimeStamp > log.Time && p.Author != User.UserName) : 0;
     }
 
     private void ReadPosts(ChatThread thread)
