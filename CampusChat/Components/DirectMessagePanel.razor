@@ -18,6 +18,7 @@
             <SelectableList T="DirectMessage"
                             List="Filtered.Skip((Page - 1) * 10).Take(10)"
                             ItemText="GetProfileUsername"
+                            NotificationCount="NotificationCount"
                             Selected="Choose"></SelectableList>
             
             <Pagination Page="Page"
@@ -94,6 +95,7 @@
 
     private void Choose(DirectMessage dm)
     {
+        ReadMessages(dm);
         Nav.NavigateTo($"/Messages/{GetProfileUsername(dm)}");
     }
     
@@ -108,18 +110,26 @@
                 _search == "" ||
                 m.Participants
                     .Any(p => p.Contains(_search, StringComparison.OrdinalIgnoreCase)))
-            .OrderByDescending(d => d.Messages.Max(m => m.TimeStamp))
-            ;
+            .OrderByDescending(d =>
+                d.Messages.LastOrDefault()?.TimeStamp ?? DateTime.MinValue);
 
-    private void HandleNewMessages()
+    private void HandleNewMessages(string dmId)
     {
-        if (_currentDm == null) return;
-
         InvokeAsync(() =>
         {
-            MessageContent = Dms.ReadAllMessages(_currentDm.Id);
-            
             _userDms = Dms.GetUserDms(User!);
+            
+            if (_currentDm?.Id == dmId)
+            {
+                var dm = _userDms.FirstOrDefault(d => d.Id == dmId);
+
+                if (dm != null)
+                {
+                    ReadMessages(dm);
+                    MessageContent = dm.Messages;
+                    _currentDm = dm;
+                }
+            }
             
             StateHasChanged();
         });
@@ -130,13 +140,38 @@
         Page = page;
     }
 
-    private async Task SendMessage(string message)
+    private void SendMessage(string message)
     {
         if (_currentDm != null)
         {
             Dms.SendMessage(User!.UserName, message, _currentDm.Id);
         }
     }
+
+    private int NotificationCount(DirectMessage dm)
+    {
+        return dm.Messages
+            .Count(m =>
+                !m.IsRead && m.Author != User!.UserName);
+    }
+    
+    private void ReadMessages(DirectMessage dm)
+    {
+        bool changed = false;
+
+        foreach (Message message in dm.Messages
+                     .Where(m => m.Author != User!.UserName && !m.IsRead))
+        {
+            message.IsRead = true;
+            changed = true;
+        }
+
+        if (changed)
+        {
+            Dms.UpdateMessage(dm);
+        }
+    }
+    
 
     public void Dispose()
     {
