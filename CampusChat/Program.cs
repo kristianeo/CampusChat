@@ -13,6 +13,8 @@ builder.Services.AddSingleton<ThreadService>();
 
 builder.Services.AddSingleton<DirectMessageService>();
 
+builder.Services.AddSingleton<NotificationService>();
+
 builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
