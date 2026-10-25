@@ -1,4 +1,3 @@
-using System.Text.Json;
 namespace CampusChat.Services;
 
 public record ChatThread(
@@ -22,7 +21,7 @@ public class ThreadService : DbService<ChatThread>
     protected override string FilePath =>
         "Database/threads.json";
 
-    public event Action? NewMessages;
+    public event Action<string>? NewMessages;
     public event Action? ThreadsChanged;
 
     public List<ChatThread> GetThreads()
@@ -63,7 +62,7 @@ public class ThreadService : DbService<ChatThread>
 
         Add(thread);
 
-        NewMessages?.Invoke();
+        NewMessages?.Invoke(thread.Id);
     }
 
     public void DeleteMessage(Post post)
@@ -86,7 +85,7 @@ public class ThreadService : DbService<ChatThread>
 
             Add(thread);
 
-            NewMessages?.Invoke();
+            NewMessages?.Invoke(thread.Id);
         }
     }
 
@@ -110,4 +109,11 @@ public class ThreadService : DbService<ChatThread>
 
         ThreadsChanged?.Invoke();
     }
+
+    public List<ChatThread> GetJoinedThreads(string username)
+    {
+        return [..Load().Where(t => t.JoinedUsers.Contains(username))];
+    }
+    
+    
 }
