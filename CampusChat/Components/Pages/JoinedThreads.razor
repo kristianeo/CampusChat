@@ -1,0 +1,10 @@
+@page "/Threads/JoinedThreads"
+@page "/Threads/JoinedThreads/{ThreadTitle}"
+
+<ThreadPanel
+    ShowJoinedThreads="true"
+    ThreadTitle="@ThreadTitle" />
+
+@code {
+    [Parameter] public string? ThreadTitle { get; set; }
+}

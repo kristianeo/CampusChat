@@ -1,0 +1,10 @@
+@page "/Threads"
+@page "/Threads/{ThreadTitle}"
+
+<ThreadPanel
+    ThreadTitle="@ThreadTitle">
+</ThreadPanel>
+
+@code {
+    [Parameter] public string? ThreadTitle { get; set; }
+}
