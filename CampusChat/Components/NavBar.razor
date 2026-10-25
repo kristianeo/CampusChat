@@ -1,22 +1,26 @@
 @rendermode InteractiveServer
-@inject UserService Us
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand">Threads</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="btn" @onclick='() => SelectThreads("")'>All</a>
+                    <NavLink class="btn" href="/Threads">
+                        All threads
+                    </NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="btn" @onclick='() => SelectThreads(User.UserName)'>Joined</a>
+                    <NavLink class="btn" href="/Threads/JoinedThreads">
+                        Joined threads
+                    </NavLink>
                 </li>
                 <li class="nav-item">
-                    <a class="btn" @onclick='() => Console.WriteLine("Clicked")'>Private messages</a>
+                    <NavLink class="btn" href="/Messages">
+                        Private messages
+                    </NavLink>
                 </li>
             </ul>
         </div>
@@ -24,27 +28,5 @@
 </nav>
 
 @code {
-    [Parameter] public string JoinedThreads { get; set; } = "";
-    [Parameter] public EventCallback<string> ChooseThreads { get; set; }
-    private Profile? User { get; set; }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            User = await Us.LoadUserAsync();
-            StateHasChanged();
-        }
-
-    }
     
-    private async Task SelectThreads(string joinedThreads)
-    {
-        Console.WriteLine($"Selected: {joinedThreads}");
-
-        JoinedThreads = joinedThreads;
-        
-        await ChooseThreads.InvokeAsync(JoinedThreads);
-    }
-
 }

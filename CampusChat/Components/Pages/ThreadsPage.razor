@@ -1,7 +1,15 @@
 @page "/Threads"
+@page "/Threads/JoinedThreads"
 @page "/Threads/{ThreadTitle}"
 
-<ThreadPanel ThreadTitle="@ThreadTitle"></ThreadPanel>
+@if (ThreadTitle == "JoinedThreads")
+{
+    <ThreadPanel ShowJoinedThreads="true"></ThreadPanel>
+}
+else
+{
+    <ThreadPanel ThreadTitle="@ThreadTitle"></ThreadPanel>
+}
 
 @code {
     [Parameter] public string? ThreadTitle { get; set; }
