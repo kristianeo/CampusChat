@@ -63,6 +63,12 @@
         if (!firstRender) return;
 
         User = await Us.LoadUserAsync();
+        
+        @if (User == null)
+        {
+            Nav.NavigateTo("/");
+            return;
+        }
 
         _userDms = Dms.GetUserDms(User!);
         

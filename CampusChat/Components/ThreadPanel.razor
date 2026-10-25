@@ -29,43 +29,42 @@
         </div>
         <div class="col">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="d-flex align-items-center">
-                        <h1 class="mb-0">@ThreadTitle</h1>
+                @if (_thread != null)
+                {
+                    <div class="panel-heading">
+                        <div class="d-flex align-items-center">
+                            <h1 class="mb-0">@ThreadTitle</h1>
 
-                        <div class="ms-auto">
-                            @if (_thread != null)
+                            <div class="ms-auto">
+                                <JoinOrLeaveThreadButton Thread="_thread"
+                                                         User="User"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group list-group-flush overflow-auto" style="height:400px;">
+                            @if (!_canAccess)
                             {
-                            <JoinOrLeaveThreadButton Thread="_thread"
-                                User="User"/> 
+                                <PrivateThread CanAccess="_canAccess"
+                                               ThreadPassword="@_thread.AccessCode"
+                                               IsValid="HandleChangedAccess">
+                                </PrivateThread>
+                            }
+
+                            @if (_canAccess)
+                            {
+                                @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
+                                {
+                                    <PostItem Post="post"
+                                              ThreadContent="ThreadContent"
+                                              @bind-ParentPostId="@_parentPostId">
+                                    </PostItem>
+                                }
                             }
                         </div>
                     </div>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group list-group-flush overflow-auto" style="height:400px;">
-                        @if (!_canAccess)
-                        {
-                            <PrivateThread CanAccess="_canAccess"
-                                           ThreadPassword="@_thread.AccessCode"
-                                           IsValid="HandleChangedAccess">
-                            </PrivateThread>
-                        }
-
-                        @if (_thread != null && _canAccess)
-                        {
-                            @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
-                            {
-                                <PostItem Post="post"
-                                          ThreadContent="ThreadContent"
-                                          @bind-ParentPostId="@_parentPostId">
-                                </PostItem>
-                            }
-                        }
-                    </div>
-                </div>
-                <MessageInput OnSend="SendMessage"></MessageInput>
-                
+                    <MessageInput OnSend="SendMessage"></MessageInput>
+                }
             </div>
         </div>
     </div>
@@ -123,6 +122,12 @@
         if (firstRender)
         {
             User = await Us.LoadUserAsync();
+            if (User == null)
+            {
+                Nav.NavigateTo("/");
+                return;
+            }
+
             _logs = Ns.GetUserLogs(User!.Id);
             _joinedThreads = Ts.GetJoinedThreads(User.UserName);
             
