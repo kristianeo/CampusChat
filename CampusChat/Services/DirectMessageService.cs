@@ -6,22 +6,26 @@ namespace CampusChat.Services;
 public record DirectMessage(
     string Id,
     ImmutableList<string> Participants,
-    List<Message> Messages
-    ) : IEntity;
+    List<Message> Messages) : IEntity;
 
-public record Message( 
+
+public record Message(
     string Id,
     string Author,
     DateTime TimeStamp,
     string Content,
-    string DmId);
+    string DmId,
+    bool IsRead = false)
+{
+    public bool IsRead { get; set; } = IsRead;
+}
 
 public class DirectMessageService : DbService<DirectMessage>
 {
     protected override string FilePath =>
         "Database/directmessages.json";
 
-    public event Action? UpdateDirectMsgs;
+    public event Action<string>? UpdateDirectMsgs;
 
     public List<DirectMessage> GetDirectMessages()
     {
@@ -62,7 +66,7 @@ public class DirectMessageService : DbService<DirectMessage>
 
         Add(newDm);
 
-        UpdateDirectMsgs?.Invoke();
+        UpdateDirectMsgs?.Invoke(newDm.Id);
 
         return newDm;
     }
@@ -88,22 +92,11 @@ public class DirectMessageService : DbService<DirectMessage>
 
         Add(dm);
 
-        UpdateDirectMsgs?.Invoke();
+        UpdateDirectMsgs?.Invoke(dm.Id);
     }
 
-    public void DeleteMessage(
-        Message message,
-        string dmId)
+    public void UpdateMessage(DirectMessage directMessage)
     {
-        DirectMessage? dm = Get(dmId);
-
-        if (dm is null)
-            return;
-
-        dm.Messages.RemoveAll(m => m.Id == message.Id);
-
-        Add(dm);
-
-        UpdateDirectMsgs?.Invoke();
+        Add(directMessage);
     }
 }
