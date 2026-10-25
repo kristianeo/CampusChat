@@ -2,6 +2,7 @@
 @inject ThreadService Ts
 @inject UserService Us
 @inject NotificationService Ns
+@inject NavigationManager Nav
 @implements IDisposable
 
 <div class="container text-left">
@@ -30,7 +31,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="d-flex align-items-center">
-                        <h1 class="mb-0">@_thread?.Title</h1>
+                        <h1 class="mb-0">@ThreadTitle</h1>
 
                         <div class="ms-auto">
                             <JoinOrLeaveThreadButton Thread="_thread"
@@ -69,6 +70,7 @@
 
 @code {
     [Parameter] public int Page { get; set; }
+    [Parameter] public string ThreadTitle { get; set; } = "";
     private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
     private List<ChatThread> _allThreads = [];
@@ -79,16 +81,32 @@
     private string? _joinedThreadsx = "";
     private bool _canAccess;
     private List<Log> _logs = [];
-    private async Task Choose(ChatThread thread)
+    private Task Choose(ChatThread thread)
     {
-        _thread = thread;
+        ReadPosts(thread);
+        Nav.NavigateTo($"/Threads/{Uri.EscapeDataString(thread.Title)}");
 
+        return Task.CompletedTask;
+    }
+
+    protected override void OnParametersSet()
+    {
+        LoadCurrentThread();
+    }
+
+    private void LoadCurrentThread()
+    {
+        if (_allThreads.Count == 0 || string.IsNullOrWhiteSpace(ThreadTitle))
+            return;
+
+        _thread = _allThreads
+            .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
+
+        if (_thread == null) return;
         ThreadContent = Ts.ReadAllMessages(_thread.Id);
         _canAccess = !_thread.IsPrivate;
-        
-        await Us.SaveThreadAsync(thread);
-        ReadPosts(thread);
     }
+
     private string GetThreadTitle(ChatThread thread)
     {
         return thread.Title;
@@ -99,10 +117,13 @@
         if (firstRender)
         {
             User = await Us.LoadUserAsync();
-            _logs = Ns.GetUserLogs(User.Id);
+            _logs = Ns.GetUserLogs(User!.Id);
             _joinedThreads = Ts.GetJoinedThreads(User.UserName);
+            if (_thread != null)
+            {
+                Nav.NavigateTo($"/Threads/{Uri.EscapeDataString(_thread.Title)}");
+            }
             StateHasChanged();
-            Console.WriteLine("After redner");
         }
     }
     
@@ -114,17 +135,6 @@
         Ts.NewMessages += HandleNewMessages;
         Ts.ThreadsChanged += HandleEditedThread;
         Console.WriteLine("ON initialized ");
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        _thread = await Us.LoadThreadAsync() ?? _allThreads.FirstOrDefault();
-        
-        if (_thread != null)
-        {
-            ThreadContent = Ts.ReadAllMessages(_thread.Id);
-            _canAccess = !_thread.IsPrivate;
-        }
     }
     
     // TODO: Fix joined threads filter 
