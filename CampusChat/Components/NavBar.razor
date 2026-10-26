@@ -1,5 +1,3 @@
-@rendermode InteractiveServer
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">CampusChat</a>
@@ -24,13 +22,20 @@
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="btn btn-small p-2" href="/Profiles "Match="NavLinkMatch.All">
+                    <NavLink class="btn btn-small p-2" href="/Profiles" Match="NavLinkMatch.All">
                         <small>Profiles</small>
                     </NavLink>
                 </li>
                 
                 <li class="nav-item">
-                    <Logout></Logout>
+                    @if (IsLoggedIn)
+                    {
+                        <LogoutButton></LogoutButton>
+                    }
+                    @if (!IsLoggedIn)
+                    {
+                        <LoginButton></LoginButton>
+                    }
                 </li>
             </ul>
         </div>
@@ -38,5 +43,5 @@
 </nav>
 
 @code {
-    
+    [Parameter] public bool IsLoggedIn { get; set; }
 }

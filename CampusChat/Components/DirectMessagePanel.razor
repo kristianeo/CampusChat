@@ -6,7 +6,7 @@
 
 <SplitPanel>
     <LeftContent>
-        <NavBar />
+        <NavBar IsLoggedIn="_isLoggedIn"/>
 
         <input class="form-control"
                type="text" 
@@ -33,7 +33,8 @@
     </Body>
 
     <Footer>
-        <MessageInput OnSend="SendMessage"></MessageInput>
+        <MessageInput OnSend="SendMessage"
+                      IsLoggedIn="_isLoggedIn"></MessageInput>
     </Footer>
 
 </SplitPanel>
@@ -47,6 +48,7 @@
     private List<Message> MessageContent { get; set; } = [];
     private string _search = "";
     private Profile? User { get; set; }
+    private bool _isLoggedIn;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -54,16 +56,15 @@
 
         User = await Us.LoadUserAsync();
         
-        @if (User == null)
+        _isLoggedIn = User != null;
+
+        if (_isLoggedIn)
         {
-            Nav.NavigateTo("/");
-            return;
+            _isLoggedIn = true;
+            _userDms = Dms.GetUserDms(User!);
+
+            LoadCurrentDm();
         }
-
-        _userDms = Dms.GetUserDms(User!);
-        
-        LoadCurrentDm();
-
         StateHasChanged();
     }
     protected override void OnInitialized()

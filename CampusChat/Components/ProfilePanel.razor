@@ -6,7 +6,7 @@
 
     <SplitPanel>
         <LeftContent>
-            <NavBar />
+            <NavBar IsLoggedIn="_isLoggedIn"/>
 
             <input class="form-control"
                    type="text" 
@@ -109,6 +109,7 @@
     private Profile? _profile;
     private List<ChatThread> _allThreads = [];
     private Profile? _user;
+    private bool _isLoggedIn;
     private string _search = "";
     protected override void OnInitialized()
     {
@@ -127,10 +128,8 @@
         if (firstRender)
         {
             _user = await Us.LoadUserAsync();
-            if (_user == null)
-            {
-                Nav.NavigateTo("/");
-            }
+            _isLoggedIn = _user != null;
+
             StateHasChanged();
         }
     }

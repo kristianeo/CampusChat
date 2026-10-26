@@ -9,11 +9,13 @@
 
     <button class="btn btn-outline-secondary"
             type="button"
+            disabled="@(string.IsNullOrWhiteSpace(_chatMessage) || !IsLoggedIn)"
             @onclick="SendMessage">Send</button>
 </div>
 
 @code {
     [Parameter] public EventCallback<string> OnSend { get; set; }
+    [Parameter] public bool IsLoggedIn { get; set; }
     private string _chatMessage = "";
     private async Task SendMessage()
     {
