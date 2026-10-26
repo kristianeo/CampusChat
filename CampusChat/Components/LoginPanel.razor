@@ -26,9 +26,16 @@
         </div>
         
     </LeftContent>
+    <Body>
+    @if (CreateMode)
+    {
+        <ProfileForm></ProfileForm>
+    }
+    </Body>
 </SplitPanel>
 
 @code {
+    [Parameter] public bool CreateMode { get; set; }
     private List<string> Profiles { get; set; } = [];
 
     private async Task LoggingIn(string userName)
