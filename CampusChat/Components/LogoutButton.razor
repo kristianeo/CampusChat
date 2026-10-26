@@ -2,7 +2,7 @@
 @inject NavigationManager Nav
 
 <button type="button"
-        class="btn btn-small p-2 btn-danger"
+        class="btn btn-small p-2 btn-success"
         @onclick="LoggingOut">
     <small>Log out</small>
 </button> 
@@ -12,6 +12,6 @@
     private async Task LoggingOut()
     {
         await Us.ClearUserAsync();
-        Nav.NavigateTo("/");
+        Nav.NavigateTo("/Threads");
     }
 }

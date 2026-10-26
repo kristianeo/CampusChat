@@ -1,0 +1,15 @@
+@inject NavigationManager Nav
+
+<button type="button"
+        class="btn btn-small p-2 btn-danger"
+        @onclick="() => LoggingIn()">
+    <small>Log in</small>
+</button> 
+
+@code {
+    private void LoggingIn()
+    {
+        Nav.NavigateTo("/Login");
+    }
+    
+}
