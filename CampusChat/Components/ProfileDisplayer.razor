@@ -4,89 +4,112 @@
 @inject DirectMessageService Dms
 @inject NavigationManager Nav
 
-@if (_profile != null)
-{
-    <div class="card" style="width: 18rem;">
-        <Avatar Username="@_profile.UserName"/>
-        <div class="card-body">
-            <h5 class="card-title">@_profile.UserName</h5>
-            <p class="card-text">@_profile.Introduction</p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">@_profile.FirstName @_profile.LastName</li>
-            @if (!_profile.Teacher)
-            {
-                <li class="list-group-item">@_profile.Studies student at @_profile.School</li>   
-                <li class="list-group-item">@GetStudyYear()</li>
-            }
-            else
-            {
-                <li class="list-group-item">Teacher</li> 
-            }
-            
-        </ul>
-        <div class="card-body">
-            <button type="button" 
-                    class="btn btn-primary"
-                    @onclick="SendDirectMessage">
-                Send a private message
-            </button>
-            
-            <button type="button" 
-                    class="btn btn-primary"
-                    @onclick='() => Nav.NavigateTo($"/EditProfile/{UserName}")'>
-                Edit profile
-            </button>
-        </div>
-    </div>
+    <SplitPanel>
+        <LeftContent>
+            <NavBar />
+
+            <input class="form-control"
+                   type="text" 
+                   @bind="_search"
+                   placeholder="Search"
+                   @bind:event="oninput" />
+
+            <SelectableList T="Profile"
+                            List="Filtered"
+                            ItemText="GetUsername"
+                            Selected="ChooseProfile"></SelectableList>
+        </LeftContent>
+
     
-    <div class="card" style="width: 18rem;">
-        <div class="card-header">
-            Joined threads:
-        </div>
-        <ul class="list-group list-group-flush">
-            @foreach (ChatThread thread in JoinedThreads)
-            {
-                <li class="list-group-item">@thread.Title</li>
-            }
-        </ul>
-    </div>
-}
+        <Body>
+        @if (_profile != null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <p class="lead mb-0">
+                        @_profile.FirstName @_profile.LastName
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-2">
+                        <Avatar Username="@_profile.UserName"/>
 
-else
-{
-    <p>No user with username @UserName</p>
-}
+                        <h4 class="card-title mb-0">
+                            @_profile.UserName
+                        </h4>
 
+                    </div>
+                    <h6 style="padding-top: 20px;">
+                        @_profile.Studies @(_profile.Teacher ? "" : "student")
+                        <small class="text-body-secondary">at @_profile.School</small>
+                    </h6>
 
-<a href="#" class="card-link" @onclick='() => Nav.NavigateTo("/")'>Go back to home page</a>
+                    <p class="card-text"><em>@_profile.Introduction</em></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @if (!_profile.Teacher)
+                    {
 
+                        <li class="list-group-item"><small>@GetStudyYear()</small></li>
+                    }
+
+                </ul>
+                <div class="card-body">
+                    @if (_user != null && _user.UserName == _profile.UserName)
+                    {
+                        <button type="button"
+                                class="btn btn-primary"
+                                @onclick='() => Nav.NavigateTo($"/Profiles/{UserName}/Edit")'>
+                            Edit profile
+                        </button>
+                    }
+                    else
+                    {
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                @onclick="SendDirectMessage">
+                            Send a private message
+                        </button>
+                    }
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <p class="lead mb-0"><small>Joined threads:</small></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @if (!JoinedThreads.Any())
+                    {
+                        <p style="padding-left: 2%"><em>Nothing to show...</em></p>
+                    }
+                    @foreach (ChatThread thread in JoinedThreads)
+                    {
+                        <li class="list-group-item">@thread.Title</li>
+                    }
+                </ul>
+            </div> 
+        }
+        </Body>
+    </SplitPanel>
 
 @code {
-    [Parameter] public string UserName { get; set; } = "";
-
+    [Parameter] public string? UserName { get; set; }
+    private List<Profile> _profiles = [];
     private Profile? _profile;
-    private List<ChatThread> AllThreads { get; set; } = [];
+    private List<ChatThread> _allThreads = [];
     private Profile? _user;
-
-    //TODO: Make global navigation routes
-    //TODO: Correct when teacher 
-    private string GetStudyYear()
-    {
-        string currentYear = _profile.StartYear switch
-        {
-            -1 => "Teacher",
-            < 2025 => "Graduated student",
-            2025 => "Second year student",
-            2026 => "First year student",
-            > 2026 => "Upcoming student"
-        };
-        return currentYear;
-    }
-
+    private string _search = "";
     protected override void OnInitialized()
     {
-        AllThreads = Ts.GetThreads();
+        _profiles = Us.GetProfiles();
+        _allThreads = Ts.GetThreads();
+        
+    }
+    protected override void OnParametersSet()
+    {
+        List<Profile> profiles = Us.GetProfiles();
+        _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -94,28 +117,65 @@ else
         if (firstRender)
         {
             _user = await Us.LoadUserAsync();
+            if (_user == null)
+            {
+                Nav.NavigateTo("/");
+            }
             StateHasChanged();
         }
     }
 
-    //TODO: Make this default when logging in
-    protected override void OnParametersSet()
+    private IEnumerable<Profile> Filtered =>
+        _profiles.Where(p =>
+            _search == "" ||
+            p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase));
+    
+    private string GetStudyYear()
     {
-        List<Profile> profiles = Us.GetProfiles();
-        _profile = profiles.SingleOrDefault(p => p.UserName == UserName);
+        string currentYear = _profile.StartYear switch
+        {
+            -1 => "Teacher",
+            < 2025 => "Alumni",
+            2025 => "Graduating 2027",
+            2026 => "Graduating 2028",
+            > 2026 => "Starting spring 2027"
+        };
+        return currentYear;
+    }
+    
+    
+    
+    
+    
+
+    private string GetUsername(Profile profile)
+    {
+        return profile.UserName;
     }
 
+    private void ChooseProfile(Profile profile)
+    {
+        string username = profile.UserName;
+        Nav.NavigateTo($"/Profiles/{username}");
+    }
+    
+    
+    
+
     private IEnumerable<ChatThread> JoinedThreads =>
-        AllThreads
+        _allThreads
             .Where(t =>
                 t.JoinedUsers.Contains(_profile.UserName))
             .OrderBy(t => int.Parse(t.Id));
 
-    // TODO: Go to chat for given thread when clicked 
+    private string GetThreadTitle(ChatThread thread)
+    {
+        return thread.Title;
+    }
 
     private void SendDirectMessage()
     {
         Dms.SendDm(_user!, _profile!.UserName);
-        Nav.NavigateTo("/Messages");
+        Nav.NavigateTo($"/Messages/{_profile.UserName}");
     }
 }
