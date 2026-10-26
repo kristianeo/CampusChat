@@ -31,7 +31,7 @@
     {
         Profile user = Us.GetProfile(userName)!;
         await Us.SaveUserAsync(user);
-        Nav.NavigateTo($"/Profile/{user.UserName}");
+        Nav.NavigateTo($"/Profiles/{user.UserName}");
     }
 
     protected override void OnInitialized()

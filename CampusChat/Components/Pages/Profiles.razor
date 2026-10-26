@@ -5,22 +5,9 @@
 @page "/Profiles"
 @page "/Profiles/{Username}"
 
-@if (Username != null)
-{
-    <ProfileDisplayer UserName="@Username"/>
-}
 
-else
-{
-    <div class="container text-left" style="width: 50%">
-        <p class="lead">Select a profile to view: </p>
-        <SelectableList T="Profile"
-                        List="_profiles"
-                        ItemText="GetUsername"
-                        Selected="ChooseProfile"></SelectableList>
-    </div>
-    
-}
+    <ProfilePanel UserName="@Username"/>
+
 
 @code 
 {

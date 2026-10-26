@@ -92,7 +92,7 @@
             <div class="col-md-1">
                 <button type="button" 
                         class="btn btn-primary"
-                        @onclick='() => Nav.NavigateTo($"/Profile/{Username}")'>
+                        @onclick='() => Nav.NavigateTo($"/Profiles/{Username}")'>
                     Cancel
                 </button>
             </div>
@@ -104,7 +104,8 @@
 
 else 
 {
-    <p>No user with username @Username</p>
+    <p>@Username not found...</p>
+    <a href="/Profiles" class="card-link">View profiles</a>
 }
 
 @inject NavigationManager Nav
@@ -141,7 +142,7 @@ else
         
         Us.SaveProfile(editedProfile);
 
-        Nav.NavigateTo($"/Profile/{Username}");
+        Nav.NavigateTo($"/Profiles/{Username}");
 
     }
     
