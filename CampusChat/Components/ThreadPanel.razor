@@ -113,7 +113,16 @@
 
         if (_thread == null) return;
         ThreadContent = Ts.ReadAllMessages(_thread.Id);
-        _canAccess = !_thread.IsPrivate;
+        UpdateAccess();
+    }
+    
+    private void UpdateAccess()
+    {
+        if (_thread == null)
+            return;
+
+        _canAccess = !_thread.IsPrivate ||
+                     (User?.Audit ?? false);
     }
 
     private string GetThreadTitle(ChatThread thread)
@@ -136,6 +145,8 @@
                 _logs = Ns.GetUserLogs(User.Id);
                 _joinedThreads = Ts.GetJoinedThreads(User.UserName);
             }
+            
+            UpdateAccess();
         
             StateHasChanged();
             
