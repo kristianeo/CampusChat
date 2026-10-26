@@ -7,6 +7,14 @@
 <SplitPanel>
     <LeftContent>
         <NavBar IsLoggedIn="_isLoggedIn"/>
+        
+        @if (User is { Audit: true })
+        {
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                <label class="form-check-label" for="switchCheckDefault">Audit role</label>
+            </div>
+        }
 
         <input class="form-control"
                type="text" 
