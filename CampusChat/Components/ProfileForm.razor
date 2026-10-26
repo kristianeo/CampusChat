@@ -80,7 +80,7 @@
         
         @if (_isTeacher)
         {
-            _studies = Studies.None;
+            _studies = Studies.Teacher;
             _startyear = -1;
             <Checkbox @bind-Value="_isAudit"
                       Message="Do you want an audit role?"
