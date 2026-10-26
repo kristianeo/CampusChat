@@ -24,6 +24,8 @@
         <Body>
         @if (_profile != null)
         {
+            if (!EditMode)
+            {
             <div class="card">
                 <div class="card-header">
                     <p class="lead mb-0">
@@ -41,37 +43,37 @@
                     </div>
                     <h6 style="padding-top: 20px;">
                         @_profile.Studies @(_profile.Teacher ? "" : "student")
-                        <small class="text-body-secondary">at @_profile.School</small>
+                            <small class="text-body-secondary">at @_profile.School</small>
                     </h6>
 
                     <p class="card-text"><em>@_profile.Introduction</em></p>
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (!_profile.Teacher)
-                    {
+                     {
 
-                        <li class="list-group-item"><small>@GetStudyYear()</small></li>
-                    }
+                    <li class="list-group-item"><small>@GetStudyYear()</small></li>
+                        }
 
                 </ul>
                 <div class="card-body">
                     @if (_user != null && _user.UserName == _profile.UserName)
                     {
-                        <button type="button"
-                                class="btn btn-primary"
-                                @onclick='() => Nav.NavigateTo($"/Profiles/{UserName}/Edit")'>
-                            Edit profile
-                        </button>
-                    }
+                    <button type="button"
+                            class="btn btn-primary"
+                            @onclick='() => Nav.NavigateTo($"/Profiles/{UserName}/Edit")'>
+                                Edit profile
+                            </button>
+                                }
                     else
                     {
 
-                        <button type="button"
-                                class="btn btn-primary"
-                                @onclick="SendDirectMessage">
-                            Send a private message
-                        </button>
-                    }
+                    <button type="button"
+                            class="btn btn-primary"
+                            @onclick="SendDirectMessage">
+                                Send a private message
+                            </button>
+                                }
                 </div>
             </div>
             <div class="card">
@@ -80,21 +82,29 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (!JoinedThreads.Any())
-                    {
-                        <p style="padding-left: 2%"><em>Nothing to show...</em></p>
-                    }
+                     {
+                    <p style="padding-left: 2%"><em>Nothing to show...</em></p>
+                        }
                     @foreach (ChatThread thread in JoinedThreads)
                     {
-                        <li class="list-group-item">@thread.Title</li>
-                    }
+                    <li class="list-group-item">@thread.Title</li>
+                        }
                 </ul>
-            </div> 
+            </div>
+            }
+
+            if (EditMode)
+            {
+                <ProfileEditor Profile="_profile"></ProfileEditor>
+            }
         }
+            
         </Body>
     </SplitPanel>
 
 @code {
     [Parameter] public string? UserName { get; set; }
+    [Parameter] public bool EditMode { get; set; }
     private List<Profile> _profiles = [];
     private Profile? _profile;
     private List<ChatThread> _allThreads = [];

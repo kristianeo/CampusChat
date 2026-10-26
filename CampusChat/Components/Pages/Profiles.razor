@@ -1,7 +1,3 @@
-@inject UserService Us
-@inject NavigationManager Nav
-@rendermode InteractiveServer
-
 @page "/Profiles"
 @page "/Profiles/{Username}"
 
@@ -12,21 +8,4 @@
 @code 
 {
     [Parameter] public string? Username { get; set; }
-    private List<Profile> _profiles = [];
-    
-    protected override void OnInitialized()
-    {
-        _profiles = Us.GetProfiles();
-    }
-
-    private string GetUsername(Profile profile)
-    {
-        return profile.UserName;
-    }
-
-    private void ChooseProfile(Profile profile)
-    {
-        string username = profile.UserName;
-        Nav.NavigateTo($"/Profiles/{username}");
-    }
 }
