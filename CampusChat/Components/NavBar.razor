@@ -9,20 +9,26 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <NavLink class="btn" href="/Threads" Match="NavLinkMatch.All">
-                        All threads
+                    <NavLink class="btn btn-small p-2" href="/Threads" Match="NavLinkMatch.All">
+                        <small>All threads</small>
+                    </NavLink>
+                </li>
+                <li class="nav-item mb-0">
+                    <NavLink class="btn btn-small p-2" href="/Threads/JoinedThreads">
+                        <small>My threads</small>
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="btn" href="/Threads/JoinedThreads">
-                        Joined threads
+                    <NavLink class="btn btn-small p-2" href="/Messages">
+                        <small>Messages</small>
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="btn" href="/Messages">
-                        Private messages
+                    <NavLink class="btn btn-small p-2" href="/Profiles "Match="NavLinkMatch.All">
+                        <small>Profiles</small>
                     </NavLink>
                 </li>
+                
                 <li class="nav-item">
                     <Logout></Logout>
                 </li>
