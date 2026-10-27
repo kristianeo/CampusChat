@@ -1,26 +1,27 @@
-@rendermode InteractiveServer
-@inject DirectMessageService Dms
-@inject UserService Us
-
-        <div class="list-group-item">
-            <div class="d-flex justify-content-between">
-                <div class="flex-grow-1">
-                    <div class="row">
-                        <div class="col">
-                            <div class="list-group-item p-2">
-                                <strong>@Message.Author</strong>
-                                <small class="text-muted">
-                                    @Message.TimeStamp.ToString("t")
-                                </small>
-                                <div>
-                                    @Message.Content
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="p-2">
+    <div class="d-flex gap-2 align-items-start">
+        <div class="flex-shrink-0">
+            <Avatar Username="@Message.Author"/>
         </div>
+        
+
+        <div class="flex-grow-1" style="min-width:0;">
+            <div>
+                <strong>@Message.Author</strong>
+                <small class="text-muted ms-1">
+                    @Message.TimeStamp.ToString("t")
+                </small>
+            </div>
+
+            <div>
+                @Message.Content
+            </div>
+
+        </div>
+
+    </div>
+</div>
+        
 
 @code {
     [Parameter] public required Message Message { get; set; }
