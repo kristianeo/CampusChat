@@ -8,25 +8,19 @@
         <Checkbox @bind-Value="@_isTeacher"
                   Message="I am a teacher">
         </Checkbox>
+    
+        <TextInput @bind-Value="_username"
+                   Id="Username"
+                   Feedback="@(_usernameTaken ? "is-invalid" : "")">
+        </TextInput>
 
-        <div class="col-md-4">
-            <TextInput @bind-Value="_username"
-                       Id="Username"
-                       Feedback="@(_usernameTaken ? "is-invalid" : "")">
-            </TextInput>
-        </div>
-
-        <div class="col-md-4">
-            <TextInput @bind-Value="_firstname"
-                       Id="First name">
-            </TextInput>
-        </div>
-        
-        <div class="col-md-4">
-            <TextInput @bind-Value="_lastname"
-                       Id="Last name">
-            </TextInput>
-        </div>
+        <TextInput @bind-Value="_firstname"
+                   Id="First name">
+        </TextInput>
+    
+        <TextInput @bind-Value="_lastname"
+                   Id="Last name">
+        </TextInput>
         
         <div class="d-flex align-items-center gap-3 mb-3">
             <span>Select an avatar color: </span>
@@ -53,21 +47,17 @@
 
         @if (!_isTeacher)
         {
-            <div class="col-md-4">
-                <SelectInput T="Studies"
-                             @bind-Value="_studies"
-                             Message="Choose your studies"
-                             Options="@(Enum.GetValues<Studies>().Skip(1))">
-                </SelectInput>
-            </div>
+            <SelectInput T="Studies"
+                         @bind-Value="_studies"
+                         Message="Choose your studies"
+                         Options="@(Enum.GetValues<Studies>().Skip(1))">
+            </SelectInput>
 
-            <div class="col-md-4">
-                <SelectInput T="int"
-                             @bind-Value="_startyear"
-                             Message="Choose your starting year"
-                             Options="@_years">
-                </SelectInput>
-            </div>
+            <SelectInput T="int"
+                         @bind-Value="_startyear"
+                         Message="Choose your starting year"
+                         Options="@_years">
+            </SelectInput>
         }
         
         <div class="input-group">
@@ -80,7 +70,7 @@
         
         @if (_isTeacher)
         {
-            _studies = Studies.None;
+            _studies = Studies.Teacher;
             _startyear = -1;
             <Checkbox @bind-Value="_isAudit"
                       Message="Do you want an audit role?"
@@ -110,7 +100,7 @@
 
     private bool _usernameTaken;
 
-    private void Submit()
+    private async Task Submit()
     {
         if (Us.UsernameExists(_username))
         {
@@ -123,8 +113,10 @@
             _avatarcolor, _isTeacher, _isAudit);
         
         Us.SaveProfile(profile);
+
+        await Us.SaveUserAsync(profile);
         
-        Nav.NavigateTo($"/Profile/{_username}");
+        Nav.NavigateTo($"/Profiles/{_username}");
     }
     
     // TODO: Fix this 

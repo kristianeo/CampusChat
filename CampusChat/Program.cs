@@ -17,6 +17,8 @@ builder.Services.AddSingleton<NotificationService>();
 
 builder.Services.AddScoped<UserService>();
 
+builder.Services.AddScoped<AuditService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

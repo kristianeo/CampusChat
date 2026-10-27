@@ -1,0 +1,63 @@
+@inject NavigationManager Nav
+@inject UserService Us
+@rendermode InteractiveServer
+
+<SplitPanel>
+    <LeftContent>
+            <div class="d-flex flex-column h-100">
+
+                <NavBar />
+
+                <p class="lead">Choose a profile to log in:</p>
+
+                <div class="flex-grow-1 overflow-auto">
+                    <ul class="list-group list-group-item-action">
+                        @foreach (string username in Profiles)
+                        {
+                            <li class="list-group-item list-group-item-action"
+                                @onclick="() => LoggingIn(username)">
+                                @username
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mt-3">
+                    <p class="lead mb-0">Or:</p>
+
+                    <button type="button"
+                            class="btn btn-success"
+                            @onclick='() => Nav.NavigateTo("/CreateProfile")'>
+                        Create a new profile
+                    </button>
+                </div>
+
+            </div>
+        </LeftContent>
+    <Body>
+    @if (CreateMode)
+    {
+        <ProfileForm></ProfileForm>
+    }
+    </Body>
+</SplitPanel>
+
+@code {
+    [Parameter] public bool CreateMode { get; set; }
+    private List<string> Profiles { get; set; } = [];
+
+    private async Task LoggingIn(string userName)
+    {
+        Profile user = Us.GetProfile(userName)!;
+        await Us.SaveUserAsync(user);
+        Nav.NavigateTo($"/Profiles/{user.UserName}");
+    }
+
+    protected override void OnInitialized()
+    {
+        Profiles = Us.GetProfiles()
+            .Select(p => p.UserName)
+            .ToList();
+    }
+
+}

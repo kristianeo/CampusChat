@@ -1,0 +1,11 @@
+@page "/Profiles"
+@page "/Profiles/{Username}"
+
+
+    <ProfilePanel UserName="@Username"/>
+
+
+@code 
+{
+    [Parameter] public string? Username { get; set; }
+}

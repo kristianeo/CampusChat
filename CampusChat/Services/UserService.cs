@@ -18,7 +18,7 @@ public record Profile(
 
 public enum Studies
 {
-    None,
+    Teacher,
     CyberSecurity, 
     BackendProgramming, 
     FrontendProgramming

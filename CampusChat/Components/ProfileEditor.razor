@@ -1,121 +1,100 @@
 @rendermode InteractiveServer
 @inject UserService Us
 
-@if (_profile != null)
-{
-    <div class="container">
-        <h1>Edit profile</h1>
-        <form class="row g-3" @onsubmit="Submit">
+<div class="container">
+    <h1>Edit profile</h1>
+    <form class="row g-3" @onsubmit="Submit">
+        
+        <TextInput Value="@Profile.UserName"
+                   Id="Username"
+                   Disabled="true">
+        </TextInput>
 
-            <div class="col-md-4">
-                <TextInput Value="@_profile.UserName"
-                           Id="Username"
-                           Disabled="true">
-                </TextInput>
+        
+        <TextInput @bind-Value="_firstname"
+                   Id="First name">
+        </TextInput>
+        
+        <TextInput @bind-Value="_lastname"
+                   Id="Last name">
+        </TextInput>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span>Select an avatar color: </span>
+            <div class="d-flex gap-2" reqired>
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-primary"
+                            Color="bg-primary">
+                    <Avatar AvatarColor="bg-primary"></Avatar>
+                </RadioInput>
+
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-success"
+                            Color="bg-success">
+                    <Avatar AvatarColor="bg-success"></Avatar>
+                </RadioInput>
+
+                <RadioInput @bind-Value="_avatarcolor"
+                            ButtonColor="btn-danger"
+                            Color="bg-danger">
+                    <Avatar AvatarColor="bg-danger"></Avatar>
+                </RadioInput>
             </div>
+        </div>
 
-            <div class="col-md-4">
-                <TextInput @bind-Value="_firstname"
-                           Id="First name">
-                </TextInput>
-            </div>
+        @if (!_isTeacher)
+        {
+             <SelectInput T="Studies"
+                          @bind-Value="_studies"
+                          Message="Choose your studies"
+                          Options="@(Enum.GetValues<Studies>().Skip(1))">
+             </SelectInput>
+             
+            <SelectInput T="int"
+                         @bind-Value="_startyear"
+                         Message="Choose your starting year"
+                         Options="@_years">
+            </SelectInput>
+        }
 
-            <div class="col-md-4">
-                <TextInput @bind-Value="_lastname"
-                           Id="Last name">
-                </TextInput>
-            </div>
+        <div class="input-group">
+            <span class="input-group-text"
+                  required>
+                Write a short note about yourself
+            </span>
+            <textarea class="form-control" @bind="_introduction"></textarea>
+        </div>
 
-            <div class="d-flex align-items-center gap-3 mb-3">
-                <span>Select an avatar color: </span>
-                <div class="d-flex gap-2" reqired>
-                    <RadioInput @bind-Value="_avatarcolor"
-                                ButtonColor="btn-primary"
-                                Color="bg-primary">
-                        <Avatar AvatarColor="bg-primary"></Avatar>
-                    </RadioInput>
+        @if (_isTeacher)
+        {
+        <Checkbox @bind-Value="_isAudit"
+            Message="Do you want an audit role?"></Checkbox>
+        }
 
-                    <RadioInput @bind-Value="_avatarcolor"
-                                ButtonColor="btn-success"
-                                Color="bg-success">
-                        <Avatar AvatarColor="bg-success"></Avatar>
-                    </RadioInput>
+        <div class="col-md-2">
+            <button type="submit"
+                    class="btn btn-primary">
+                Submit
+            </button>
+        </div>
+        
+        <div class="col-md-2">
+            <button type="button" 
+                    class="btn btn-primary"
+                    @onclick='() => Nav.NavigateTo($"/Profiles/{Profile.UserName}")'>
+                Cancel
+            </button>
+        </div>
+        
 
-                    <RadioInput @bind-Value="_avatarcolor"
-                                ButtonColor="btn-danger"
-                                Color="bg-danger">
-                        <Avatar AvatarColor="bg-danger"></Avatar>
-                    </RadioInput>
-                </div>
-            </div>
+    </form>
+</div>
 
-            @if (!_isTeacher)
-            {
-            <div class="col-md-4">
-                     <SelectInput T="Studies"
-                                  @bind-Value="_studies"
-                                  Message="Choose your studies"
-                                  Options="@(Enum.GetValues<Studies>().Skip(1))">
-                     </SelectInput>
-                 </div>
-
-                <div class="col-md-4">
-                    <SelectInput T="int"
-                                 @bind-Value="_startyear"
-                                 Message="Choose your starting year"
-                                 Options="@_years">
-                    </SelectInput>
-                </div>
-            }
-
-            <div class="input-group">
-                <span class="input-group-text"
-                      required>
-                    Write a short note about yourself
-                </span>
-                <textarea class="form-control" @bind="_introduction"></textarea>
-            </div>
-
-            @if (_isTeacher)
-            {
-            <Checkbox @bind-Value="_isAudit"
-                Message="Do you want an audit role?"></Checkbox>
-            }
-
-            <div class="col-md-1">
-                <button type="submit"
-                        class="btn btn-primary">
-                    Submit
-                </button>
-            </div>
-            
-            <div class="col-md-1">
-                <button type="button" 
-                        class="btn btn-primary"
-                        @onclick='() => Nav.NavigateTo($"/Profile/{Username}")'>
-                    Cancel
-                </button>
-            </div>
-            
-
-        </form>
-    </div>
-}
-
-else 
-{
-    <p>No user with username @Username</p>
-}
 
 @inject NavigationManager Nav
 
 @code {
-    // I want it to load with the modifiable parameters not disabled in the text box 
-    [Parameter]
-    public required string Username { get; set; }
-
-    private Profile? _profile;
-    
+    [Parameter] public required Profile Profile { get; set; }
     private string _firstname = "";
     private string _lastname = "";
     private Studies _studies;
@@ -127,7 +106,7 @@ else
 
     private void Submit()
     {
-        Profile editedProfile = _profile with
+        Profile editedProfile = Profile with
         {
             FirstName = _firstname,
             LastName = _lastname,
@@ -141,26 +120,21 @@ else
         
         Us.SaveProfile(editedProfile);
 
-        Nav.NavigateTo($"/Profile/{Username}");
+        Nav.NavigateTo($"/Profiles/{Profile.UserName}");
 
     }
-    
-    //I need to update the profiles list by removing the old profile and adding the new one 
     protected override void OnInitialized()
     {
-        List<Profile> profiles = Us.GetProfiles();
-        _profile = profiles.SingleOrDefault(p => p.UserName == Username);
-
-        if (_profile == null) return;
+        if (Profile == null) return;
         
-        _firstname = _profile.FirstName;
-        _lastname = _profile.LastName;
-        _studies = _profile.Studies;
-        _startyear = _profile.StartYear;
-        _introduction = _profile.Introduction;
-        _avatarcolor = _profile.AvatarColor;
-        _isTeacher = _profile.Teacher;
-        _isAudit = _profile.Audit;
+        _firstname = Profile.FirstName;
+        _lastname = Profile.LastName;
+        _studies = Profile.Studies;
+        _startyear = Profile.StartYear;
+        _introduction = Profile.Introduction;
+        _avatarcolor = Profile.AvatarColor;
+        _isTeacher = Profile.Teacher;
+        _isAudit = Profile.Audit;
     }
 
     // TODO: Fix this 

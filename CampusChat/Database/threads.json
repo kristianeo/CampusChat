@@ -68,7 +68,9 @@
     "Title": "Volunteer projects",
     "AccessCode": "",
     "Posts": [],
-    "JoinedUsers": [],
+    "JoinedUsers": [
+      "Brukernavn2"
+    ],
     "IsPrivate": false
   },
   {
@@ -92,7 +94,9 @@
     "Title": "Music society",
     "AccessCode": "",
     "Posts": [],
-    "JoinedUsers": [],
+    "JoinedUsers": [
+      "Brukernavn2"
+    ],
     "IsPrivate": false
   },
   {
@@ -100,7 +104,9 @@
     "Title": "Teachers and assistants",
     "AccessCode": "FacultyOnly",
     "Posts": [],
-    "JoinedUsers": [],
+    "JoinedUsers": [
+      "Brukernavn2"
+    ],
     "IsPrivate": true
   },
   {
@@ -115,7 +121,16 @@
     "Id": "3",
     "Title": "Student council group",
     "AccessCode": "Iamthestudentcouncil",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "0a32b3c3-057a-45dd-b488-f5eb482b2b6c",
+        "Author": "Brukernavn2",
+        "Message": "ddd",
+        "TimeStamp": "2026-10-26T11:52:36.709549+01:00",
+        "ChatTreadId": "3",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [
       "Brukernavn"
     ],
@@ -164,7 +179,8 @@
       }
     ],
     "JoinedUsers": [
-      "Hest"
+      "Hest",
+      "Brukernavn2"
     ],
     "IsPrivate": false
   },
@@ -185,7 +201,8 @@
     "Posts": [],
     "JoinedUsers": [
       "Brukernavn",
-      "Brukernavn2"
+      "Brukernavn2",
+      "Nils"
     ],
     "IsPrivate": false
   },
@@ -287,7 +304,7 @@
       {
         "Id": "806b8228-cebd-46ed-ae04-e2cb6f488939",
         "Author": "Brukernavn2",
-        "Message": "hei",
+        "Message": "This message has been deleted",
         "TimeStamp": "2026-10-22T13:46:33.5660614+02:00",
         "ChatTreadId": "7",
         "ParentPostId": ""

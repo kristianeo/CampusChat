@@ -1,6 +1,7 @@
-@page "/EditProfile/{Username}"
+@page "/Profiles/{Username}/Edit"
 
-<ProfileEditor Username="@Username"></ProfileEditor>
+<ProfilePanel UserName="@Username"
+              EditMode="true"></ProfilePanel>
 
 @code {
     [Parameter]
