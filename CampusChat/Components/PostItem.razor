@@ -2,6 +2,10 @@
 @inject UserService Us
 @inject ThreadService Ts
 
+@if (ParentPostId == Post.Id)
+{
+    <strong class="mb-0">Replying to: </strong>
+}
 <div class="list-group-item list-group-item-action p-2 @(ParentPostId == Post.Id ? "selected-post" : "")"
      @onclick="() => SelectPost(Post.Id)">
     <div class="d-flex gap-2 align-items-start">
