@@ -42,7 +42,7 @@
     </Header>
 
     <Body>
-    @if (_thread != null)
+    @if (_thread != null && ThreadContent.Any())
     {
         @if (!_canAccess)
          {
@@ -62,6 +62,10 @@
                 </PostItem>
             }
         }
+    }
+    else
+    {
+        <p class="lead">Be the first to post in this thread!</p>
     }
     
     </Body>
@@ -88,49 +92,20 @@
     private string? _parentPostId = "";
     private bool _canAccess = true;
     private List<Log> _logs = [];
-    private Task Choose(ChatThread thread)
+    
+    protected override void OnInitialized()
     {
-        ReadPosts(thread);
-        Nav.NavigateTo(
-            ShowJoinedThreads
-                ? $"/Threads/JoinedThreads/{Uri.EscapeDataString(thread.Title)}"
-                : $"/Threads/{Uri.EscapeDataString(thread.Title)}");
-
-        return Task.CompletedTask;
+        _allThreads = Ts.GetThreads();
+        
+        Ts.NewMessages += HandleNewMessages;
+        Ts.ThreadsChanged += HandleEditedThread;
     }
-
+    
     protected override void OnParametersSet()
     {
         LoadCurrentThread();
     }
-
-    private void LoadCurrentThread()
-    {
-        if (ThreadTitle == "JoinedThreads" || string.IsNullOrWhiteSpace(ThreadTitle))
-            return;
-        
-        _thread = _allThreads
-            .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
-
-        if (_thread == null) return;
-        ThreadContent = Ts.ReadAllMessages(_thread.Id);
-        UpdateAccess();
-    }
     
-    private void UpdateAccess()
-    {
-        if (_thread == null)
-            return;
-
-        _canAccess = !_thread.IsPrivate ||
-                     (User?.Audit ?? false);
-    }
-
-    private string GetThreadTitle(ChatThread thread)
-    {
-        return thread.Title;
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -148,17 +123,51 @@
             UpdateAccess();
         
             StateHasChanged();
-            
         }
     }
     
-    protected override void OnInitialized()
+    private Task Choose(ChatThread thread)
     {
-        _allThreads = Ts.GetThreads();
-        
-        Ts.NewMessages += HandleNewMessages;
-        Ts.ThreadsChanged += HandleEditedThread;
+        ReadPosts(thread);
+        Nav.NavigateTo(
+            ShowJoinedThreads
+                ? $"/Threads/JoinedThreads/{Uri.EscapeDataString(thread.Title)}"
+                : $"/Threads/{Uri.EscapeDataString(thread.Title)}");
+
+        return Task.CompletedTask;
     }
+    
+    private void LoadCurrentThread()
+    {
+        if (ThreadTitle == "JoinedThreads" || string.IsNullOrWhiteSpace(ThreadTitle))
+            return;
+        
+        _thread = _allThreads
+            .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
+
+        if (_thread == null) return;
+        ThreadContent = Ts.ReadAllMessages(_thread.Id);
+
+        UpdateAccess();
+    }
+    
+    private void UpdateAccess()
+    {
+        if (_thread == null)
+            return;
+
+        _canAccess = !_thread.IsPrivate ||
+                     (User?.Audit ?? false);
+    }
+
+    private string GetThreadTitle(ChatThread thread)
+    {
+        return thread.Title;
+    }
+
+    
+    
+    
     
     private IEnumerable<ChatThread> Filtered =>
         (ShowJoinedThreads
