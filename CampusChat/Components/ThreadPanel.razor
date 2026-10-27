@@ -19,6 +19,7 @@
             <SelectableList T="ChatThread"
                             List="Filtered"
                             ItemText="GetThreadTitle"
+                            Notifications="Notifications"
                             Selected="Choose" />
         </div>
     </LeftContent>
@@ -135,11 +136,9 @@
         if (firstRender)
         {
             User = await Us.LoadUserAsync();
-            Console.WriteLine($"User loaded: {User?.UserName ?? "NULL"}");
             
-
             _isLoggedIn = User != null;
-
+            
             if (_isLoggedIn)
             {
                 _logs = Ns.GetUserLogs(User.Id);
