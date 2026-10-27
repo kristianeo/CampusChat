@@ -1,58 +1,56 @@
 @rendermode InteractiveServer
-@inject ThreadService Ts
 @inject UserService Us
+@inject ThreadService Ts
 
-        <div class="list-group-item">
-            <div class="d-flex justify-content-between">
-                <div class="flex-grow-1">
-                    <div class="row">
-                        <div class="col">
-                            <div class="list-group-item list-group-item-action p-2
-                                @(ParentPostId == Post.Id ? "active" : "")"
-                                 @onclick="() => SelectPost(Post.Id)">
+<div class="list-group-item list-group-item-action p-2 @(ParentPostId == Post.Id ? "selected-post" : "")"
+     @onclick="() => SelectPost(Post.Id)">
+    <div class="d-flex gap-2 align-items-start">
 
-                                <strong>@Post.Author</strong>
-                                <small class="text-muted">
-                                    @Post.TimeStamp.ToString("t")
-                                </small>
+        <div class="flex-shrink-0">
+            <Avatar Username="@Post.Author"></Avatar>
+        </div>
 
-                                <div>
-                                    @if (Post.Message == "This message has been deleted")
-                                    {
-                                        <i>@Post.Message</i>
-                                    }
-                                    else @Post.Message
-                                </div>
+        <div class="flex-grow-1" style="min-width:0;">
+            <div>
+                <strong>@Post.Author</strong>
+                <small class="text-muted">
+                    @Post.TimeStamp.ToString("t")
+                </small>
+            </div>
 
-                            </div>
-                        </div>
-                        <div class="col">
-                            @if (CanDelete(Post))
-                            {
-                                <button type="button"
-                                        class="btn btn-danger btn-sm mt-2"
-                                        @onclick:stopPropagation="true"
-                                        @onclick="() => Ts.DeleteMessage(Post)">
-                                    Delete
-                                </button>
-                            }
-                        </div>
-                    </div>
-                    
-                    @foreach (var reply in PostReplies(Post.Id))
-                    {
-                        <div class="ms-4">
-                            <PostItem Post="reply"
-                                      ThreadContent="ThreadContent"
-                                      ParentPostId="@ParentPostId"
-                                      ParentPostIdChanged="@ParentPostIdChanged">
-                            </PostItem>
-                        </div>
-                    }
-
-                </div>
+            <div>
+                @if (Post.Message == "This message has been deleted")
+                {
+                    <i>@Post.Message</i>
+                }
+                else
+                @Post.Message
+            </div>
+            <div>
+                @if (CanDelete(Post))
+                {
+                    <button type="button"
+                            class="btn btn-danger btn-sm mt-2"
+                            @onclick:stopPropagation="true"
+                            @onclick="() => Ts.DeleteMessage(Post)">
+                        Delete
+                    </button>
+                }
             </div>
         </div>
+    </div>
+</div>
+
+@foreach (var reply in PostReplies(Post.Id))
+{
+    <div class="ms-4">
+        <PostItem Post="reply"
+                  ThreadContent="ThreadContent"
+                  ParentPostId="@ParentPostId"
+                  ParentPostIdChanged="@ParentPostIdChanged">
+        </PostItem>
+    </div>
+}
 
 @code {
     [Parameter] public required List<Post> ThreadContent { get; set; }
