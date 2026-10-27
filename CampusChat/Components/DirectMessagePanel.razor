@@ -1,6 +1,7 @@
 @rendermode InteractiveServer
 @inject DirectMessageService Dms
 @inject UserService Us
+@inject AuditService As
 @implements IDisposable
 @inject NavigationManager Nav
 
@@ -11,7 +12,9 @@
         @if (User is { Audit: true })
         {
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" 
+                       @bind="As.IsAuditModeEnabled"
+                       @bind:after="RefreshMessages">
                 <label class="form-check-label" for="switchCheckDefault">Audit role</label>
             </div>
         }
@@ -30,7 +33,7 @@
     </LeftContent>
 
     <Header>
-        <h3 class="mb-0">@Username</h3>
+        <h3 class="mb-0">@_username</h3>
     </Header>
 
     <Body>
@@ -49,13 +52,14 @@
 
 @code
 {
-    [Parameter] public string Username { get; set; } = "";
-    [Parameter] public int Page { get; set; }
+    
+    [Parameter] public string DmId { get; set; } = "";
+    private Profile? User { get; set; }
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
+    private string _username = "";
     private List<Message> MessageContent { get; set; } = [];
     private string _search = "";
-    private Profile? User { get; set; }
     private bool _isLoggedIn;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -69,7 +73,7 @@
         if (_isLoggedIn)
         {
             _isLoggedIn = true;
-            _userDms = Dms.GetUserDms(User!);
+            RefreshMessages();
 
             LoadCurrentDm();
         }
@@ -90,23 +94,29 @@
         if (_userDms.Count == 0)
             return;
 
-        _currentDm = _userDms
-            .FirstOrDefault(dm => dm.Participants.Contains(Username));
+        _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
 
-        MessageContent = _currentDm != null
-            ? Dms.ReadAllMessages(_currentDm.Id)
-            : [];
+        if (_currentDm == null) return;
+        _username = GetProfileUsername(_currentDm);
+        MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
 
     private void Choose(DirectMessage dm)
     {
         ReadMessages(dm);
-        Nav.NavigateTo($"/Messages/{GetProfileUsername(dm)}");
+        
+        Nav.NavigateTo($"/Messages/{dm.Id}");
     }
     
     private string GetProfileUsername(DirectMessage dm)
     {
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            return $"{dm.Participants[0]}, {dm.Participants[1]}";
+        }
+
         return User == null ? "" : dm.Participants.Single(d => d != User.UserName).ToString();
+
     }
 
     private IEnumerable<DirectMessage> Filtered =>
@@ -120,10 +130,10 @@
 
     private void HandleNewMessages(string dmId)
     {
+        RefreshMessages();
+        
         InvokeAsync(() =>
         {
-            _userDms = Dms.GetUserDms(User!);
-            
             if (_currentDm?.Id == dmId)
             {
                 var dm = _userDms.FirstOrDefault(d => d.Id == dmId);
@@ -140,21 +150,33 @@
         });
     }
 
-    private void HandleChangedPage(int page)
+    private void RefreshMessages()
     {
-        Page = page;
+        _userDms = User!.Audit && As.IsAuditModeEnabled
+            ? Dms.GetDirectMessages()
+            : Dms.GetUserDms(User);
+        
+        LoadCurrentDm();
+        
+        StateHasChanged();
     }
 
     private void SendMessage(string message)
     {
-        if (_currentDm != null)
-        {
-            Dms.SendMessage(User!.UserName, message, _currentDm.Id);
-        }
+        if (_currentDm == null)
+            return;
+
+        if (User?.Audit == true && As.IsAuditModeEnabled)
+            return;
+
+        Dms.SendMessage(User!.UserName, message, _currentDm.Id);
     }
 
     private int NotificationCount(DirectMessage dm)
     {
+        if (User?.Audit == true && As.IsAuditModeEnabled)
+            return 0;
+        
         return dm.Messages
             .Count(m =>
                 !m.IsRead && m.Author != User!.UserName);
@@ -162,6 +184,8 @@
     
     private void ReadMessages(DirectMessage dm)
     {
+        if (User!.Audit && As.IsAuditModeEnabled) return;
+        
         bool changed = false;
 
         foreach (Message message in dm.Messages
