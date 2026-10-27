@@ -1,12 +1,17 @@
 using System.Collections.Immutable;
-using System.Text.Json;
 
 namespace CampusChat.Services;
 
 public record DirectMessage(
     string Id,
     ImmutableList<string> Participants,
-    List<Message> Messages) : IEntity;
+    List<Message> Messages,
+    bool Archived = false,
+    DateTime? ArchiveDate = null) : IEntity
+{
+    public bool Archived { get; set; } = Archived;
+    public DateTime? ArchiveDate { get; set; } = ArchiveDate;
+}
 
 
 public record Message(
@@ -72,7 +77,7 @@ public class DirectMessageService : DbService<DirectMessage>
     }
 
     public void SendMessage(
-        string author,
+        Profile author,
         string message,
         string dmId)
     {
@@ -83,7 +88,7 @@ public class DirectMessageService : DbService<DirectMessage>
 
         Message msg = new(
             Guid.NewGuid().ToString(),
-            author,
+            author.UserName,
             DateTime.Now,
             message,
             dmId);
@@ -99,4 +104,6 @@ public class DirectMessageService : DbService<DirectMessage>
     {
         Add(directMessage);
     }
+    
+    
 }

@@ -55,6 +55,7 @@
     
     [Parameter] public string DmId { get; set; } = "";
     private Profile? User { get; set; }
+    private List<DirectMessage> _allDms = [];
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
     private string _username = "";
@@ -152,9 +153,17 @@
 
     private void RefreshMessages()
     {
-        _userDms = User!.Audit && As.IsAuditModeEnabled
-            ? Dms.GetDirectMessages()
-            : Dms.GetUserDms(User);
+        _allDms = Dms.GetDirectMessages();
+
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            _userDms = Dms.GetDirectMessages();
+            ArchiveMessages();
+        }
+        else
+        {
+            _userDms = Dms.GetUserDms(User).Where(dm => !dm.Archived).ToList();
+        }
         
         LoadCurrentDm();
         
@@ -169,7 +178,7 @@
         if (User?.Audit == true && As.IsAuditModeEnabled)
             return;
 
-        Dms.SendMessage(User!.UserName, message, _currentDm.Id);
+        Dms.SendMessage(User!, message, _currentDm.Id);
     }
 
     private int NotificationCount(DirectMessage dm)
@@ -197,6 +206,29 @@
 
         if (changed)
         {
+            Dms.UpdateMessage(dm);
+        }
+    }
+    
+    public void ArchiveMessages()
+    {
+        List<DirectMessage> messages = Dms.GetDirectMessages();
+        List<Profile> profiles = Us.GetProfiles();
+        foreach (var dm in messages)
+        {
+            var participants = profiles
+                .Where(p => dm.Participants.Contains(p.UserName));
+
+            Profile? profile = participants.FirstOrDefault(p => p.Graduated);
+
+            if (profile != null)
+            {
+                if (!dm.Archived)
+                 {
+                    dm.Archived = true;
+                    dm.ArchiveDate = profile.GraduationDate;
+                 }
+            }
             Dms.UpdateMessage(dm);
         }
     }

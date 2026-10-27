@@ -14,7 +14,15 @@ public record Profile(
     string AvatarColor,
     bool Teacher = false,
     bool Audit = false,
-    string School = "Gokstad Akademiet") : IEntity;
+    string School = "Gokstad Akademiet") : IEntity
+{
+    public DateTime GraduationDate =>
+        new(StartYear + 2, 6, 30);
+    
+    public bool Graduated =>
+        !Teacher &&
+        DateTime.Now >= GraduationDate;
+}
 
 public enum Studies
 {
