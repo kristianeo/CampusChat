@@ -30,7 +30,7 @@
         <div class="d-flex align-items-center">
             <h3 class="mb-0">@ThreadTitle</h3>
 
-            @if(User != null)
+            @if(User != null && _canAccess)
             {
                 
                     <JoinOrLeaveThreadButton Thread="_thread"
@@ -48,7 +48,8 @@
          {
              <PrivateThread CanAccess="_canAccess"
                             ThreadPassword="@_thread.AccessCode"
-                            IsValid="HandleChangedAccess">
+                            IsValid="HandleChangedAccess"
+                            User="User">
             </PrivateThread>
         }
 
