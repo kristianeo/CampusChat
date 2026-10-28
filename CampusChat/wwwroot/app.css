@@ -39,4 +39,8 @@ h1:focus {
 .selected-post {
     border: 1px solid cornflowerblue !important;
 }
+.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+}
 
