@@ -26,6 +26,15 @@
                         <small>Profiles</small>
                     </NavLink>
                 </li>
+                @if (User != null)
+                {
+                <li class="nav-item">
+                    <NavLink class="btn btn-small p-2" href=@($"/Profiles/{User.UserName}") Match="NavLinkMatch.All">
+                        <small>My profile</small>
+                    </NavLink>
+                </li>
+                }
+                
                 
                 <li class="nav-item">
                     @if (IsLoggedIn)
@@ -44,4 +53,5 @@
 
 @code {
     [Parameter] public bool IsLoggedIn { get; set; }
+    [Parameter] public Profile? User { get; set; }
 }

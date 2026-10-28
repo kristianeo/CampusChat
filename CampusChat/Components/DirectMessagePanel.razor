@@ -7,7 +7,8 @@
 
 <SplitPanel>
     <LeftContent>
-        <NavBar IsLoggedIn="_isLoggedIn"/>
+        <NavBar IsLoggedIn="_isLoggedIn"
+                User="User"/>
         
         @if (User is { Audit: true })
         {
