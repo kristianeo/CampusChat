@@ -121,7 +121,11 @@
             _currentDm = _userDms.FirstOrDefault(d => d.Participants.Contains(Username));
         }
 
-        if (_currentDm == null) _currentDmNotExist = true;
+        if (_currentDm == null)
+        {
+            _currentDmNotExist = true;
+            return;
+        }
 
         MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
