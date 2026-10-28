@@ -34,7 +34,7 @@
     </LeftContent>
 
     <Header>
-        <h3 class="mb-0">@_username</h3>
+        <h3 class="mb-0">@(_currentDm != null ? GetProfileUsername(_currentDm) : "")</h3>
     </Header>
 
     <Body>
@@ -53,13 +53,11 @@
 
 @code
 {
-    
+    [Parameter] public string Username { get; set; } = "";
     [Parameter] public string DmId { get; set; } = "";
     private Profile? User { get; set; }
-    private List<DirectMessage> _allDms = [];
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
-    private string _username = "";
     private List<Message> MessageContent { get; set; } = [];
     private string _search = "";
     private bool _isLoggedIn;
@@ -96,10 +94,19 @@
         if (_userDms.Count == 0)
             return;
 
-        _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
+            Console.WriteLine("DmId"+ DmId + "Current dm: " + _currentDm);
+        }
+        else
+        {
+            _currentDm = _userDms.FirstOrDefault(d => d.Participants.Contains(Username));
+            Console.WriteLine("Username: "+ Username + "Current dm: " + _currentDm);
+        }
+        
 
         if (_currentDm == null) return;
-        _username = GetProfileUsername(_currentDm);
         MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
 
@@ -107,7 +114,13 @@
     {
         ReadMessages(dm);
         
-        Nav.NavigateTo($"/Messages/{dm.Id}");
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            Nav.NavigateTo($"/Messages/Dm/{dm.Id}");
+            return;
+        }
+        
+        Nav.NavigateTo($"/Messages/User/{GetProfileUsername(dm)}");
     }
     
     private string GetProfileUsername(DirectMessage dm)
@@ -154,8 +167,6 @@
 
     private void RefreshMessages()
     {
-        _allDms = Dms.GetDirectMessages();
-
         if (User!.Audit && As.IsAuditModeEnabled)
         {
             _userDms = Dms.GetDirectMessages();
