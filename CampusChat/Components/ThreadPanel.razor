@@ -64,9 +64,13 @@
             }
         }
     }
-    else
+    else if (_thread != null)
     {
         <p class="lead">Be the first to post in this thread!</p>
+    }
+    else
+    {
+        <p class="lead">Choose a thread to get started</p>
     }
     
     </Body>
@@ -80,7 +84,6 @@
 
 @code
 {
-    [Parameter] public int Page { get; set; }
     [Parameter] public string ThreadTitle { get; set; } = "";
     [Parameter] public bool ShowJoinedThreads { get; set; }
     private List<Post> ThreadContent { get; set; } = [];
@@ -185,6 +188,7 @@
         {
             Ns.LastChecked(User!.Id, threadId);
             _logs = Ns.GetUserLogs(User.Id);
+            LoadCurrentThread();
         }
 
         _allThreads = Ts.GetThreads();
@@ -200,11 +204,6 @@
             _joinedThreads = Ts.GetJoinedThreads(User.UserName);
         }
         InvokeAsync(StateHasChanged);
-    }
-    
-    private void HandleChangedPage(int page)
-    {
-        Page = page;
     }
 
     private void HandleChangedAccess()
