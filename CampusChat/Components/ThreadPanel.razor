@@ -33,28 +33,26 @@
 
             @if(User != null && _canAccess)
             {
-                
                     <JoinOrLeaveThreadButton Thread="_thread"
                                              User="User"/>
-                
             }
         </div>
         }        
     </Header>
 
     <Body>
-    @if (_thread != null && ThreadContent.Any())
+    @if (_thread != null)
     {
         @if (!_canAccess)
          {
              <PrivateThread CanAccess="_canAccess"
-                            ThreadPassword="@_thread.AccessCode"
+                            ThreadPassword="@_thread!.AccessCode"
                             IsValid="HandleChangedAccess"
                             User="User">
             </PrivateThread>
         }
 
-        @if (_canAccess)
+        @if (_canAccess && ThreadContent.Any())
         {
             @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
             {
@@ -64,14 +62,21 @@
                 </PostItem>
             }
         }
+        else if (ThreadContent.Count == 0)
+        {
+             <p class="lead">Be the first to post in this thread!</p>
+        }
     }
-    else if (_thread != null)
-    {
-        <p class="lead">Be the first to post in this thread!</p>
-    }
-    else
+    
+    else if (_thread == null)
     {
         <p class="lead">Choose a thread to get started</p>
+    }
+    
+    else if(_threadNotExist)
+    {
+        <p class="lead">The thread you are trying to reach does not exist.</p>
+        <p class="lead">Please chose a thread from the list.</p>
     }
     
     </Body>
@@ -89,6 +94,7 @@
     [Parameter] public bool ShowJoinedThreads { get; set; }
     private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
+    private bool _threadNotExist;
     private List<ChatThread> _allThreads = [];
     private List<ChatThread> _joinedThreads = [];
     private Profile? User { get; set; }
@@ -150,7 +156,11 @@
         _thread = _allThreads
             .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
 
-        if (_thread == null) return;
+        if (_thread == null)
+        {
+            _threadNotExist = true;
+            return;
+        }
         ThreadContent = Ts.ReadAllMessages(_thread.Id);
 
         UpdateAccess();
@@ -170,10 +180,6 @@
         return thread.Title;
     }
 
-    
-    
-    
-    
     private IEnumerable<ChatThread> Filtered =>
         (ShowJoinedThreads
             ? _allThreads.Where(t => User != null && 
@@ -207,18 +213,16 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private void HandleChangedAccess()
+    private void HandleChangedAccess(bool access)
     {
-        _canAccess = true;
+        _canAccess = access;
     }
 
     private Task SendMessage(string message)
     {
-        Console.WriteLine("Sending: " + message);
         if (_thread != null && User != null)
         {
             Ts.SendMessage(User, _thread.Id, message, _parentPostId);
-            Console.WriteLine($"Count after send: {Ts.ReadAllMessages(_thread.Id).Count}");
         }
 
         return Task.CompletedTask;
