@@ -38,10 +38,21 @@
     </Header>
 
     <Body>
-        @foreach (Message message in MessageContent)
-        {
-            <DmItem Message="message"></DmItem>
-        }
+    @if (_currentDmNotExist)
+    {
+        <p class="lead">The address you are trying to reach does not exist.</p>
+        <p class="lead">Please select a user from the list or look at the profiles 
+            page to find new people to connect with!</p>
+    }
+    
+    @if (!_currentDmNotExist && MessageContent.Count == 0)
+    {
+        <p class="lead">Be the first to send a message!</p>
+    }
+    @foreach (Message message in MessageContent)
+    {
+        <DmItem Message="message"></DmItem>
+    }
     </Body>
 
     <Footer>
@@ -58,6 +69,7 @@
     private Profile? User { get; set; }
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
+    private bool _currentDmNotExist;
     private List<Message> MessageContent { get; set; } = [];
     private string _search = "";
     private bool _isLoggedIn;
@@ -97,16 +109,17 @@
         if (User!.Audit && As.IsAuditModeEnabled)
         {
             _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
-            Console.WriteLine("DmId"+ DmId + "Current dm: " + _currentDm);
         }
         else
         {
             _currentDm = _userDms.FirstOrDefault(d => d.Participants.Contains(Username));
-            Console.WriteLine("Username: "+ Username + "Current dm: " + _currentDm);
         }
-        
 
-        if (_currentDm == null) return;
+        if (_currentDm == null)
+        {
+            _currentDmNotExist = true;
+            return;
+        }
         MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
 
