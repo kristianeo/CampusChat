@@ -85,9 +85,8 @@
         if (_isLoggedIn)
         {
             _isLoggedIn = true;
-            RefreshMessages();
 
-            LoadCurrentDm();
+            RefreshMessages();
         }
         StateHasChanged();
     }
@@ -105,6 +104,13 @@
     {
         if (_userDms.Count == 0)
             return;
+        
+        bool hasSetParameter =
+            !string.IsNullOrWhiteSpace(DmId) ||
+            !string.IsNullOrWhiteSpace(Username);
+
+        if (!hasSetParameter)
+            return;
 
         if (User!.Audit && As.IsAuditModeEnabled)
         {
@@ -115,11 +121,8 @@
             _currentDm = _userDms.FirstOrDefault(d => d.Participants.Contains(Username));
         }
 
-        if (_currentDm == null)
-        {
-            _currentDmNotExist = true;
-            return;
-        }
+        if (_currentDm == null) _currentDmNotExist = true;
+
         MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
 
@@ -158,10 +161,9 @@
 
     private void HandleNewMessages(string dmId)
     {
-        RefreshMessages();
-        
         InvokeAsync(() =>
         {
+            RefreshMessages();
             if (_currentDm?.Id == dmId)
             {
                 var dm = _userDms.FirstOrDefault(d => d.Id == dmId);
@@ -192,8 +194,6 @@
         }
         
         LoadCurrentDm();
-        
-        StateHasChanged();
     }
 
     private void SendMessage(string message)
