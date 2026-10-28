@@ -159,6 +159,7 @@
         {
             _userDms = Dms.GetDirectMessages();
             ArchiveMessages();
+            DeleteOldMessages();
         }
         else
         {
@@ -210,7 +211,7 @@
         }
     }
     
-    public void ArchiveMessages()
+    private void ArchiveMessages()
     {
         List<DirectMessage> messages = Dms.GetDirectMessages();
         List<Profile> profiles = Us.GetProfiles();
@@ -230,6 +231,17 @@
                  }
             }
             Dms.UpdateMessage(dm);
+        }
+    }
+
+    private void DeleteOldMessages()
+    {
+        List<DirectMessage> messages = Dms.GetDirectMessages();
+
+        foreach (var directMessage in messages.Where(directMessage => directMessage.Archived).ToList()
+                     .Where(directMessage => DateTime.Now.AddYears(-3) >= directMessage.ArchiveDate))
+        {
+            Dms.DeleteDirectMessage(directMessage);
         }
     }
     

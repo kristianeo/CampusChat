@@ -49,6 +49,11 @@ public class DirectMessageService : DbService<DirectMessage>
             .ToList();
     }
 
+    public void DeleteDirectMessage(DirectMessage directMessage)
+    {
+        Delete(directMessage.Id);
+    }
+
     public List<Message> ReadAllMessages(string dmId)
     {
         return Get(dmId)?.Messages ?? [];
