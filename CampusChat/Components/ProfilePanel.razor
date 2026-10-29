@@ -139,7 +139,7 @@
         _profiles.Where(p =>
             (_search == "" ||
              p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase)) &&
-            _user is { Audit: true } ? p.Graduated : !p.Graduated);
+            (_user?.Audit == true || !p.Graduated));
     
     private string GetStudyYear()
     {
@@ -153,12 +153,6 @@
         };
         return currentYear;
     }
-    
-    
-    
-    
-    
-
     private string GetUsername(Profile profile)
     {
         return profile.UserName;
@@ -169,9 +163,6 @@
         string username = profile.UserName;
         Nav.NavigateTo($"/Profiles/{username}");
     }
-    
-    
-    
 
     private IEnumerable<ChatThread> JoinedThreads =>
         _allThreads
