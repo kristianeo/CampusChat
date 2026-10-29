@@ -137,12 +137,13 @@
 
     private IEnumerable<Profile> Filtered =>
         _profiles.Where(p =>
-            _search == "" ||
-            p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase));
+            (_search == "" ||
+             p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase)) &&
+            _user is { Audit: true } ? p.Graduated : !p.Graduated);
     
     private string GetStudyYear()
     {
-        string currentYear = _profile.StartYear switch
+        string currentYear = _profile!.StartYear switch
         {
             -1 => "Teacher",
             < 2025 => "Alumni",
@@ -175,7 +176,7 @@
     private IEnumerable<ChatThread> JoinedThreads =>
         _allThreads
             .Where(t =>
-                t.JoinedUsers.Contains(_profile.UserName))
+                t.JoinedUsers.Contains(_profile!.UserName))
             .OrderBy(t => int.Parse(t.Id));
 
     private string GetThreadTitle(ChatThread thread)
