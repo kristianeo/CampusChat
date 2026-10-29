@@ -21,23 +21,23 @@
                             List="Filtered"
                             ItemText="GetThreadTitle"
                             Notifications="Notifications"
+                            IsLoggedIn="_isLoggedIn"
                             Selected="Choose" />
         </div>
     </LeftContent>
 
     <Header>
-        @if (_thread != null)
-        {
-        <div class="d-flex align-items-center">
-            <h3 class="mb-0">@ThreadTitle</h3>
-
-            @if(User != null && _canAccess)
-            {
+        <RightPanelHeader Thread="@ThreadTitle"
+                          IsLoggedIn="_isLoggedIn">
+            <Button>
+                @if (_canAccess)
+                {
                     <JoinOrLeaveThreadButton Thread="_thread"
-                                             User="User"/>
-            }
-        </div>
-        }        
+                        User="User"/>
+                }
+            </Button>
+        </RightPanelHeader>
+        
     </Header>
 
     <Body>
@@ -68,16 +68,18 @@
         }
     }
     
-    else if (_thread == null)
-    {
-        <p class="lead">Choose a thread to get started</p>
-    }
-    
     else if(_threadNotExist)
     {
         <p class="lead">The thread you are trying to reach does not exist.</p>
         <p class="lead">Please chose a thread from the list.</p>
     }
+    
+    else if (_thread == null)
+    {
+        <p class="lead">Choose a thread to get started</p>
+    }
+    
+    
     
     </Body>
 
@@ -227,9 +229,8 @@
     
     public int Notifications(ChatThread thread)
     {
-        if (thread == null || User == null) return 0;
         if (_joinedThreads.All(t => t.Id != thread.Id)) return 0;
-        Log? log = Ns.GetThreadLog(User.Id, thread.Id);
+        Log? log = Ns.GetThreadLog(User!.Id, thread.Id);
         return log != null ? thread.Posts.Count(p => p.TimeStamp > log.Time && p.Author != User.UserName) : 0;
     }
 

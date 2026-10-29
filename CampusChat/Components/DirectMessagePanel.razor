@@ -34,24 +34,36 @@
     </LeftContent>
 
     <Header>
-        <h3 class="mb-0">@(_currentDm != null ? GetProfileUsername(_currentDm) : "")</h3>
+        <RightPanelHeader Username="@(_currentDm != null ? GetProfileUsername(_currentDm) : "")"
+                          IsLoggedIn="_isLoggedIn"></RightPanelHeader>
     </Header>
 
     <Body>
-    @if (_currentDmNotExist)
+    @if (_currentDm != null)
+    {
+        if (MessageContent.Any())
+        {
+            foreach (Message message in MessageContent)
+            {
+                <DmItem Message="message"></DmItem>
+            }
+        }
+        else
+        {
+            <p class="lead">Be the first to send a message!</p>
+        }
+    }
+
+    else if (_currentDmNotExist)
     {
         <p class="lead">The address you are trying to reach does not exist.</p>
-        <p class="lead">Please select a user from the list or look at the profiles 
+        <p class="lead">Please select a user from the list or look at the profiles
             page to find new people to connect with!</p>
     }
     
-    @if (!_currentDmNotExist && MessageContent.Count == 0)
+    else if (_currentDm == null)
     {
-        <p class="lead">Be the first to send a message!</p>
-    }
-    @foreach (Message message in MessageContent)
-    {
-        <DmItem Message="message"></DmItem>
+        <p class="lead">Choose a message or start a conversation by looking at a profile!</p>
     }
     </Body>
 
@@ -64,8 +76,8 @@
 
 @code
 {
-    [Parameter] public string Username { get; set; } = "";
-    [Parameter] public string DmId { get; set; } = "";
+    [Parameter] public string? Username { get; set; }
+    [Parameter] public string? DmId { get; set; }
     private Profile? User { get; set; }
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
@@ -106,8 +118,10 @@
             return;
         
         bool hasSetParameter =
-            !string.IsNullOrWhiteSpace(DmId) ||
-            !string.IsNullOrWhiteSpace(Username);
+            DmId != null ||
+            Username != null;
+
+        Console.WriteLine("bool: " + hasSetParameter);
 
         if (!hasSetParameter)
             return;
