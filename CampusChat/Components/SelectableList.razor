@@ -24,15 +24,9 @@
     [Parameter] public EventCallback<T> Selected { get; set; }
     [Parameter] public required Func<T, string> ItemText { get; set; }
     [Parameter] public Func<T, int>? Notifications { get; set; }
-    [Parameter] public bool IsLoggedIn { get; set; }
 
     private int NotificationCount(T choice)
     {
-        if (IsLoggedIn)
-        {
-            return Notifications?.Invoke(choice) ?? 0;
-        }
-
-        return 0;
+        return Notifications?.Invoke(choice) ?? 0;
     }
 }
