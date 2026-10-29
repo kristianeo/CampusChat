@@ -33,11 +33,11 @@ public class NotificationService : DbService<Log>
 
     public List<Log> GetUserLogs(string id)
     {
-        return Load().Where(l => l.Id.Contains(id)).ToList();
+        return Load().Where(l => l.UserId == id).ToList();
     }
     
     public Log? GetThreadLog(string userId, string threadId)
     {
-        return GetUserLogs(userId).FirstOrDefault(l => l.ThreadId.Contains(threadId));
+        return GetUserLogs(userId).FirstOrDefault(l => l.ThreadId == threadId);
     }
 }
