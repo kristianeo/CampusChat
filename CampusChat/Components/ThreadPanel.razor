@@ -51,7 +51,7 @@
             </PrivateThread>
         }
 
-        @if (_canAccess && ThreadContent.Any())
+        else if (_canAccess && ThreadContent.Any())
         {
             @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
             {
@@ -77,8 +77,6 @@
     {
         <p class="lead">Choose a thread to get started</p>
     }
-    
-    
     
     </Body>
 
