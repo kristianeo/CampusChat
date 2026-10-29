@@ -69,7 +69,7 @@
 
     <Footer>
         <MessageInput OnSend="SendMessage"
-                      IsLoggedIn="_isLoggedIn"></MessageInput>
+                      IsLoggedIn="@(!_isLoggedIn || As.IsAuditModeEnabled)"></MessageInput>
     </Footer>
 
 </SplitPanel>

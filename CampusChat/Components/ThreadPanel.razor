@@ -21,7 +21,6 @@
                             List="Filtered"
                             ItemText="GetThreadTitle"
                             Notifications="Notifications"
-                            IsLoggedIn="_isLoggedIn"
                             Selected="Choose" />
         </div>
     </LeftContent>
@@ -85,7 +84,7 @@
 
     <Footer>
         <MessageInput OnSend="SendMessage"
-                      IsLoggedIn="_isLoggedIn"/>
+                      IsLoggedIn="!_isLoggedIn"/>
     </Footer>
 
 </SplitPanel>
