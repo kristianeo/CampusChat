@@ -187,6 +187,6 @@
     private void SendDirectMessage()
     {
         Dms.SendDm(_user!, _profile!.UserName);
-        Nav.NavigateTo($"/Messages/User/{_profile.UserName}");
+        Nav.NavigateTo($"/Messages/{_profile.UserName}");
     }
 }
