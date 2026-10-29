@@ -82,7 +82,7 @@
 
     <Footer>
         <MessageInput OnSend="SendMessage"
-                      IsLoggedIn="!_isLoggedIn"/>
+                      Disabled="@(!_isLoggedIn || !_canAccess)"/>
     </Footer>
 
 </SplitPanel>
