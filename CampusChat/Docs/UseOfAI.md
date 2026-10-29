@@ -3,6 +3,7 @@
 I asked my AI to send me a summary of what we discussed the last 3 weeks. I do not feel the list was complete, even after like 7 prompts. 
 I have added the relevant topics the AI listed here, along with relevant information from my head. There have been many conceptual
 discussions not listed here, and also minor bugs/logic errors (like a mixed up boolean) discussions used for troubleshooting. 
+I asked it to write the ReadMe.md, which I later reviewed and added relevant information.
 
 ### DbService 
 In the beginning, I had some code for ThreadService in another class, and when I made UserService I figured I needed a generic parent class.
@@ -96,11 +97,8 @@ Messages/{Username}.
 ### Null-safe contains
 AI taught me about this concept, which can then be seen throughout the assignment: _thread.JoinedUsers?.Contains(User?.UserName) ?? false.
 
-### Threads
-The first 5 threads are created by me, the rest is AI. 
-
 ## Impact of AI use 
-In some aspects it has made the process more efficient by automating repetitive tasks and restructuring code I have already written.
+In some aspects it has made the process more efficient by automating repetitive tasks (more threads) and restructuring code I have already written.
 It has also made the process of learning parent/child communication and HTML a lot quicker. On the downside, it lowers the
 threshold of asking for help, compared to taking the time to troubleshoot yourself. I have tried to use it primarily as a learning and 
-productivity tool.
+productivity tool. 
