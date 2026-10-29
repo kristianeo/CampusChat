@@ -170,8 +170,13 @@
     {
         if (_thread == null)
             return;
+        
+        bool isJoined =
+            User?.UserName is { } userName &&
+            (_thread.JoinedUsers?.Contains(userName) ?? false);
 
         _canAccess = !_thread.IsPrivate ||
+                     isJoined ||
                      (User?.Audit ?? false);
     }
 
