@@ -5,7 +5,7 @@ public interface INotify
     bool IsRead { get; set; }
 }
 
-public record Log(string Id, string threadId, DateTime Time) : IEntity;
+public record Log(string Id, string UserId, string ThreadId, DateTime Time) : IEntity;
 
 public class NotificationService : DbService<Log>
 {
@@ -14,8 +14,7 @@ public class NotificationService : DbService<Log>
     
     public void LastChecked(string userId, string threadId)
     {
-        List<Log> logs = GetUserLogs(userId);
-        Log? log = logs.FirstOrDefault(l => l.threadId.Contains(threadId));
+        Log? log = GetThreadLog(userId, threadId);
 
         if (log != null)
         {
@@ -27,7 +26,7 @@ public class NotificationService : DbService<Log>
         }
         else
         {
-            Log newLog = new Log(userId, threadId, DateTime.Now);
+            Log newLog = new Log(Guid.NewGuid().ToString(), userId, threadId, DateTime.Now);
             Add(newLog);
         }
     }
@@ -39,6 +38,6 @@ public class NotificationService : DbService<Log>
     
     public Log? GetThreadLog(string userId, string threadId)
     {
-        return GetUserLogs(userId).FirstOrDefault(l => l.threadId.Contains(threadId));
+        return GetUserLogs(userId).FirstOrDefault(l => l.ThreadId.Contains(threadId));
     }
 }
