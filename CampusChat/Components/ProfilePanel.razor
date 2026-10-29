@@ -20,7 +20,10 @@
                             ItemText="GetUsername"
                             Selected="ChooseProfile"></SelectableList>
         </LeftContent>
-
+        
+        <Header>
+            <RightPanelHeader IsLoggedIn="_isLoggedIn"></RightPanelHeader>
+        </Header>
     
         <Body>
         @if (_profile != null)
