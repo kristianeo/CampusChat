@@ -37,8 +37,26 @@
         "Content": "rewe",
         "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76",
         "IsRead": true
+      },
+      {
+        "Id": "242b0371-d2fc-46a9-bfa7-4d994de944a1",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-27T11:53:47.398165+01:00",
+        "Content": "hei",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76",
+        "IsRead": false
+      },
+      {
+        "Id": "ed5a4e9e-bab3-44df-8ba5-74382fc80303",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-27T11:56:49.0991232+01:00",
+        "Content": "hei p\u00E5 deg hvordan g\u00E5r det jeg m\u00E5 teste \u00E5 skrive en lanf melding vi f\u00E5r se hvordan det g\u00E5r",
+        "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76",
+        "IsRead": false
       }
-    ]
+    ],
+    "Archived": false,
+    "ArchiveDate": null
   },
   {
     "Id": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
@@ -53,7 +71,7 @@
         "TimeStamp": "2026-10-23T11:22:04.3118481+02:00",
         "Content": "hei",
         "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
-        "IsRead": false
+        "IsRead": true
       },
       {
         "Id": "58195847-4377-44a2-895a-8ca37834f355",
@@ -61,7 +79,7 @@
         "TimeStamp": "2026-10-23T11:42:10.5567798+02:00",
         "Content": "hvorfor svarer du ikke",
         "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
-        "IsRead": false
+        "IsRead": true
       },
       {
         "Id": "a7d89884-57de-47b1-b5ee-993c62888729",
@@ -69,7 +87,7 @@
         "TimeStamp": "2026-10-23T14:02:28.8546566+02:00",
         "Content": "tre",
         "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
-        "IsRead": false
+        "IsRead": true
       },
       {
         "Id": "88075868-3136-460a-a42b-cbabadab3a6f",
@@ -77,9 +95,11 @@
         "TimeStamp": "2026-10-23T14:08:26.0739609+02:00",
         "Content": "hei",
         "DmId": "9de8b693-aed8-4c6d-b5d4-80c6889d6cbf",
-        "IsRead": false
+        "IsRead": true
       }
-    ]
+    ],
+    "Archived": false,
+    "ArchiveDate": null
   },
   {
     "Id": "7d6d857d-b06b-4c3d-adcc-ade4c8084696",
@@ -96,7 +116,9 @@
         "DmId": "7d6d857d-b06b-4c3d-adcc-ade4c8084696",
         "IsRead": true
       }
-    ]
+    ],
+    "Archived": false,
+    "ArchiveDate": null
   },
   {
     "Id": "64ee9619-f1e7-436c-8780-2fb1e812886b",
@@ -113,6 +135,108 @@
         "DmId": "64ee9619-f1e7-436c-8780-2fb1e812886b",
         "IsRead": true
       }
-    ]
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "f1265a87-47cc-4f15-88d1-e6ffc08816ad",
+    "Participants": [
+      "CatPerson",
+      "Tester"
+    ],
+    "Messages": [],
+    "Archived": true,
+    "ArchiveDate": "2026-06-30T00:00:00"
+  },
+  {
+    "Id": "80ec0648-b2bb-4bd8-aadc-b5edb4707d57",
+    "Participants": [
+      "CatPerson",
+      "Nils"
+    ],
+    "Messages": [],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "6bd640cf-64bd-4da8-978a-8b5179e56aca",
+    "Participants": [
+      "Audit",
+      "Hest"
+    ],
+    "Messages": [],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+    "Participants": [
+      "Audit",
+      "CatPerson"
+    ],
+    "Messages": [
+      {
+        "Id": "6af96596-41c4-4160-9159-f2e204ee6229",
+        "Author": "Audit",
+        "TimeStamp": "2026-10-28T18:05:19.0776152+01:00",
+        "Content": "hello",
+        "DmId": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+        "IsRead": true
+      },
+      {
+        "Id": "c71c25df-b813-447d-811b-5dd0178fc9b5",
+        "Author": "Audit",
+        "TimeStamp": "2026-10-28T18:22:48.2880301+01:00",
+        "Content": "yes",
+        "DmId": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+        "IsRead": true
+      },
+      {
+        "Id": "b531b972-0c97-46b9-99ce-0dcc482193c9",
+        "Author": "Audit",
+        "TimeStamp": "2026-10-28T18:23:04.3459581+01:00",
+        "Content": "hallo???",
+        "DmId": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+        "IsRead": true
+      },
+      {
+        "Id": "7b9353fb-bd5e-4208-b03b-1724e06bdc87",
+        "Author": "Audit",
+        "TimeStamp": "2026-10-28T18:26:54.8002486+01:00",
+        "Content": "dust",
+        "DmId": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+        "IsRead": true
+      },
+      {
+        "Id": "cb398227-742e-435a-a47f-508d9fc08ab4",
+        "Author": "CatPerson",
+        "TimeStamp": "2026-10-28T18:27:03.8684477+01:00",
+        "Content": "eh nei",
+        "DmId": "c02454f4-d347-4b96-a082-6d8829ffe4a3",
+        "IsRead": true
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "1139b37c-b916-471d-9005-4244711657b7",
+    "Participants": [
+      "Tester",
+      "Bruker"
+    ],
+    "Messages": [
+      {
+        "Id": "7ff73b78-403b-4886-91ab-cde9a20a1f85",
+        "Author": "Tester",
+        "TimeStamp": "2026-10-29T09:48:39.4350999+01:00",
+        "Content": "yo",
+        "DmId": "1139b37c-b916-471d-9005-4244711657b7",
+        "IsRead": true
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
   }
 ]
