@@ -77,4 +77,5 @@ troubleshooting and monitoring.
 ### 7. Private threads
 
 The code is stored in the database together with the thread info and posts. When a user tries to
-access a private thread, the entered password is cross-referenced with the database. 
+access a private thread, the entered password is cross-referenced with the database. A user can only join a private thread after entering the password. 
+If a user has joined a private thread, they do not need to enter the password every time. 
