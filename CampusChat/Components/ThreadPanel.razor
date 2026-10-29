@@ -102,7 +102,6 @@
     private string _search = "";
     private string? _parentPostId = "";
     private bool _canAccess = true;
-    private List<Log> _logs = [];
     
     protected override void OnInitialized()
     {
@@ -127,8 +126,7 @@
             
             if (_isLoggedIn)
             {
-                _logs = Ns.GetUserLogs(User.Id);
-                _joinedThreads = Ts.GetJoinedThreads(User.UserName);
+                _joinedThreads = Ts.GetJoinedThreads(User!.UserName);
             }
             
             UpdateAccess();
@@ -194,7 +192,6 @@
         if (_thread?.Id == threadId)
         {
             Ns.LastChecked(User!.Id, threadId);
-            _logs = Ns.GetUserLogs(User.Id);
             LoadCurrentThread();
         }
 
@@ -232,7 +229,7 @@
     {
         if (thread == null || User == null) return 0;
         if (_joinedThreads.All(t => t.Id != thread.Id)) return 0;
-        Log? log = _logs.FirstOrDefault(l => l.threadId.Contains(thread.Id));
+        Log? log = Ns.GetThreadLog(User.Id, thread.Id);
         return log != null ? thread.Posts.Count(p => p.TimeStamp > log.Time && p.Author != User.UserName) : 0;
     }
 
@@ -242,7 +239,6 @@
         if (_joinedThreads.Any(t => t.Id == thread.Id))
         {
             Ns.LastChecked(User.Id, thread.Id);
-            _logs = Ns.GetUserLogs(User.Id);
 
             StateHasChanged();
         }
