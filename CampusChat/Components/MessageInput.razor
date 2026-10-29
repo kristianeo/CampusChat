@@ -5,11 +5,12 @@
     <input type="text"
            class="form-control"
            placeholder="Say something..."
+           disabled="@(string.IsNullOrWhiteSpace(_chatMessage) || !IsLoggedIn)"
            @bind="_chatMessage">
 
     <button class="btn btn-outline-secondary"
             type="button"
-            disabled="@(string.IsNullOrWhiteSpace(_chatMessage) || !IsLoggedIn)"
+            disabled="@(string.IsNullOrWhiteSpace(_chatMessage))"
             @onclick="SendMessage">Send</button>
 </div>
 
