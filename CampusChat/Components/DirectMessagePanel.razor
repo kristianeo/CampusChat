@@ -7,7 +7,8 @@
 
 <SplitPanel>
     <LeftContent>
-        <NavBar IsLoggedIn="_isLoggedIn"/>
+        <NavBar IsLoggedIn="_isLoggedIn"
+                User="User"/>
         
         @if (User is { Audit: true })
         {
@@ -33,31 +34,54 @@
     </LeftContent>
 
     <Header>
-        <h3 class="mb-0">@_username</h3>
+        <RightPanelHeader Username="@(_currentDm != null ? GetProfileUsername(_currentDm) : "")"
+                          IsLoggedIn="_isLoggedIn"></RightPanelHeader>
     </Header>
 
     <Body>
-        @foreach (Message message in MessageContent)
+    @if (_currentDm != null)
+    {
+        if (MessageContent.Any())
         {
-            <DmItem Message="message"></DmItem>
+            foreach (Message message in MessageContent)
+            {
+                <DmItem Message="message"></DmItem>
+            }
         }
+        else
+        {
+            <p class="lead">Be the first to send a message!</p>
+        }
+    }
+
+    else if (_currentDmNotExist)
+    {
+        <p class="lead">The address you are trying to reach does not exist.</p>
+        <p class="lead">Please select a user from the list or look at the profiles
+            page to find new people to connect with!</p>
+    }
+    
+    else if (_currentDm == null)
+    {
+        <p class="lead">Choose a message or start a conversation by looking at a profile!</p>
+    }
     </Body>
 
     <Footer>
         <MessageInput OnSend="SendMessage"
-                      IsLoggedIn="_isLoggedIn"></MessageInput>
+                      Disabled="@(!_isLoggedIn || As.IsAuditModeEnabled)"></MessageInput>
     </Footer>
 
 </SplitPanel>
 
 @code
 {
-    
-    [Parameter] public string DmId { get; set; } = "";
+    [Parameter] public string? Username { get; set; }
+    [Parameter] public string? DmId { get; set; }
     private Profile? User { get; set; }
     private List<DirectMessage> _userDms = [];
     private DirectMessage? _currentDm;
-    private string _username = "";
+    private bool _currentDmNotExist;
     private List<Message> MessageContent { get; set; } = [];
     private string _search = "";
     private bool _isLoggedIn;
@@ -73,9 +97,8 @@
         if (_isLoggedIn)
         {
             _isLoggedIn = true;
-            RefreshMessages();
 
-            LoadCurrentDm();
+            RefreshMessages();
         }
         StateHasChanged();
     }
@@ -93,11 +116,31 @@
     {
         if (_userDms.Count == 0)
             return;
+        
+        bool hasSetParameter =
+            DmId != null ||
+            Username != null;
 
-        _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
+        Console.WriteLine("bool: " + hasSetParameter);
 
-        if (_currentDm == null) return;
-        _username = GetProfileUsername(_currentDm);
+        if (!hasSetParameter)
+            return;
+
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            _currentDm = _userDms.FirstOrDefault(d => d.Id == DmId);
+        }
+        else
+        {
+            _currentDm = _userDms.FirstOrDefault(d => d.Participants.Contains(Username));
+        }
+
+        if (_currentDm == null)
+        {
+            _currentDmNotExist = true;
+            return;
+        }
+
         MessageContent = Dms.ReadAllMessages(_currentDm.Id);
     }
 
@@ -105,7 +148,13 @@
     {
         ReadMessages(dm);
         
-        Nav.NavigateTo($"/Messages/{dm.Id}");
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            Nav.NavigateTo($"/Messages/Dm/{dm.Id}");
+            return;
+        }
+        
+        Nav.NavigateTo($"/Messages/{GetProfileUsername(dm)}");
     }
     
     private string GetProfileUsername(DirectMessage dm)
@@ -130,10 +179,9 @@
 
     private void HandleNewMessages(string dmId)
     {
-        RefreshMessages();
-        
         InvokeAsync(() =>
         {
+            RefreshMessages();
             if (_currentDm?.Id == dmId)
             {
                 var dm = _userDms.FirstOrDefault(d => d.Id == dmId);
@@ -152,13 +200,18 @@
 
     private void RefreshMessages()
     {
-        _userDms = User!.Audit && As.IsAuditModeEnabled
-            ? Dms.GetDirectMessages()
-            : Dms.GetUserDms(User);
+        if (User!.Audit && As.IsAuditModeEnabled)
+        {
+            _userDms = Dms.GetDirectMessages();
+            ArchiveMessages();
+            DeleteOldMessages();
+        }
+        else
+        {
+            _userDms = Dms.GetUserDms(User).Where(dm => !dm.Archived).ToList();
+        }
         
         LoadCurrentDm();
-        
-        StateHasChanged();
     }
 
     private void SendMessage(string message)
@@ -169,7 +222,7 @@
         if (User?.Audit == true && As.IsAuditModeEnabled)
             return;
 
-        Dms.SendMessage(User!.UserName, message, _currentDm.Id);
+        Dms.SendMessage(User!, message, _currentDm.Id);
     }
 
     private int NotificationCount(DirectMessage dm)
@@ -198,6 +251,40 @@
         if (changed)
         {
             Dms.UpdateMessage(dm);
+        }
+    }
+    
+    private void ArchiveMessages()
+    {
+        List<DirectMessage> messages = Dms.GetDirectMessages();
+        List<Profile> profiles = Us.GetProfiles();
+        foreach (var dm in messages)
+        {
+            var participants = profiles
+                .Where(p => dm.Participants.Contains(p.UserName));
+
+            Profile? profile = participants.FirstOrDefault(p => p.Graduated);
+
+            if (profile != null)
+            {
+                if (!dm.Archived)
+                 {
+                    dm.Archived = true;
+                    dm.ArchiveDate = profile.GraduationDate;
+                 }
+            }
+            Dms.UpdateMessage(dm);
+        }
+    }
+
+    private void DeleteOldMessages()
+    {
+        List<DirectMessage> messages = Dms.GetDirectMessages();
+
+        foreach (var directMessage in messages.Where(directMessage => directMessage.Archived).ToList()
+                     .Where(directMessage => DateTime.Now.AddYears(-3) >= directMessage.ArchiveDate))
+        {
+            Dms.DeleteDirectMessage(directMessage);
         }
     }
     

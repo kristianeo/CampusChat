@@ -5,7 +5,7 @@
     <h1>Create a new profile</h1>
     <form class="row g-3" @onsubmit="Submit">
         
-        <Checkbox @bind-Value="@_isTeacher"
+        <Checkbox @bind-Value="@IsTeacher"
                   Message="I am a teacher">
         </Checkbox>
     
@@ -70,8 +70,6 @@
         
         @if (_isTeacher)
         {
-            _studies = Studies.Teacher;
-            _startyear = -1;
             <Checkbox @bind-Value="_isAudit"
                       Message="Do you want an audit role?"
             ></Checkbox>
@@ -97,8 +95,22 @@
     private string _avatarcolor = "";
     private bool _isTeacher;
     private bool _isAudit;
-
     private bool _usernameTaken;
+    
+    private bool IsTeacher
+    {
+        get => _isTeacher;
+        set
+        {
+            _isTeacher = value;
+
+            if (value)
+            {
+                _studies = Studies.Teacher;
+                _startyear = -1;
+            }
+        }
+    }
 
     private async Task Submit()
     {

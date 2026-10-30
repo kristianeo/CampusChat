@@ -1,8 +1,10 @@
 @page "/Messages"
-@page "/Messages/{DmId}"
+@page "/Messages/Dm/{DmId}"
+@page "/Messages/{Username}"
 
-<DirectMessagePanel DmId="@DmId"></DirectMessagePanel>
+<DirectMessagePanel DmId="@DmId" Username="@Username"></DirectMessagePanel>
 
 @code {
     [Parameter] public string? DmId {get; set; }
+    [Parameter] public string? Username {get; set; }
 }

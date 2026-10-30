@@ -3,7 +3,56 @@
     "Id": "1",
     "Title": "Information from the school",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "9f73ac13-4162-4138-8b31-52f71a860700",
+        "Author": "Brukernavn2",
+        "Message": "dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test ",
+        "TimeStamp": "2026-10-27T12:39:28.8765951+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "fe0e38c8-90f5-464d-b5fc-262f8614476f",
+        "Author": "Brukernavn2",
+        "Message": "dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test",
+        "TimeStamp": "2026-10-27T12:40:30.1623472+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": "9f73ac13-4162-4138-8b31-52f71a860700"
+      },
+      {
+        "Id": "2b805a07-7fde-4817-90e0-e72b192d96af",
+        "Author": "Brukernavn2",
+        "Message": "hei hei",
+        "TimeStamp": "2026-10-28T10:17:44.3249643+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "c1772d6e-4a11-4978-b95b-7b906b43a1ec",
+        "Author": "Brukernavn2",
+        "Message": "yo",
+        "TimeStamp": "2026-10-28T10:19:13.7911798+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "e1523d78-acf5-40bc-9a45-404f2ca4a768",
+        "Author": "Audit",
+        "Message": "hei",
+        "TimeStamp": "2026-10-28T10:19:22.4830501+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "7835cf3a-8dae-4a1e-9592-d7c6b523fc0f",
+        "Author": "Fredyy319",
+        "Message": "YOOOOOO",
+        "TimeStamp": "2026-10-29T19:07:55.5252104+01:00",
+        "ChatTreadId": "1",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [],
     "IsPrivate": false
   },
@@ -59,7 +108,16 @@
     "Id": "17",
     "Title": "Class representatives",
     "AccessCode": "ClassRep2026",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "3c7fd5dd-f53d-4c44-b542-be0f312e8ea3",
+        "Author": "Fredyy319",
+        "Message": "lololo",
+        "TimeStamp": "2026-10-29T19:42:06.1640369+01:00",
+        "ChatTreadId": "17",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [],
     "IsPrivate": true
   },
@@ -93,7 +151,24 @@
     "Id": "21",
     "Title": "Music society",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "aa0365e6-9935-43cb-9768-51b9baaaa64c",
+        "Author": "Brukernavn2",
+        "Message": "hello",
+        "TimeStamp": "2026-10-27T13:40:56.3141984+01:00",
+        "ChatTreadId": "21",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "532b6f6b-4839-45c8-8d15-81ba8979c031",
+        "Author": "Brukernavn2",
+        "Message": "hu",
+        "TimeStamp": "2026-10-29T19:58:57.391804+01:00",
+        "ChatTreadId": "21",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [
       "Brukernavn2"
     ],
@@ -129,10 +204,20 @@
         "TimeStamp": "2026-10-26T11:52:36.709549+01:00",
         "ChatTreadId": "3",
         "ParentPostId": ""
+      },
+      {
+        "Id": "53d2b422-8594-4661-a661-a831451d41e3",
+        "Author": "Fredyy319",
+        "Message": "dette m\u00E5 jeg replye p\u00E5",
+        "TimeStamp": "2026-10-29T20:01:04.6899149+01:00",
+        "ChatTreadId": "3",
+        "ParentPostId": "0a32b3c3-057a-45dd-b488-f5eb482b2b6c"
       }
     ],
     "JoinedUsers": [
-      "Brukernavn"
+      "Brukernavn",
+      "Brukernavn2",
+      "Fredyy319"
     ],
     "IsPrivate": true
   },
@@ -150,9 +235,51 @@
     "Id": "8",
     "Title": "Campus events",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "9560496b-c0c9-4f20-919a-50465f2cf637",
+        "Author": "Brukernavn2",
+        "Message": "F\u00D8RST",
+        "TimeStamp": "2026-10-29T19:53:28.8983391+01:00",
+        "ChatTreadId": "8",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "c70fdada-3a1b-40c1-b6b7-2b5cc560f70a",
+        "Author": "Brukernavn2",
+        "Message": "TREDD",
+        "TimeStamp": "2026-10-29T19:53:56.9106619+01:00",
+        "ChatTreadId": "8",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "6c207e8e-fe57-4a6b-a211-17e3975af667",
+        "Author": "Brukernavn2",
+        "Message": "=?=?=?",
+        "TimeStamp": "2026-10-29T19:56:33.7121068+01:00",
+        "ChatTreadId": "8",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "fd25c7ab-7ef4-459b-ae1f-fe55e5d32730",
+        "Author": "Fredyy319",
+        "Message": "AND ADN ADN",
+        "TimeStamp": "2026-10-29T19:58:12.4846017+01:00",
+        "ChatTreadId": "8",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "4d8b382f-0fc6-455f-b41a-aed0abf41b61",
+        "Author": "Fredyy319",
+        "Message": "HU",
+        "TimeStamp": "2026-10-29T19:59:05.25139+01:00",
+        "ChatTreadId": "8",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [
-      "Hest"
+      "Hest",
+      "Fredyy319"
     ],
     "IsPrivate": false
   },
@@ -176,11 +303,76 @@
         "TimeStamp": "2026-10-22T14:28:26.4712092+02:00",
         "ChatTreadId": "9",
         "ParentPostId": "5f00ce60-1757-4b7c-ae1b-83d5a5f63ed4"
+      },
+      {
+        "Id": "f84b2128-84fc-470f-a3a4-8c745619282b",
+        "Author": "Nils",
+        "Message": "test",
+        "TimeStamp": "2026-10-29T19:23:51.9255863+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "126c8056-4ae8-40cb-980c-1991ec1d2eb3",
+        "Author": "Nils",
+        "Message": "test",
+        "TimeStamp": "2026-10-29T19:26:18.8247713+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "1dc262bc-7b5d-47eb-8bf8-b9ef8674d499",
+        "Author": "Fredyy319",
+        "Message": "s\u00E5 bra!",
+        "TimeStamp": "2026-10-29T19:50:59.6340581+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "8760e8b8-0d3e-4cef-bd43-44041955729b",
+        "Author": "Brukernavn2",
+        "Message": "andre veien da?\u0027",
+        "TimeStamp": "2026-10-29T19:51:20.5865639+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "12612ad5-3b71-4fd9-b93e-f911d7147b61",
+        "Author": "Brukernavn2",
+        "Message": "212",
+        "TimeStamp": "2026-10-29T19:51:38.4687274+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "510e7e26-57f1-4d38-8bd0-28e685bb5bf1",
+        "Author": "Fredyy319",
+        "Message": "LOL",
+        "TimeStamp": "2026-10-29T19:51:53.2992071+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "1c397fb5-915a-43da-8bb6-2a0ca09faf4e",
+        "Author": "Fredyy319",
+        "Message": "ku",
+        "TimeStamp": "2026-10-29T19:52:19.8437217+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "1b3d8e5d-9c67-4849-9da3-11f2e4db014e",
+        "Author": "Fredyy319",
+        "Message": "INNI HER",
+        "TimeStamp": "2026-10-29T20:01:38.758206+01:00",
+        "ChatTreadId": "9",
+        "ParentPostId": "8760e8b8-0d3e-4cef-bd43-44041955729b"
       }
     ],
     "JoinedUsers": [
       "Hest",
-      "Brukernavn2"
+      "Brukernavn2",
+      "Fredyy319"
     ],
     "IsPrivate": false
   },
@@ -198,7 +390,32 @@
     "Id": "5",
     "Title": "Exam preparation",
     "AccessCode": "",
-    "Posts": [],
+    "Posts": [
+      {
+        "Id": "98051c9b-6f32-41b4-b173-61792210d4c0",
+        "Author": "Audit",
+        "Message": "jef er audit",
+        "TimeStamp": "2026-10-29T19:11:07.1549673+01:00",
+        "ChatTreadId": "5",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "6ee83d8c-e87d-40ad-8999-2edf25b6296a",
+        "Author": "Fredyy319",
+        "Message": "lol",
+        "TimeStamp": "2026-10-29T19:14:07.6187523+01:00",
+        "ChatTreadId": "5",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "bb296bd9-7f8d-4690-b309-ab72677ccb42",
+        "Author": "Bruker",
+        "Message": "er du hjemme?",
+        "TimeStamp": "2026-10-29T19:27:07.8304809+01:00",
+        "ChatTreadId": "5",
+        "ParentPostId": ""
+      }
+    ],
     "JoinedUsers": [
       "Brukernavn",
       "Brukernavn2",
@@ -218,6 +435,14 @@
         "TimeStamp": "2026-10-22T13:11:47.4080879+02:00",
         "ChatTreadId": "4",
         "ParentPostId": "9354124b-55bb-4d3c-afb5-bc9dae254600"
+      },
+      {
+        "Id": "1492eb5c-6436-402f-8bdc-8159a6835d1d",
+        "Author": "Audit",
+        "Message": "hey",
+        "TimeStamp": "2026-10-28T18:03:37.9009363+01:00",
+        "ChatTreadId": "4",
+        "ParentPostId": ""
       }
     ],
     "JoinedUsers": [],
@@ -235,6 +460,14 @@
         "TimeStamp": "2026-10-22T13:11:58.328649+02:00",
         "ChatTreadId": "2",
         "ParentPostId": "9354124b-55bb-4d3c-afb5-bc9dae254600"
+      },
+      {
+        "Id": "24f5ed17-3f09-48df-8b61-90cd18808e5c",
+        "Author": "Audit",
+        "Message": "jeg er audit",
+        "TimeStamp": "2026-10-29T20:00:41.3367993+01:00",
+        "ChatTreadId": "2",
+        "ParentPostId": ""
       }
     ],
     "JoinedUsers": [],
@@ -324,6 +557,30 @@
         "TimeStamp": "2026-10-22T14:02:10.0532266+02:00",
         "ChatTreadId": "7",
         "ParentPostId": "68e1f683-08ba-4de4-a21d-71a95d32b082"
+      },
+      {
+        "Id": "c1696f2f-c351-48d2-a306-ff9c7cd21915",
+        "Author": "Brukernavn2",
+        "Message": "dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test dette er en lang test",
+        "TimeStamp": "2026-10-27T12:39:09.4304239+01:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "35d1eeab-30e2-4a8d-a421-6c5bb19b9834",
+        "Author": "Fredyy319",
+        "Message": "This message has been deleted",
+        "TimeStamp": "2026-10-29T19:04:00.3942013+01:00",
+        "ChatTreadId": "7",
+        "ParentPostId": ""
+      },
+      {
+        "Id": "216649e0-f622-4634-94aa-6629b107509c",
+        "Author": "Fredyy319",
+        "Message": "reply",
+        "TimeStamp": "2026-10-29T19:04:09.9083338+01:00",
+        "ChatTreadId": "7",
+        "ParentPostId": "c1696f2f-c351-48d2-a306-ff9c7cd21915"
       }
     ],
     "JoinedUsers": [

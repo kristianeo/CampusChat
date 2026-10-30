@@ -7,7 +7,8 @@
 
 <SplitPanel>
     <LeftContent>
-        <NavBar IsLoggedIn="_isLoggedIn"/>
+        <NavBar IsLoggedIn="_isLoggedIn"
+                User="User"/>
 
         <input class="form-control"
                type="text" 
@@ -25,20 +26,17 @@
     </LeftContent>
 
     <Header>
-        @if (_thread != null)
-        {
-        <div class="d-flex align-items-center">
-            <h3 class="mb-0">@ThreadTitle</h3>
-
-            @if(User != null)
-            {
-                <div class="ms-auto">
+        <RightPanelHeader Thread="@ThreadTitle"
+                          IsLoggedIn="_isLoggedIn">
+            <Button>
+                @if (_canAccess)
+                {
                     <JoinOrLeaveThreadButton Thread="_thread"
-                                             User="User"/>
-                </div>
-            }
-        </div>
-        }        
+                        User="User"/>
+                }
+            </Button>
+        </RightPanelHeader>
+        
     </Header>
 
     <Body>
@@ -47,12 +45,13 @@
         @if (!_canAccess)
          {
              <PrivateThread CanAccess="_canAccess"
-                            ThreadPassword="@_thread.AccessCode"
-                            IsValid="HandleChangedAccess">
+                            ThreadPassword="@_thread!.AccessCode"
+                            IsValid="HandleChangedAccess"
+                            User="User">
             </PrivateThread>
         }
 
-        @if (_canAccess)
+        else if (_canAccess && ThreadContent.Any())
         {
             @foreach (var post in ThreadContent.Where(p => p.ParentPostId == ""))
             {
@@ -62,24 +61,39 @@
                 </PostItem>
             }
         }
+        else if (ThreadContent.Count == 0)
+        {
+             <p class="lead">Be the first to post in this thread!</p>
+        }
+    }
+    
+    else if(_threadNotExist)
+    {
+        <p class="lead">The thread you are trying to reach does not exist.</p>
+        <p class="lead">Please chose a thread from the list.</p>
+    }
+    
+    else if (_thread == null)
+    {
+        <p class="lead">Choose a thread to get started</p>
     }
     
     </Body>
 
     <Footer>
         <MessageInput OnSend="SendMessage"
-                      IsLoggedIn="_isLoggedIn"/>
+                      Disabled="@(!_isLoggedIn || !_canAccess)"/>
     </Footer>
 
 </SplitPanel>
 
 @code
 {
-    [Parameter] public int Page { get; set; }
     [Parameter] public string ThreadTitle { get; set; } = "";
     [Parameter] public bool ShowJoinedThreads { get; set; }
     private List<Post> ThreadContent { get; set; } = [];
     private ChatThread? _thread;
+    private bool _threadNotExist;
     private List<ChatThread> _allThreads = [];
     private List<ChatThread> _joinedThreads = [];
     private Profile? User { get; set; }
@@ -87,50 +101,20 @@
     private string _search = "";
     private string? _parentPostId = "";
     private bool _canAccess = true;
-    private List<Log> _logs = [];
-    private Task Choose(ChatThread thread)
+    
+    protected override void OnInitialized()
     {
-        ReadPosts(thread);
-        Nav.NavigateTo(
-            ShowJoinedThreads
-                ? $"/Threads/JoinedThreads/{Uri.EscapeDataString(thread.Title)}"
-                : $"/Threads/{Uri.EscapeDataString(thread.Title)}");
-
-        return Task.CompletedTask;
+        _allThreads = Ts.GetThreads();
+        
+        Ts.NewMessages += HandleNewMessages;
+        Ts.ThreadsChanged += HandleEditedThread;
     }
-
+    
     protected override void OnParametersSet()
     {
         LoadCurrentThread();
     }
-
-    private void LoadCurrentThread()
-    {
-        if (ThreadTitle == "JoinedThreads" || string.IsNullOrWhiteSpace(ThreadTitle))
-            return;
-        
-        _thread = _allThreads
-            .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
-
-        if (_thread == null) return;
-        ThreadContent = Ts.ReadAllMessages(_thread.Id);
-        UpdateAccess();
-    }
     
-    private void UpdateAccess()
-    {
-        if (_thread == null)
-            return;
-
-        _canAccess = !_thread.IsPrivate ||
-                     (User?.Audit ?? false);
-    }
-
-    private string GetThreadTitle(ChatThread thread)
-    {
-        return thread.Title;
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -141,25 +125,63 @@
             
             if (_isLoggedIn)
             {
-                _logs = Ns.GetUserLogs(User.Id);
-                _joinedThreads = Ts.GetJoinedThreads(User.UserName);
+                _joinedThreads = Ts.GetJoinedThreads(User!.UserName);
             }
             
             UpdateAccess();
         
             StateHasChanged();
-            
         }
     }
     
-    protected override void OnInitialized()
+    private Task Choose(ChatThread thread)
     {
-        _allThreads = Ts.GetThreads();
-        
-        Ts.NewMessages += HandleNewMessages;
-        Ts.ThreadsChanged += HandleEditedThread;
+        ReadPosts(thread);
+        Nav.NavigateTo(
+            ShowJoinedThreads
+                ? $"/Threads/JoinedThreads/{Uri.EscapeDataString(thread.Title)}"
+                : $"/Threads/{Uri.EscapeDataString(thread.Title)}");
+
+        return Task.CompletedTask;
     }
     
+    private void LoadCurrentThread()
+    {
+        if (ThreadTitle == "JoinedThreads" || string.IsNullOrWhiteSpace(ThreadTitle))
+            return;
+        
+        _thread = _allThreads
+            .FirstOrDefault(t => t.Title.Contains(ThreadTitle));
+
+        if (_thread == null)
+        {
+            _threadNotExist = true;
+            return;
+        }
+        ThreadContent = Ts.ReadAllMessages(_thread.Id);
+
+        UpdateAccess();
+    }
+    
+    private void UpdateAccess()
+    {
+        if (_thread == null)
+            return;
+        
+        bool isJoined =
+            User?.UserName is { } userName &&
+            (_thread.JoinedUsers?.Contains(userName) ?? false);
+
+        _canAccess = !_thread.IsPrivate ||
+                     isJoined ||
+                     (User?.Audit ?? false);
+    }
+
+    private string GetThreadTitle(ChatThread thread)
+    {
+        return thread.Title;
+    }
+
     private IEnumerable<ChatThread> Filtered =>
         (ShowJoinedThreads
             ? _allThreads.Where(t => User != null && 
@@ -174,7 +196,7 @@
         if (_thread?.Id == threadId)
         {
             Ns.LastChecked(User!.Id, threadId);
-            _logs = Ns.GetUserLogs(User.Id);
+            LoadCurrentThread();
         }
 
         _allThreads = Ts.GetThreads();
@@ -191,24 +213,17 @@
         }
         InvokeAsync(StateHasChanged);
     }
-    
-    private void HandleChangedPage(int page)
-    {
-        Page = page;
-    }
 
-    private void HandleChangedAccess()
+    private void HandleChangedAccess(bool access)
     {
-        _canAccess = true;
+        _canAccess = access;
     }
 
     private Task SendMessage(string message)
     {
-        Console.WriteLine("Sending: " + message);
         if (_thread != null && User != null)
         {
             Ts.SendMessage(User, _thread.Id, message, _parentPostId);
-            Console.WriteLine($"Count after send: {Ts.ReadAllMessages(_thread.Id).Count}");
         }
 
         return Task.CompletedTask;
@@ -216,9 +231,8 @@
     
     public int Notifications(ChatThread thread)
     {
-        if (thread == null || User == null) return 0;
         if (_joinedThreads.All(t => t.Id != thread.Id)) return 0;
-        Log? log = _logs.FirstOrDefault(l => l.threadId.Contains(thread.Id));
+        Log? log = Ns.GetThreadLog(User!.Id, thread.Id);
         return log != null ? thread.Posts.Count(p => p.TimeStamp > log.Time && p.Author != User.UserName) : 0;
     }
 
@@ -228,7 +242,6 @@
         if (_joinedThreads.Any(t => t.Id == thread.Id))
         {
             Ns.LastChecked(User.Id, thread.Id);
-            _logs = Ns.GetUserLogs(User.Id);
 
             StateHasChanged();
         }

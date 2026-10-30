@@ -6,7 +6,8 @@
 
     <SplitPanel>
         <LeftContent>
-            <NavBar IsLoggedIn="_isLoggedIn"/>
+            <NavBar IsLoggedIn="_isLoggedIn"
+                    User="_user"/>
 
             <input class="form-control"
                    type="text" 
@@ -19,7 +20,10 @@
                             ItemText="GetUsername"
                             Selected="ChooseProfile"></SelectableList>
         </LeftContent>
-
+        
+        <Header>
+            <RightPanelHeader IsLoggedIn="_isLoggedIn"></RightPanelHeader>
+        </Header>
     
         <Body>
         @if (_profile != null)
@@ -65,7 +69,7 @@
                                 Edit profile
                             </button>
                                 }
-                    else
+                    else if (_user != null)
                     {
 
                     <button type="button"
@@ -136,12 +140,13 @@
 
     private IEnumerable<Profile> Filtered =>
         _profiles.Where(p =>
-            _search == "" ||
-            p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase));
+            (_search == "" ||
+             p.UserName.Contains(_search, StringComparison.OrdinalIgnoreCase)) &&
+            (_user?.Audit == true || !p.Graduated));
     
     private string GetStudyYear()
     {
-        string currentYear = _profile.StartYear switch
+        string currentYear = _profile!.StartYear switch
         {
             -1 => "Teacher",
             < 2025 => "Alumni",
@@ -151,12 +156,6 @@
         };
         return currentYear;
     }
-    
-    
-    
-    
-    
-
     private string GetUsername(Profile profile)
     {
         return profile.UserName;
@@ -167,14 +166,11 @@
         string username = profile.UserName;
         Nav.NavigateTo($"/Profiles/{username}");
     }
-    
-    
-    
 
     private IEnumerable<ChatThread> JoinedThreads =>
         _allThreads
             .Where(t =>
-                t.JoinedUsers.Contains(_profile.UserName))
+                t.JoinedUsers.Contains(_profile!.UserName))
             .OrderBy(t => int.Parse(t.Id));
 
     private string GetThreadTitle(ChatThread thread)

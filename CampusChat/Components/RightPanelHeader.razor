@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="@($"/Profiles/{Username}")">@Username</a>
+        <a class="navbar-brand" href="@($"/Threads/{Thread}")">@Thread</a>
+        
+        @if (IsLoggedIn)
+        {
+            @Button  
+        }
+        
+        <div class="d-flex align-items-center ms-auto gap-2">
+            @if (IsLoggedIn)
+            {
+                <LogoutButton></LogoutButton>
+            }
+            @if (!IsLoggedIn)
+            {
+                <LoginButton></LoginButton>
+            }
+        </div>
+    </div>
+</nav>
+
+@code {
+    [Parameter] public bool IsLoggedIn { get; set; }
+    [Parameter] public string Username { get; set; } = "";
+    [Parameter] public string Thread { get; set; } = "";
+    [Parameter] public RenderFragment? Button { get; set; }
+}

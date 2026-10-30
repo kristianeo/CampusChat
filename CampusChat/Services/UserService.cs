@@ -14,7 +14,15 @@ public record Profile(
     string AvatarColor,
     bool Teacher = false,
     bool Audit = false,
-    string School = "Gokstad Akademiet") : IEntity;
+    string School = "Gokstad Akademiet") : IEntity
+{
+    public DateTime GraduationDate =>
+        new(StartYear + 2, 6, 30);
+    
+    public bool Graduated =>
+        !Teacher &&
+        DateTime.Now >= GraduationDate;
+}
 
 public enum Studies
 {
@@ -96,36 +104,5 @@ public class UserService(ProtectedSessionStorage storage) : DbService<Profile>
     public async Task ClearUserAsync()
     {
         await storage.DeleteAsync(StoredUser);
-    }
-
-    public async Task<ChatThread?> LoadThreadAsync()
-    {
-        try
-        {
-            var storedThread =
-                await storage.GetAsync<ChatThread>(StoredThread);
-
-            return storedThread.Success
-                ? storedThread.Value
-                : null;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(
-                $"LoadThreadAsync error: {ex.Message}");
-
-            return null;
-        }
-    }
-
-    public async Task SaveThreadAsync(ChatThread thread)
-    {
-        await storage.SetAsync(StoredThread, thread);
-    }
-
-    public async Task ClearThreadAsync()
-    {
-        await storage.DeleteAsync(
-            StoredThread);
     }
 }

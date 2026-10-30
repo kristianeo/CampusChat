@@ -10,7 +10,9 @@
     "AvatarColor": "bg-success",
     "Teacher": false,
     "Audit": false,
-    "School": "Gokstad Akademiet"
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2029-06-30T00:00:00",
+    "Graduated": false
   },
   {
     "Id": "2",
@@ -23,7 +25,9 @@
     "AvatarColor": "bg-danger",
     "Teacher": false,
     "Audit": false,
-    "School": "Gokstad Akademiet"
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2027-06-30T00:00:00",
+    "Graduated": false
   },
   {
     "Id": "3",
@@ -35,8 +39,10 @@
     "Introduction": "hallo",
     "AvatarColor": "bg-success",
     "Teacher": true,
-    "Audit": true,
-    "School": "Gokstad Akademiet"
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2028-06-30T00:00:00",
+    "Graduated": false
   },
   {
     "Id": "4",
@@ -49,7 +55,9 @@
     "AvatarColor": "bg-success",
     "Teacher": true,
     "Audit": true,
-    "School": "Gokstad Akademiet"
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "0002-06-30T00:00:00",
+    "Graduated": false
   },
   {
     "Id": "d2225fab-051a-448d-90fd-00fe2bda789f",
@@ -62,7 +70,9 @@
     "AvatarColor": "bg-primary",
     "Teacher": false,
     "Audit": false,
-    "School": "Gokstad Akademiet"
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2028-06-30T00:00:00",
+    "Graduated": false
   },
   {
     "Id": "e357b180-43fe-46bf-afe7-4c261442fca1",
@@ -75,6 +85,83 @@
     "AvatarColor": "bg-success",
     "Teacher": true,
     "Audit": true,
-    "School": "Gokstad Akademiet"
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "0001-06-30T00:00:00",
+    "Graduated": false
+  },
+  {
+    "Id": "cd2622c1-4a90-4736-b27b-9fa8537e7149",
+    "UserName": "Graduate",
+    "FirstName": "fredrik",
+    "LastName": "k\u00E5sin",
+    "Studies": 2,
+    "StartYear": -1,
+    "Introduction": "jeg er flink",
+    "AvatarColor": "bg-primary",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "0001-06-30T00:00:00",
+    "Graduated": true
+  },
+  {
+    "Id": "a30811db-41ee-4dfb-895c-ec202270b1c7",
+    "UserName": "Tester",
+    "FirstName": "k\u00E5re",
+    "LastName": "willoch",
+    "Studies": 2,
+    "StartYear": 2024,
+    "Introduction": "statsminister for lenge siden",
+    "AvatarColor": "bg-primary",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2026-06-30T00:00:00",
+    "Graduated": true
+  },
+  {
+    "Id": "ffd9811a-3a52-4da2-b372-7da78770ed24",
+    "UserName": "DogPerson",
+    "FirstName": "Snoop",
+    "LastName": "Dogg",
+    "Studies": 0,
+    "StartYear": -1,
+    "Introduction": "woof",
+    "AvatarColor": "bg-success",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "0001-06-30T00:00:00",
+    "Graduated": true
+  },
+  {
+    "Id": "d07533e9-40d9-4296-b571-1fda2e60673d",
+    "UserName": "CatPerson",
+    "FirstName": "Gro",
+    "LastName": "Harlem Brundtland",
+    "Studies": 2,
+    "StartYear": 2025,
+    "Introduction": "bedre enn k\u00E5re",
+    "AvatarColor": "bg-danger",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2027-06-30T00:00:00",
+    "Graduated": false
+  },
+  {
+    "Id": "0d6ebc03-4356-4213-9827-54befbc73e50",
+    "UserName": "Fredyy319",
+    "FirstName": "Fredrik",
+    "LastName": "L\u00E5s",
+    "Studies": 2,
+    "StartYear": 2026,
+    "Introduction": "Jeg er t\u00F8ff",
+    "AvatarColor": "bg-success",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2028-06-30T00:00:00",
+    "Graduated": false
   }
 ]

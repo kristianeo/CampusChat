@@ -5,12 +5,12 @@
 {
     @if (!Thread.JoinedUsers.Contains(User.UserName))
     {
-        <button type="button" class="btn btn-outline-success"
+        <button type="button" class="btn btn-outline-success m-2"
                 @onclick='() => Ts.JoinThread(User, Thread)'>Join thread</button>
     }
     else
     {
-        <button type="button" class="btn btn-outline-danger"
+        <button type="button" class="btn btn-outline-danger m-2"
                 @onclick='() => Ts.LeaveThread(User, Thread)'>Leave thread</button>
     }
 }

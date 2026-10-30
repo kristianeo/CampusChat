@@ -12,12 +12,12 @@
                     </NavLink>
                 </li>
                 <li class="nav-item mb-0">
-                    <NavLink class="btn btn-small p-2" href="/Threads/JoinedThreads">
+                    <NavLink class="@($"btn btn-small p-2 {(IsDisabled() ? "disabled" : "")}")" href="/Threads/JoinedThreads">
                         <small>My threads</small>
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="btn btn-small p-2" href="/Messages">
+                    <NavLink class="@($"btn btn-small p-2 {(IsDisabled() ? "disabled" : "")}")" href="/Messages">
                         <small>Messages</small>
                     </NavLink>
                 </li>
@@ -26,17 +26,14 @@
                         <small>Profiles</small>
                     </NavLink>
                 </li>
-                
+                @if (User != null)
+                {
                 <li class="nav-item">
-                    @if (IsLoggedIn)
-                    {
-                        <LogoutButton></LogoutButton>
-                    }
-                    @if (!IsLoggedIn)
-                    {
-                        <LoginButton></LoginButton>
-                    }
+                    <NavLink class="@($"btn btn-small p-2 {(IsDisabled() ? "disabled" : "")}")" href=@($"/Profiles/{User.UserName}") Match="NavLinkMatch.All">
+                        <small>My profile</small>
+                    </NavLink>
                 </li>
+                }
             </ul>
         </div>
     </div>
@@ -44,4 +41,12 @@
 
 @code {
     [Parameter] public bool IsLoggedIn { get; set; }
+    [Parameter] public Profile? User { get; set; }
+
+    private bool IsDisabled()
+    {
+        return User == null;
+    }
+    
+    
 }
