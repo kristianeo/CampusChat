@@ -105,35 +105,4 @@ public class UserService(ProtectedSessionStorage storage) : DbService<Profile>
     {
         await storage.DeleteAsync(StoredUser);
     }
-
-    public async Task<ChatThread?> LoadThreadAsync()
-    {
-        try
-        {
-            var storedThread =
-                await storage.GetAsync<ChatThread>(StoredThread);
-
-            return storedThread.Success
-                ? storedThread.Value
-                : null;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(
-                $"LoadThreadAsync error: {ex.Message}");
-
-            return null;
-        }
-    }
-
-    public async Task SaveThreadAsync(ChatThread thread)
-    {
-        await storage.SetAsync(StoredThread, thread);
-    }
-
-    public async Task ClearThreadAsync()
-    {
-        await storage.DeleteAsync(
-            StoredThread);
-    }
 }
