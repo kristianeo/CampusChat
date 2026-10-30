@@ -12,7 +12,7 @@
         "TimeStamp": "2026-10-21T15:21:52.6127188+02:00",
         "Content": "yo",
         "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76",
-        "IsRead": false
+        "IsRead": true
       },
       {
         "Id": "b2c60d02-0bfb-4777-8308-58c9196e3141",
@@ -20,7 +20,7 @@
         "TimeStamp": "2026-10-21T17:56:54.1634398+02:00",
         "Content": "hey",
         "DmId": "0fc29306-7bb1-426b-92f3-be47551cfa76",
-        "IsRead": false
+        "IsRead": true
       },
       {
         "Id": "6ecd7bdd-662f-4c65-bbf7-0af842d11781",
@@ -326,6 +326,25 @@
         "Content": "jass\u00E5gitt",
         "DmId": "df4b32eb-c7ef-4a35-8197-3fac620782d0",
         "IsRead": true
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "dd01e94d-dadf-4a93-9ede-d834d7f4e611",
+    "Participants": [
+      "Hest",
+      "Graduate"
+    ],
+    "Messages": [
+      {
+        "Id": "7c77c22b-0f48-441a-88db-f41721cc681e",
+        "Author": "Hest",
+        "TimeStamp": "2026-10-30T11:41:35.6508911+01:00",
+        "Content": "test",
+        "DmId": "dd01e94d-dadf-4a93-9ede-d834d7f4e611",
+        "IsRead": false
       }
     ],
     "Archived": false,
