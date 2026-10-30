@@ -2,13 +2,13 @@
 
 I asked my AI to send me a summary of what we discussed the last 3 weeks. I do not feel the list was complete, even after like 7 prompts. 
 I have added the relevant topics the AI listed here, along with relevant information from my head. There have been many conceptual
-discussions not listed here, and also minor bugs/logic errors (like a mixed up boolean) discussions used for troubleshooting. 
+discussions not listed here, and also minor bugs/logic error discussions used for troubleshooting. 
 I asked it to write the ReadMe.md, which I later reviewed and added relevant information.
 
 ### DbService 
 In the beginning, I had some code for ThreadService in another class, and when I made UserService I figured I needed a generic parent class.
 I asked AI to make this for me using the code I had already written, which is seen in DbService. I wrote all the logic, AI made it generic so 
-both classes could inherit from it. 
+both classes could inherit from it. It also rewrote the inherited methods. This also includes the IEntity interface.
 
 ### Parent/child communication
 I used AI in the beginning to understand the concept of the components sharing data, and showed it my code to tell me why
@@ -73,14 +73,14 @@ The following routes conflict:
 
 I chose to keep "/Messages/Dm/{DmId}" for audit use, as both DmId and Username are strings.
 I didn't find it necessary to keep the /User/ path for normal dms, as it is easier and more readable to directly use
-Messages/{Username}.
+Messages/{Username}. There should be added some functionality restricting new users to pick the username "Dm" (it should have a length requirement anyway).
 
 ---
 
 ### Styling
 
 - Logic is working correctly, but Bootstrap styling overrode custom styling.
-- I added some CSS suggested by AI shown under
+- I added some CSS suggested by AI
 
 #### Suggested CSS
 

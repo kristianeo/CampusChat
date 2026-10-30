@@ -44,8 +44,9 @@ user cannot simply access this when trying the same url.
   * **AuditService**
 
 The logged-in user details needs to be unique to the state, so the program can access the correct
-data based on the user. The audit service also needs to be scoped, because this is unique to the user if they are an audit.
-The audit service could have more functionality related to the audit role, and rather have the services inherit from it.
+data based on the user. The audit service as it is now also needs to be scoped, because this is unique to the user 
+if they are an audit. The audit service could instead have been its own class, having more functionality,
+and rather have the services inherit from it.
 
 ### Singleton services:
   * **ThreadService** 
@@ -53,7 +54,7 @@ The audit service could have more functionality related to the audit role, and r
   * **NotificationService**
 
 These have functionality which needs to be updated across the users, to render new messages and increase the notification count.
-A singleton service is nice for this purpose, as there is no need to inject them into every component which requires them. 
+A singleton service is nice for this purpose, as it uses the same instance across all users.
 
 ## IV. Data Persistence and Lifecycles
 
@@ -75,7 +76,7 @@ inherits from DbService to access the data.
 
 ## VI. Thread Feature Configuration
 
-The thread has a title, and the threads are set. In the future, teachers could make new threads as needed. 
+The threads have a title, and the threads are set. In the future, teachers could make new threads as needed. 
 There are no owners of any threads as of now.
 
 ## VII. Notification counts on threads

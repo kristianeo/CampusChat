@@ -149,7 +149,7 @@ Current retention policy:
 - Advanced moderation tools.
 - Additional reporting functionality.
 - New students/faculty automatically subscribe to relevant threads
-- Own module for saved posts for lecturers
+- Own module for saved posts used by lecturers
 
 ---
 
