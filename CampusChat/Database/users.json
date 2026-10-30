@@ -148,5 +148,20 @@
     "School": "Gokstad Akademiet",
     "GraduationDate": "2027-06-30T00:00:00",
     "Graduated": false
+  },
+  {
+    "Id": "0d6ebc03-4356-4213-9827-54befbc73e50",
+    "UserName": "Fredyy319",
+    "FirstName": "Fredrik",
+    "LastName": "L\u00E5s",
+    "Studies": 2,
+    "StartYear": 2026,
+    "Introduction": "Jeg er t\u00F8ff",
+    "AvatarColor": "bg-success",
+    "Teacher": false,
+    "Audit": false,
+    "School": "Gokstad Akademiet",
+    "GraduationDate": "2028-06-30T00:00:00",
+    "Graduated": false
   }
 ]

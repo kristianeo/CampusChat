@@ -236,6 +236,98 @@
         "IsRead": true
       }
     ],
+    "Archived": true,
+    "ArchiveDate": "2026-06-30T00:00:00"
+  },
+  {
+    "Id": "826a1586-408a-4d12-af37-760f4eddd22b",
+    "Participants": [
+      "Fredyy319",
+      "Nils"
+    ],
+    "Messages": [
+      {
+        "Id": "a3cdbfaa-0cd2-4d32-80ed-22d9a9f1887b",
+        "Author": "Fredyy319",
+        "TimeStamp": "2026-10-29T19:01:29.0684779+01:00",
+        "Content": "Hei Nils",
+        "DmId": "826a1586-408a-4d12-af37-760f4eddd22b",
+        "IsRead": true
+      },
+      {
+        "Id": "a84b09bf-4a23-4355-93a3-3b9c84c5d351",
+        "Author": "Nils",
+        "TimeStamp": "2026-10-29T19:01:59.3846697+01:00",
+        "Content": "Hei du",
+        "DmId": "826a1586-408a-4d12-af37-760f4eddd22b",
+        "IsRead": true
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "5e7e44e5-e531-43ec-8304-e65ae5e35271",
+    "Participants": [
+      "Fredyy319",
+      "Brukernavn"
+    ],
+    "Messages": [
+      {
+        "Id": "29dd14d1-cea8-44af-ad29-bb4874522e25",
+        "Author": "Fredyy319",
+        "TimeStamp": "2026-10-29T19:07:32.975919+01:00",
+        "Content": "DUUUUUUUU",
+        "DmId": "5e7e44e5-e531-43ec-8304-e65ae5e35271",
+        "IsRead": false
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "e496361b-a82a-472e-a9e6-6069ac466f75",
+    "Participants": [
+      "Bruker",
+      "Nils"
+    ],
+    "Messages": [
+      {
+        "Id": "4ec53eb6-aba2-4cdb-9698-f0bce59ec397",
+        "Author": "Bruker",
+        "TimeStamp": "2026-10-29T19:29:53.7320558+01:00",
+        "Content": "juhu",
+        "DmId": "e496361b-a82a-472e-a9e6-6069ac466f75",
+        "IsRead": false
+      }
+    ],
+    "Archived": false,
+    "ArchiveDate": null
+  },
+  {
+    "Id": "df4b32eb-c7ef-4a35-8197-3fac620782d0",
+    "Participants": [
+      "Fredyy319",
+      "Brukernavn2"
+    ],
+    "Messages": [
+      {
+        "Id": "2bbbdc2f-dfc2-45fd-aa19-01dd0cc58467",
+        "Author": "Fredyy319",
+        "TimeStamp": "2026-10-29T19:50:10.3502305+01:00",
+        "Content": "DUUUUU",
+        "DmId": "df4b32eb-c7ef-4a35-8197-3fac620782d0",
+        "IsRead": true
+      },
+      {
+        "Id": "30716fba-fda5-43ee-8916-9cceec9cc992",
+        "Author": "Brukernavn2",
+        "TimeStamp": "2026-10-29T19:50:38.9068754+01:00",
+        "Content": "jass\u00E5gitt",
+        "DmId": "df4b32eb-c7ef-4a35-8197-3fac620782d0",
+        "IsRead": true
+      }
+    ],
     "Archived": false,
     "ArchiveDate": null
   }
